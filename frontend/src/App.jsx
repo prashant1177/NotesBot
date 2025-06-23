@@ -1,4 +1,5 @@
 import "./App.css";
+import Landing from "./components/Landing";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
 import Recent from "./components/Recent";
