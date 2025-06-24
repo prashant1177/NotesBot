@@ -53,6 +53,7 @@ export default function Main() {
 
       const result = await response.json();
       alert(result.message);
+      console.log("Response from server:", result);
     } catch (err) {
       console.error("Error submitting:", err);
     }
