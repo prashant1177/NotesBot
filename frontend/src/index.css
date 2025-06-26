@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@import "./typography.css";
+@tailwind utilities;
 button:hover {
   cursor: pointer;
 }

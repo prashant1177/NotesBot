@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import logo from "../assets/logo1.png";
+import { Link } from "react-router-dom";
 
 export default function Landing() {
   const phrases = ["Clean summaries out.", "Questions out.", "Answers out.", "Bullets out."];
@@ -51,9 +52,9 @@ export default function Landing() {
             Convert raw thoughts into smart structure. Let AI summarize, bullet, organize, and extract questions from your notes instantly.
           </p>
           <div className="flex justify-center">
-            <button className="inline-flex text-white bg-purple-900 border-0 py-3 px-8 focus:outline-none hover:bg-purple-700 rounded-lg text-lg shadow-md">
+         <Link to="/main">  <button className="inline-flex text-white bg-purple-900 border-0 py-3 px-8 focus:outline-none hover:bg-purple-700 rounded-lg text-lg shadow-md">
               Start now
-            </button>
+            </button></Link> 
             <button className="ml-4 inline-flex text-purple-800 bg-purple-100 border-0 py-3 px-8 focus:outline-none hover:bg-purple-200 rounded-lg text-lg">
               Know more
             </button>

@@ -1,6 +1,7 @@
 export default function Recent() {
   return (
-    <div className="mt-10 bg-white/60 backdrop-blur-md shadow-lg rounded-2xl p-6 max-w-3xl mx-auto">
+    
+    <div className=" min-h-screen p-6 w-full mx-auto">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">
         Recent Results
       </h2>
