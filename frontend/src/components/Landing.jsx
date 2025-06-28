@@ -55,9 +55,9 @@ export default function Landing() {
          <Link to="/main">  <button className="inline-flex text-white bg-purple-900 border-0 py-3 px-8 focus:outline-none hover:bg-purple-700 rounded-lg text-lg shadow-md">
               Start now
             </button></Link> 
-            <button className="ml-4 inline-flex text-purple-800 bg-purple-100 border-0 py-3 px-8 focus:outline-none hover:bg-purple-200 rounded-lg text-lg">
-              Know more
-            </button>
+             <Link to="/register">   <button className="ml-4 inline-flex text-purple-800 bg-purple-100 border-0 py-3 px-8 focus:outline-none hover:bg-purple-200 rounded-lg text-lg">
+              Register
+            </button></Link> 
           </div>
         </div>
       </div>

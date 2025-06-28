@@ -7,6 +7,7 @@ import Test from "./components/Test";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Register from "./components/Register";
+import Pricing from "./components/pricing";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/test" element={<Test />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/pricing" element={< Pricing/>} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </div>
