@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Register from "./components/Register";
 import Pricing from "./components/pricing";
+import Youtube from "./components/Youtube";
 
 function App() {
   return (
@@ -17,11 +18,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/main" element={<Main />} />
-          <Route path="/test" element={<Test />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/pricing" element={< Pricing/>} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/youtube" element={<Youtube />} />
         </Routes>
       </div>
     </Router>

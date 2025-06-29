@@ -2,26 +2,15 @@ import React, { useEffect, useState, useRef } from "react";
 import Recent from "./Recent";
 import { marked } from "marked";
 import "@tailwindcss/typography";
-import '../index.css'
+import "../index.css";
 // Enable GitHub-flavored markdown
 marked.setOptions({
   gfm: true,
   breaks: true,
   headerIds: true,
 });
-const sample = `
-# Sample Header
 
-This is **bold** and this is *italic*.
-
-- One
-- Two
-
-\`\`\`js
-console.log("Hello world");
-\`\`\`
-`;
-export default function Test() {
+export default function Main() {
   const [message, setMessage] = useState("");
   const [textInput, setTextInput] = useState("");
   const [selectedOption, setSelectedOption] = useState("Custom");
@@ -42,7 +31,7 @@ export default function Test() {
   }, [textInput]);
 
   useEffect(() => {
-    const text = "What's on your mind...";
+    const text = "Upload your PDF here...";
     let index = -1;
 
     const typeInterval = setInterval(() => {
@@ -61,14 +50,19 @@ export default function Test() {
     return () => clearInterval(typeInterval);
   }, []);
   const handleSubmit = async () => {
+    const token = localStorage.getItem("token"); // ✅ Get token here
+
     const formData = new FormData();
     formData.append("message", textInput);
     formData.append("file", file);
     formData.append("selectedOption", selectedOption);
 
     try {
-      const response = await fetch("http://localhost:5000/sendrequest", {
+      const response = await fetch("http://localhost:5000/pdfrequest", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // Make sure token is included!
+        },
         body: formData,
       });
 
@@ -81,10 +75,8 @@ export default function Test() {
     }
   };
   return (
-          <div className="container mx-auto flex flex-col items-center px-24">
-
-    
-<main className=" flex flex-col justify-between w-full mx-auto px-2 py-6 my-16">
+    <div className="container mx-auto flex flex-col items-center px-24">
+      <main className=" flex flex-col justify-between w-full mx-auto px-2 py-6 my-16">
         <div className="bg-white/50 backdrop-blur-lg py-8 px-8 rounded-2xl shadow-md w-full text-center my-auto">
           {geminiHTML ? (
             <div className="prose max-w-none text-left">
@@ -93,10 +85,11 @@ export default function Test() {
           ) : (
             <h1 className="text-3xl font-bold text-gray-900 mb-6">{message}</h1>
           )}
-<div className="sticky bottom-4 z-20 mt-8 rounded-lg shadow-2xl shadow-white">
+          <div className="sticky bottom-4 z-20 mt-8 rounded-lg shadow-2xl shadow-white">
             <div className="flex flex-col items-center bg-white rounded-lg  shadow-sm w-full ">
               <div className="w-full flex items-center bg-white rounded-lg  ps-2  inset-ring">
                 {/* Upload Icon with Tooltip */}
+
                 <div className="text-purple-900 px-2 py-2 h-full ">
                   <input
                     type="file"
@@ -155,37 +148,34 @@ export default function Test() {
               {/* Action Buttons */}
               <div className="flex items-center justify-between w-full bg-purple-100 px-4 py-2">
                 <div className="flex flex-wrap justify-center gap-4">
-                  {[
-                    "Summary",
-                    "Questions",
-                    "Organize",
-                    "Custom",
-                  ].map((label) => (
-                    <div key={label}>
-                      <input
-                        type="radio"
-                        name="option"
-                        value={label}
-                        id={label}
-                        checked={selectedOption === label}
-                        onChange={() => setSelectedOption(label)}
-                        className="hidden peer"
-                      />
-                      <label
-                        htmlFor={label}
-                        className="peer-checked:bg-purple-600 peer-checked:text-white inline-flex items-center px-5 py-2 border border-purple-500 rounded-full text-purple-700 cursor-pointer hover:bg-purple-500 transition-colors duration-150"
-                      >
-                        {label}
-                      </label>
-                    </div>
-                  ))}
+                  {["Summary", "Questions", "Organize", "Custom"].map(
+                    (label) => (
+                      <div key={label}>
+                        <input
+                          type="radio"
+                          name="option"
+                          value={label}
+                          id={label}
+                          checked={selectedOption === label}
+                          onChange={() => setSelectedOption(label)}
+                          className="hidden peer"
+                        />
+                        <label
+                          htmlFor={label}
+                          className="peer-checked:bg-purple-600 peer-checked:text-white inline-flex items-center px-5 py-2 border border-purple-500 rounded-full text-purple-700 cursor-pointer hover:bg-purple-500 transition-colors duration-150"
+                        >
+                          {label}
+                        </label>
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </main>
-        <Recent />
+      <Recent />
     </div>
   );
 }

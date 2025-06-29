@@ -8,11 +8,15 @@ import os
 from google import genai
 from google.genai import types
 import httpx
+from youtube_transcript_api import YouTubeTranscriptApi
+import re
 # import pymongo
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, verify_jwt_in_request
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
+import markdown
+from bs4 import BeautifulSoup
 
 load_dotenv()
 app = Flask(__name__)
@@ -26,6 +30,7 @@ genaiClient = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
 mongoClient = MongoClient(os.getenv("uri"))
 db = mongoClient["notesbot_db"]
 users = db["users"]
+searchData = db["searchData"]
 
 # Cloudinary config
 cloudinary.config(
@@ -41,7 +46,9 @@ prompts = {
 
     "Organize": """You are a document formatting assistant. The uploaded PDF contains handwritten or typed student notes. Your task is to reconstruct the content into a well-organized, clean, and properly formatted text. Use clear headings, subheadings, bullet points, and paragraphs where necessary. Ensure the content flow is logical and the output resembles a neat, readable textbook-style version of the original notes. Do not add any new information—only rephrase or structure what's already in the PDF.""",
 
-    "Custom": """You are a Notesbot AI that improves the quality of notes."""
+    "Custom": """You are a Notesbot AI that improves the quality of notes.""",
+    
+    "Youtube": """You are an expert note-taker. Read the following text and create well-organized, concise notes that capture the key points, subpoints, and important examples or definitions. Use headings, bullet points, and indentation for clarity. Avoid repeating sentences; instead, summarize them in your own words. Ensure the notes are easy to read and structured logically for studying or review purposes. Here is the Text to process: """
 }
 
 @app.route('/register', methods=['POST'])
@@ -80,11 +87,14 @@ def dashboard():
         "user_id": user_id
     })
 
-@app.route('/sendrequest', methods=['POST'])
-def handle_request():
+@app.route('/pdfrequest', methods=['POST'])
+def handle_pdf_request():
     try:
+        
+        verify_jwt_in_request(optional=True)
+        user_id = get_jwt_identity()
         # Get text inputs
-        message = ' Intruction from user: '+ request.form.get('message')
+        message = ' Give it a short title also for better tracking and here are few more Intruction from user: '+ request.form.get('message')
         selected_option = request.form.get('selectedOption')
 
         # Get file
@@ -113,9 +123,6 @@ def handle_request():
         doc_data = httpx.get(doc_url).content
 
         response = genaiClient.models.generate_content(
-
-  # gemini-2.5-flash has thinking on by default for enhanced accuracy
-  # you can adjust it to minimize latency/token usage (refer to documentation)
         model="gemini-2.5-flash",
         contents=[
              types.Part.from_bytes(
@@ -123,9 +130,23 @@ def handle_request():
             mime_type='application/pdf',
         ), 
         prompts.get(selected_option) + message])
-
-        print(response.text)
-
+        # Print the response
+        
+        html = markdown.markdown(response.text)
+        soup = BeautifulSoup(html, "html.parser")
+        heading = soup.find(["h1", "h2", "h3", "h4", "h5", "h6"])
+        title = heading.get_text(strip=True) if heading else "Untitled"
+        print(title)
+        # Save the response to MongoDB
+        if user_id:
+            searchData.insert_one({
+                "user_id": user_id,
+                "title": title,
+                "selected_option": selected_option,
+                "file_url": file_url,
+                "response": response.text
+            })
+            
         return jsonify({
             'message': 'Form submitted successfully!',
             'file_url': file_url,
@@ -136,35 +157,90 @@ def handle_request():
         print("Error:", e)
         return jsonify({'message': 'An error occurred', 'error': str(e)}), 500
 
-@app.route('/test', methods=['GET'])
-def test_markdown():
-    markdown_text = """
-# Introduction to AI
 
-Artificial Intelligence (**AI**) is the simulation of *human intelligence* processes by machines.
-
-## Key Concepts
-
-- **Machine Learning**: A method where computers learn from data.
-- **Neural Networks**: Algorithms inspired by the human brain.
-- **Natural Language Processing (NLP)**: Enables machines to understand text and speech.
-
-## Example
-
-You can write simple AI models using Python:
-
-```python
-def greet(name):
-    return f"Hello, {name}!"```"""
+@app.route('/ytrequest', methods=['POST'])
+def handle_youtube_request():
     try:
+        
+        verify_jwt_in_request(optional=True)
+        user_id = get_jwt_identity()
+    
+        # Get file
+        url = request.form.get('url')
+        print(UnicodeTranslateError)
+        message = ' ' 
+        if not url:
+            return jsonify({'error': 'No URL provided'}), 400
+
+        pattern = r"(?:v=|\/|embed\/|youtu\.be\/)([0-9A-Za-z_-]{11})"
+        match = re.search(pattern, url)
+        if not match:
+            return jsonify({'error': 'Invalid YouTube URL'}), 400
+        video_id = match.group(1)
+        print(video_id)
+        try:
+            transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        except Exception as e:
+            return jsonify({'error': f'Could not retrieve transcript: {str(e)}'}), 400
+        for entry in transcript:
+            message += entry['text']
+            
+        response = genaiClient.models.generate_content(
+        model="gemini-2.5-flash",
+        contents= prompts.get("Youtube") + message)
+        # Print the response
+        
+        html = markdown.markdown(response.text)
+        soup = BeautifulSoup(html, "html.parser")
+        heading = soup.find(["h1", "h2", "h3", "h4", "h5", "h6"])
+        title = heading.get_text(strip=True) if heading else "Untitled"
+        print(title)
+        # Save the response to MongoDB
+        if user_id:
+            searchData.insert_one({
+                "user_id": user_id,
+                "title": title,
+                "selected_option": "Youtube",
+                "file_url": url,
+                "response": response.text
+            })
+            
         return jsonify({
             'message': 'Form submitted successfully!',
-            'response': markdown_text,
+            'file_url': url,
+            'response': response.text,
         })
 
     except Exception as e:
         print("Error:", e)
         return jsonify({'message': 'An error occurred', 'error': str(e)}), 500
     
+@app.route('/recent', methods=['GET'])
+@jwt_required()
+def get_recent_results():
+    try:
+        user_id = get_jwt_identity()
+
+        # Get last 10 results for this user, sorted by most recent
+        recent_entries = searchData.find(
+            {"user_id": user_id}
+        ).sort("_id", -1).limit(10)
+
+        results = []
+        for entry in recent_entries:
+            results.append({
+                "user_id": user_id,
+                "title": entry.get("title", "Untitled"),
+                "selected_option": entry.get("selected_option"),
+                "file_url": entry.get("file_url"),
+                "response": entry.get("response")
+            })
+
+        return jsonify(results), 200
+
+    except Exception as e:
+        print("Error fetching recent results:", e)
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
     app.run(port=5000)
