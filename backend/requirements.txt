@@ -1,0 +1,13 @@
+flask
+flask-cors
+python-dotenv
+cloudinary
+google-generativeai
+httpx
+youtube-transcript-api
+flask-jwt-extended
+pymongo
+werkzeug
+markdown
+beautifulsoup4
+gunicorn
