@@ -56,7 +56,7 @@ export default function Youtube() {
 
   const formData = new FormData();
   formData.append("url", url);
-
+console.log("Base API URL is:", process.env.REACT_APP_API_URL);
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/ytrequest`, {
       method: "POST",
