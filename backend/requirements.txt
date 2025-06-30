@@ -1,13 +1,13 @@
 flask
 flask-cors
+gunicorn
 python-dotenv
+pymongo
 cloudinary
+flask-jwt-extended
+google-auth>=2.0.0
 google-generativeai
 httpx
 youtube-transcript-api
-flask-jwt-extended
-pymongo
-werkzeug
 markdown
 beautifulsoup4
-gunicorn
