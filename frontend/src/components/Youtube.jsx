@@ -56,9 +56,9 @@ export default function Youtube() {
 
   const formData = new FormData();
   formData.append("url", url);
-console.log("Base API URL is:", import.meta.VITE_API_URL);
+console.log("Base API URL is:", import.meta.env.VITE_API_URL);
   try {
-    const response = await fetch(`${import.meta.VITE_API_URL}/ytrequest`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/ytrequest`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
