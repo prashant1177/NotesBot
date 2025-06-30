@@ -5,8 +5,8 @@ python-dotenv
 pymongo
 cloudinary
 flask-jwt-extended
-google-auth>=2.0.0
-google-generativeai
+google
+google.genai
 httpx
 youtube-transcript-api
 markdown
