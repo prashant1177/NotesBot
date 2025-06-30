@@ -58,7 +58,7 @@ export default function Youtube() {
   formData.append("url", url);
 
   try {
-    const response = await fetch("http://localhost:5000/ytrequest", {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/ytrequest`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

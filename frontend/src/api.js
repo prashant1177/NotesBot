@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000', // or your deployed Flask URL
+  baseURL: `${process.env.REACT_APP_API_URL}`, // or your deployed Flask URL
 });
 
 export const setAuthToken = token => {
