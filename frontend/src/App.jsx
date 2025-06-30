@@ -7,7 +7,7 @@ import Test from "./components/Test";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Register from "./components/Register";
-import Pricing from "./components/pricing";
+import Pricing from "./components/Pricing";
 import Youtube from "./components/Youtube";
 
 function App() {
