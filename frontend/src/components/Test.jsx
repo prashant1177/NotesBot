@@ -67,7 +67,7 @@ export default function Test() {
     formData.append("selectedOption", selectedOption);
 
     try {
-      const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/test`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/test`, {
         method: "POST",
         body: formData,
       });
