@@ -5,8 +5,8 @@ import cloudinary
 import cloudinary.uploader
 import uuid
 import os
-from google import genai
-from google.genai import types
+import google.generativeai as genai
+from google.generativeai import types
 import httpx
 from youtube_transcript_api import YouTubeTranscriptApi
 import re
