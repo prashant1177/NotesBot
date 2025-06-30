@@ -58,7 +58,7 @@ export default function Main() {
     formData.append("selectedOption", selectedOption);
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/pdfrequest`, {
+      const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/pdfrequest`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Make sure token is included!

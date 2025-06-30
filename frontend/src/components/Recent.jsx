@@ -8,7 +8,7 @@ export default function Recent() {
 
     const fetchRecentResults = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/recent`, {
+        const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/recent`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
