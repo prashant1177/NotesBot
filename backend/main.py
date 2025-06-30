@@ -23,7 +23,7 @@ app = Flask(__name__)
 app.config["JWT_SECRET_KEY"] = os.getenv("SECRET_KEY")
 jwt = JWTManager(app)
 
-CORS(app)  # Allow cross-origin requests from React
+CORS(app, supports_credentials=True, origins=["https://notes-bot-nine.vercel.app/"])  # Allow cross-origin requests from React
 
 
 genaiClient = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
@@ -167,7 +167,6 @@ def handle_youtube_request():
     
         # Get file
         url = request.form.get('url')
-        print(UnicodeTranslateError)
         message = ' ' 
         if not url:
             return jsonify({'error': 'No URL provided'}), 400
