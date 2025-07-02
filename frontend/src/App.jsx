@@ -1,21 +1,20 @@
 import "./App.css";
-import Landing from "./components/Landing";
-import Main from "./components/Main";
+import Landing from "./Pages/Landing";
+import Main from "./Pages/Main";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Test from "./components/Test";
-import Login from "./components/Login";
+import Login from "./Pages/Login";
 import Dashboard from "./components/Dashboard";
-import Register from "./components/Register";
-import Pricing from "./components/Pricing";
-import Youtube from "./components/Youtube";
+import Register from "./Pages/Register";
+import Pricing from "./Pages/Pricing";
+import Youtube from "./Pages/Youtube";
 
 function App() {
   return (
     <Router>
       <Navbar />
-      <div className="bg-gradient-to-br from-purple-100 to-white min-h-screen">
-        <Routes>
+      <div className="bg-purple-50">
+        <Routes >
           <Route path="/" element={<Landing />} />
           <Route path="/main" element={<Main />} />
           <Route path="/register" element={<Register />} />
@@ -24,7 +23,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/youtube" element={<Youtube />} />
         </Routes>
-      </div>
+        </div>
     </Router>
   );
 }

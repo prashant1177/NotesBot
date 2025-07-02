@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import Recent from "./Recent";
+import Recent from "../components/Recent";
 import { marked } from "marked";
 import "@tailwindcss/typography";
 import "../index.css";
