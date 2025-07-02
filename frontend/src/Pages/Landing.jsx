@@ -168,7 +168,7 @@ export default function Landing() {
             ))}
           </div>
         </div>
-        <div className="w-1/2 mx-auto mb-12 p-8 ">
+        <div className="w-1/2 mx-auto mb-12 p-8 flex items-center justify-center">
           <img src={aiImage} className="bg-purple-900 border-purple-200 rounded-full"/>{" "}
         </div>
       </section>
