@@ -49,14 +49,7 @@ export default function Navbar() {
                 Documentation
               </a>
             </li>
-            <li>
-              <Link
-                to="/contact"
-                className="block py-2 px-3 md:p-0 text-gray-700 hover:text-purple-500 transition duration-300"
-              >
-                Contact
-              </Link>
-            </li>
+            
 
             {/* Login/Logout Button */}
             <li>

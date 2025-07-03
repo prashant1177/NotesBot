@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import Recent from "../components/Recent";
 import { marked } from "marked";
+import { Link } from "react-router-dom";
+
 import "@tailwindcss/typography";
 import "../index.css";
 // Enable GitHub-flavored markdown
@@ -172,6 +174,11 @@ export default function Main() {
                 </div>
               </div>
             </div>
+          </div>
+          <div className="flex items-center justify-center mt-6">
+                  <Link to="/youtube" className="text-purple-600 hover:text-purple-800">
+                  Youtube URL
+                  </Link>
           </div>
         </div>
       </main>

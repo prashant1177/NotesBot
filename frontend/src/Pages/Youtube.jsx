@@ -3,6 +3,7 @@ import Recent from "../components/Recent";
 import { marked } from "marked";
 import "@tailwindcss/typography";
 import "../index.css";
+import { Link } from "react-router-dom";
 // Enable GitHub-flavored markdown
 marked.setOptions({
   gfm: true,
@@ -126,6 +127,12 @@ console.log("Base API URL is:", import.meta.env.VITE_API_URL);
               </div>
             </div>
           </div>
+          
+                    <div className="flex items-center justify-center mt-6">
+                            <Link to="/main" className="text-purple-600 hover:text-purple-800">
+                            Upload PDF
+                            </Link>
+                    </div>
         </div>
       </main>
       <Recent />

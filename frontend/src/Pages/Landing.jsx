@@ -168,12 +168,12 @@ export default function Landing() {
             ))}
           </div>
         </div>
-        <div className="w-1/2 mx-auto mb-12 p-8 flex items-center justify-center">
+        <div className="w-1/2 h-full mx-auto mb-12 p-8 flex items-center justify-center">
           <img src={aiImage} className="bg-purple-900 border-purple-200 rounded-full"/>{" "}
         </div>
       </section>
       {/* Developer Section */}
-      <section className="px-6 py-20 bg-[#fdf6ff] text-center">
+      <section className="px-6 py-20 bg-gray-100 text-center">
         <p className="text-xl uppercase text-purple-500 font-semibold mb-12">
           Meet The Developer
         </p>
