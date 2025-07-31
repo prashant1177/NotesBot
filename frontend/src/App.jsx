@@ -6,20 +6,18 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./Pages/Login";
 import Dashboard from "./components/Dashboard";
 import Register from "./Pages/Register";
-import Pricing from "./Pages/Pricing";
 import Youtube from "./Pages/Youtube";
 
 function App() {
   return (
     <Router>
+      <div className="min-h-screen bg-background text-foreground dark">
       <Navbar />
-      <div className="bg-purple-50">
         <Routes >
           <Route path="/" element={<Landing />} />
           <Route path="/main" element={<Main />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/pricing" element={< Pricing/>} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/youtube" element={<Youtube />} />
         </Routes>
