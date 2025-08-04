@@ -45,8 +45,6 @@ prompts = {
     "Questions": """You are an expert academic assistant. Analyze the attached PDF which contains class notes taken by a student. Based on the content, generate a set of relevant questions, each followed by a brief but accurate answer. Focus on important definitions, key concepts, formulas, and explanations. Structure your output as: Q1: ... A1: ... Ensure questions are fact-based, appropriate for revision or exam preparation, and only derived from the actual content in the PDF.""",
 
     "Organize": """You are a document formatting assistant. The uploaded PDF contains handwritten or typed student notes. Your task is to reconstruct the content into a well-organized, clean, and properly formatted text. Use clear headings, subheadings, bullet points, and paragraphs where necessary. Ensure the content flow is logical and the output resembles a neat, readable textbook-style version of the original notes. Do not add any new information—only rephrase or structure what's already in the PDF.""",
-
-    "Custom": """You are a Notesbot AI that improves the quality of notes.""",
     
     "Youtube": """You are an expert note-taker. Read the following text and create well-organized, concise notes that capture the key points, subpoints, and important examples or definitions. Use headings, bullet points, and indentation for clarity. Avoid repeating sentences; instead, summarize them in your own words. Ensure the notes are easy to read and structured logically for studying or review purposes. Here is the Text to process: """
 }
@@ -93,10 +91,7 @@ def handle_pdf_request():
         
         verify_jwt_in_request(optional=True)
         user_id = get_jwt_identity()
-        # Get text inputs
-        message = ' Give it a short title also for better tracking and here are few more Intruction from user: '+ request.form.get('message')
-        selected_option = request.form.get('selectedOption')
-
+        
         # Get file
         file = request.files.get('file')
         filename = str(uuid.uuid4())  # generates unique name like 98ad8c0e-...
@@ -115,42 +110,55 @@ def handle_pdf_request():
 
         file_url = result.get("secure_url")
 
-        print(f"Message: {message}")
-        print(f"Selected Option: {selected_option}")
         print(f"Uploaded to: {file_url}")
         doc_url = file_url
         # Retrieve and encode the PDF byte
         doc_data = httpx.get(doc_url).content
 
-        response = genaiClient.models.generate_content(
+        Summary = genaiClient.models.generate_content(
         model="gemini-2.5-flash",
         contents=[
              types.Part.from_bytes(
             data=doc_data,
             mime_type='application/pdf',
         ), 
-        prompts.get(selected_option) + message])
+        prompts.get("Summary")])
+        
+        Questions = genaiClient.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=[
+             types.Part.from_bytes(
+            data=doc_data,
+            mime_type='application/pdf',
+        ), 
+        prompts.get("Questions")])
+        
+        Organize = genaiClient.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=[
+             types.Part.from_bytes(
+            data=doc_data,
+            mime_type='application/pdf',
+        ), 
+        prompts.get("Organize")])
         # Print the response
         
-        html = markdown.markdown(response.text)
-        soup = BeautifulSoup(html, "html.parser")
-        heading = soup.find(["h1", "h2", "h3", "h4", "h5", "h6"])
-        title = heading.get_text(strip=True) if heading else "Untitled"
-        print(title)
+        
         # Save the response to MongoDB
         if user_id:
             searchData.insert_one({
                 "user_id": user_id,
-                "title": title,
-                "selected_option": selected_option,
+                "title": request.files.get('title'),
                 "file_url": file_url,
-                "response": response.text
+                "summary": Summary.text,
+                "questions": Questions.text,
+                "organize": Organize.text
             })
             
         return jsonify({
             'message': 'Form submitted successfully!',
             'file_url': file_url,
-            'response': response.text,
+            'response': Summary.text,
         })
 
     except Exception as e:
@@ -189,17 +197,11 @@ def handle_youtube_request():
         contents= prompts.get("Youtube") + message)
         # Print the response
         
-        html = markdown.markdown(response.text)
-        soup = BeautifulSoup(html, "html.parser")
-        heading = soup.find(["h1", "h2", "h3", "h4", "h5", "h6"])
-        title = heading.get_text(strip=True) if heading else "Untitled"
-        print(title)
         # Save the response to MongoDB
         if user_id:
             searchData.insert_one({
                 "user_id": user_id,
-                "title": title,
-                "selected_option": "Youtube",
+                "title": request.files.get('title'),
                 "file_url": url,
                 "response": response.text
             })
