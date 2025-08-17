@@ -7,14 +7,14 @@ import Login from "./Pages/Login";
 import Dashboard from "./components/Dashboard";
 import Register from "./Pages/Register";
 import Youtube from "./Pages/Youtube";
+import Maintenance from "./Pages/Maintenance";
 
 function App() {
   return (
     <Router>
       <div className="min-h-screen bg-background text-foreground dark">
-      <Navbar />
         <Routes >
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Maintenance />} />
           <Route path="/main" element={<Main />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
