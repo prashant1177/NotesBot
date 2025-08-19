@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Button from "../ui/Button/Button";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -17,12 +18,12 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/20">
+    <nav className="sticky top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-border/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
            <div className="flex items-center space-x-2">
-            <span className="text-xl font-medium bg-gradient-to-r from-primary to-chart-1 bg-clip-text text-transparent">
-              NotesBot.ai
+            <span className="text-xl font-medium">
+              Gilmind
             </span>
           </div>
           <div className="flex space-x-4">
@@ -69,14 +70,14 @@ export default function Navbar() {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link to="/login">
-                <button className="text-white hover:bg-gray-500/10 py-2 px-4 rounded-md">
+                <Button>
                   Sign in
-                </button>
+                </Button>
               </Link>
               <Link to="/register">
-                <button className="bg-gradient-to-r from-primary to-chart-1 hover:from-primary/90 hover:to-chart-1/90 text-background font-medium py-2 px-4 rounded-md">
+                <Button varient="transparent">
                   Get Started
-                </button>
+                </Button>
               </Link>
               </div>
             )}

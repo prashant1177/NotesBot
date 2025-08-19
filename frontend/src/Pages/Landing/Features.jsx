@@ -1,65 +1,9 @@
-import { Brain, Lightbulb, Search, Share2, Zap, BookOpen, Users, Shield } from "lucide-react";
-
+import { Brain, Search, Lightbulb, BookOpen, Share2, Zap, Shield, Users } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "../../ui/Card/Card";
+import  Badge  from "../../ui/Badge/Badge";
 // Inline Badge Component
-const Badge = ({ children, variant = "default", className = "" }) => {
-  const baseStyles = "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring";
-  
-  const variants = {
-    default: "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-    secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-    outline: "text-foreground"
-  };
-  
-  return (
-    <div className={`${baseStyles} ${variants[variant]} ${className}`}>
-      {children}
-    </div>
-  );
-};
 
-// Inline Card Components
-const Card = ({ children, className = "", ...props }) => {
-  return (
-    <div 
-      className={`rounded-lg border bg-card text-card-foreground shadow-sm ${className}`}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-};
 
-const CardHeader = ({ children, className = "" }) => {
-  return (
-    <div className={`flex flex-col space-y-1.5 p-6 ${className}`}>
-      {children}
-    </div>
-  );
-};
-
-const CardContent = ({ children, className = "" }) => {
-  return (
-    <div className={`p-6 pt-0 ${className}`}>
-      {children}
-    </div>
-  );
-};
-
-const CardTitle = ({ children, className = "" }) => {
-  return (
-    <h3 className={`text-lg font-semibold leading-none tracking-tight ${className}`}>
-      {children}
-    </h3>
-  );
-};
-
-const CardDescription = ({ children, className = "" }) => {
-  return (
-    <p className={`text-sm text-muted-foreground ${className}`}>
-      {children}
-    </p>
-  );
-};
 
 const features = [
   {
