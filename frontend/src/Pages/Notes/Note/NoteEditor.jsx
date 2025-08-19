@@ -1,43 +1,113 @@
-import React, { useRef, useEffect } from "react";
+import { AlignCenter, AlignLeft, AlignRight, List, ListOrdered, Quote } from "lucide-react";
+import { useRef, useEffect } from "react";
 
 const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList }) => {
   return (
-    <div className="flex flex-col  items-center gap-4 h-screen bg-gray-950 text-gray-100 p-2 fixed left-0">
-      <button type="button" onMouseDown={(e) => { e.preventDefault(); exec("bold"); }}>
+    <div
+      id="toolbar"
+      className="flex flex-col  items-center gap-4 h-screen bg-gray-900 text-gray-100 p-2 sticky top-0"
+    >
+      <button
+        type="button"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          exec("bold");
+        }}
+      >
         <b>B</b>
       </button>
-      <button type="button" onMouseDown={(e) => { e.preventDefault(); exec("italic"); }}>
+      <button
+        type="button"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          exec("italic");
+        }}
+      >
         <i>I</i>
       </button>
-      <button type="button" onMouseDown={(e) => { e.preventDefault(); exec("underline"); }}>
+      <button
+        type="button"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          exec("underline");
+        }}
+      >
         <u>U</u>
       </button>
 
-      <button type="button" onMouseDown={(e) => { e.preventDefault(); toggleHeading("H1"); }}>
+      <button
+        type="button"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          toggleHeading("H1");
+        }}
+      >
         H1
       </button>
-      <button type="button" onMouseDown={(e) => { e.preventDefault(); toggleHeading("H2"); }}>
+      <button
+        type="button"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          toggleHeading("H2");
+        }}
+      >
         H2
       </button>
-      <button type="button" onMouseDown={(e) => { e.preventDefault(); toggleBlockquote(); }}>
-        ❝
+     
+
+      <button
+        type="button"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          toggleList("unordered");
+        }}
+      >
+        <List />
+      </button>
+      <button
+        type="button"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          toggleList("ordered");
+        }}
+      >
+        <ListOrdered />
       </button>
 
-      <button type="button" onMouseDown={(e) => { e.preventDefault(); toggleList("unordered"); }}>
-        • List
+      <button
+        type="button"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          exec("justifyLeft");
+        }}
+      >
+        <AlignLeft strokeWidth={1} />
       </button>
-      <button type="button" onMouseDown={(e) => { e.preventDefault(); toggleList("ordered"); }}>
-        1. List
+      <button
+        type="button"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          exec("justifyCenter");
+        }}
+      ><AlignCenter strokeWidth={1} />
       </button>
-
-      <button type="button" onMouseDown={(e) => { e.preventDefault(); exec("justifyLeft"); }}>
-        ⯇
+      <button
+        type="button"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          exec("justifyRight");
+        }}
+      >
+       <AlignRight  strokeWidth={1} />
       </button>
-      <button type="button" onMouseDown={(e) => { e.preventDefault(); exec("justifyCenter"); }}>
-        ≡
-      </button>
-      <button type="button" onMouseDown={(e) => { e.preventDefault(); exec("justifyRight"); }}>
-        ⯈
+       <button
+        type="button"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          toggleBlockquote();
+        }}
+      >
+        <Quote />
       </button>
     </div>
   );
@@ -53,7 +123,10 @@ const NoteEditor = () => {
     if (!sel || sel.rangeCount === 0) return;
 
     const range = sel.getRangeAt(0);
-    if (editorRef.current && editorRef.current.contains(range.commonAncestorContainer)) {
+    if (
+      editorRef.current &&
+      editorRef.current.contains(range.commonAncestorContainer)
+    ) {
       savedRangeRef.current = range;
     }
   };
@@ -71,7 +144,8 @@ const NoteEditor = () => {
   useEffect(() => {
     const onSelectionChange = () => saveSelectionIfInside();
     document.addEventListener("selectionchange", onSelectionChange);
-    return () => document.removeEventListener("selectionchange", onSelectionChange);
+    return () =>
+      document.removeEventListener("selectionchange", onSelectionChange);
   }, []);
 
   // ---- Exec helpers ----
@@ -157,25 +231,24 @@ const NoteEditor = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full flex justify-center">
-      
+    <div className="min-h-screen w-full flex justify-center relative">
       <Toolbar
         exec={exec}
         toggleHeading={toggleHeading}
         toggleBlockquote={toggleBlockquote}
         toggleList={toggleList}
       />
-      <div className="w-3/5 bg-gray-50">
-      <div
-  ref={editorRef}
-  contentEditable
-  suppressContentEditableWarning
-  className="editor p-6 outline-none min-h-[80vh] cursor-text"
->
-      <h1>This is the title</h1>
-  <p>Click anywhere and start typing like Notion ✨</p>
-</div>
-</div>
+      <div className="w-3/5 transition-colors duration-500 ease-in-out">
+        <div
+          ref={editorRef}
+          contentEditable
+          suppressContentEditableWarning
+          className="editor p-6 outline-none min-h-screen cursor-text bg-gray-50"
+        >
+          <h1>This is the title</h1>
+          <p>Click anywhere and start typing like Notion ✨</p>
+        </div>
+      </div>
     </div>
   );
 };

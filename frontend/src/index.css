@@ -7,24 +7,39 @@ button:hover {
   cursor: pointer;
 }
 .editor h1 {
-  @apply text-3xl font-bold my-4;
+  @apply text-3xl font-bold py-4;
 }
 .editor h2 {
-  @apply text-2xl font-semibold my-3;
+  @apply text-2xl font-semibold py-3;
 }
 .editor blockquote {
-  @apply border-l-4 pl-4 italic text-gray-600 my-4;
+  @apply border-l-4 pl-4 italic text-gray-600 py-2;
 }
 .editor p {
-  @apply my-2;
+  @apply py-1;
 }
 
 .editor ul {
-  @apply list-disc pl-6 my-2;
+  @apply list-disc pl-6 py-1;
 }
 .editor ol {
-  @apply list-decimal pl-6 my-2;
+  @apply list-decimal pl-6 py-1;
 }
 .editor li {
-  @apply my-1;
+  @apply py-1;
 }
+
+.editor > * {
+  position: relative;
+}
+
+.editor > *:hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: #e5e7eb; /* tailwind gray-200 */
+}
+

@@ -1,4 +1,5 @@
 import "./App.css";
+import React, { useState, useEffect } from "react";
 import Landing from "./Pages/Landing/Landing";
 import Main from "./Pages/Main";
 import Navbar from "./components/Navbar";
@@ -16,11 +17,30 @@ import PrivateNotes from "./Pages/Notes/allNotes/PrivateNotes";
 import Sidebar from "./components/Sidebar";
 
 function App() {
+   const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Check if Ctrl + N is pressed
+      if (e.ctrlKey && e.key === "g") {
+        e.preventDefault(); // prevent browser default new window/tab
+        setIsActive((prev) => !prev); // toggle class
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
   return (
     <Router>
       <div className="min-h-screen bg-background text-text">
-        <Navbar />
-        <Sidebar />
+       { isActive ? 
+        <Navbar />:
+        null
+       }
         <Routes >
           <Route path="/" element={<Maintenance />} />
           <Route path="/main" element={<Main />} />
