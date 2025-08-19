@@ -6,3 +6,25 @@
 button:hover {
   cursor: pointer;
 }
+.editor h1 {
+  @apply text-3xl font-bold my-4;
+}
+.editor h2 {
+  @apply text-2xl font-semibold my-3;
+}
+.editor blockquote {
+  @apply border-l-4 pl-4 italic text-gray-600 my-4;
+}
+.editor p {
+  @apply my-2;
+}
+
+.editor ul {
+  @apply list-disc pl-6 my-2;
+}
+.editor ol {
+  @apply list-decimal pl-6 my-2;
+}
+.editor li {
+  @apply my-1;
+}

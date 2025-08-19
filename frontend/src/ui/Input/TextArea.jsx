@@ -1,13 +1,12 @@
 import ClassNameInput from "./ClassNameInput";
-
-export default function Input({ varient= "default", children, className = "", ...props }) {
+export default function TextArea({ varient= "default", children, className = "", ...props }) {
   return (
-        <input className={ClassNameInput(
+        <textarea className={ClassNameInput(
                 (varient),
                 (className)
               )}
       {...props}>
         {children}
-        </input>
+        </textarea>
   );
 }
