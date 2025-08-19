@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 
 const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList }) => {
   return (
-    <div style={{ padding: "8px", borderBottom: "1px solid #ddd", display: "flex", gap: "8px" }}>
+    <div className="flex flex-col  items-center gap-4 h-screen bg-gray-950 text-gray-100 p-2 fixed left-0">
       <button type="button" onMouseDown={(e) => { e.preventDefault(); exec("bold"); }}>
         <b>B</b>
       </button>
@@ -157,20 +157,24 @@ const NoteEditor = () => {
   }, []);
 
   return (
-    <div style={{ width: "100%", minHeight: "100vh", background: "#f9f9f9", color: "#111" }}>
+    <div className="min-h-screen w-full flex justify-center">
+      
       <Toolbar
         exec={exec}
         toggleHeading={toggleHeading}
         toggleBlockquote={toggleBlockquote}
         toggleList={toggleList}
       />
+      <div className="w-3/5 bg-gray-50">
       <div
   ref={editorRef}
   contentEditable
   suppressContentEditableWarning
   className="editor p-6 outline-none min-h-[80vh] cursor-text"
 >
+      <h1>This is the title</h1>
   <p>Click anywhere and start typing like Notion ✨</p>
+</div>
 </div>
     </div>
   );

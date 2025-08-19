@@ -23,7 +23,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
            <div className="flex items-center space-x-2">
             <span className="text-xl font-medium">
-              Gilmind
+              Writingpapers
             </span>
           </div>
           <div className="flex space-x-4">

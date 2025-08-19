@@ -1,5 +1,5 @@
-import Input from "../../../../ui/Input/Input";
-import TextArea from "../../../../ui/Input/TextArea";
+import Input from "../../../ui/Input/Input";
+import TextArea from "../../../ui/Input/TextArea";
 
 export default function NewNote() {
   return (
