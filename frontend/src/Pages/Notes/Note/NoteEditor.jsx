@@ -1,5 +1,7 @@
 import { AlignCenter, AlignLeft, AlignRight, List, ListOrdered, Quote } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import api from "../../../api"
+import { useParams } from "react-router-dom";
 
 const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList }) => {
   return (
@@ -114,9 +116,20 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList }) => {
 };
 
 const NoteEditor = () => {
+    const { noteId } = useParams(); // 👈 here you get "id" from the URL
+  const [content, setContent] = useState("");
   const editorRef = useRef(null);
   const savedRangeRef = useRef(null);
+ useEffect( () => {
+    async function fetchData() {
 
+  console.log(noteId);
+  const res = await api.get(`/editor/${noteId}`);
+  setContent(res.data.title + res.data.content);
+  console.log(res.data);
+    }
+    fetchData();
+}, []);
   // ---- Selection helpers ----
   const saveSelectionIfInside = () => {
     const sel = window.getSelection();
@@ -244,9 +257,8 @@ const NoteEditor = () => {
           contentEditable
           suppressContentEditableWarning
           className="editor p-6 outline-none min-h-screen cursor-text bg-gray-50"
+          dangerouslySetInnerHTML={{ __html: content }} // 👈 load saved content
         >
-          <h1>This is the title</h1>
-          <p>Click anywhere and start typing like Notion ✨</p>
         </div>
       </div>
     </div>

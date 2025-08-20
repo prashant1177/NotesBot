@@ -49,7 +49,7 @@ function App() {
           <Route path="/PublicNotes" element={<PublicNotes />} />
           <Route path="/PrivateNotes" element={<PrivateNotes />} />
           <Route path="/shownote" element={<ShowNote />} />
-          <Route path="/editor" element={<NoteEditor />} />
+          <Route path="/editor/:noteId" element={<NoteEditor />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />

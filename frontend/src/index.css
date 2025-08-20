@@ -40,6 +40,6 @@ button:hover {
   right: 0;
   bottom: 0;
   height: 1px;
-  background: #e5e7eb; /* tailwind gray-200 */
+  background: oklch(87.2% 0.01 258.338); /* tailwind gray-200 */
 }
 
