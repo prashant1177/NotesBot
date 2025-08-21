@@ -156,19 +156,19 @@ const NoteEditor = () => {
         toggleBlockquote={toggleBlockquote}
         toggleList={toggleList}
       />
-      <div className="w-3/5 transition-colors text-gray-800 duration-500 ease-in-out">
+      <div className="w-3/5 transition-colors text-gray-800 duration-500 ease-in-out p-6">
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="text-3xl font-bold  pt-6 px-6 pb-3   border-b-2 border-gray-100
+          className="text-3xl font-bold   pb-3   border-b-2 border-gray-100
 hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colors duration-200"
         />
         <div
           ref={editorRef}
           contentEditable
           suppressContentEditableWarning
-          className="editor p-6 outline-none min-h-screen cursor-text "
+          className="editor outline-none min-h-screen cursor-text"
           dangerouslySetInnerHTML={{ __html: content }} // 👈 load saved content
         ></div>
       </div>

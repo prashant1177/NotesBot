@@ -35,15 +35,19 @@ app.get("/PublicNotes", async (req, res) => {
 
 app.get("/PrivateNotes", async (req, res) => {
   const notes = await Note.find({ privatMark: true });
-  console.log(notes);
   res.json({ notes});
 });
+
 app.post("/newnote", async (req, res) => {
-  const { title, privatMark } = req.body;
+  const { title, about, privatMark } = req.body;
   const note = new Note({
     title: title || `Add a title here`,
+    about: about || ``,
     content: `<p>Start writing from here...</p>`,
     privatMark: privatMark,
+    views: 0,
+    like: 0,
+    dislike: 0,
   });
   await note.save();
   console.log(note.privatMark);

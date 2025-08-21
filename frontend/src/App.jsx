@@ -19,46 +19,31 @@ import UserHome from "./Pages/UserHome/UserHome";
 
 function App() {
   const [isActive, setIsActive] = useState(true);
-  const [sidebarHide, setSidebarHide] = useState("w-48"); 
+  const [sidebarHide, setSidebarHide] = useState("w-64"); 
 
 const toggleSidebar = () => {
       setIsActive((prev) => !prev); // toggle class
        if (isActive) {
       setSidebarHide("w-16");
     } else {
-      setSidebarHide("w-48");
+      setSidebarHide("w-64");
     }
     };
     
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      // Check if Ctrl + N is pressed
-      if (e.ctrlKey && e.key === "g") {
-        e.preventDefault(); // prevent browser default new window/tab
-        toggleSidebar();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
   return (
     <Router>
       <div>
-        <Sidebar toggleSidebar={toggleSidebar} sidebarHide={sidebarHide} isActive={isActive}/>
+       <Sidebar toggleSidebar={toggleSidebar} sidebarHide={sidebarHide} isActive={isActive}/>
         <div
           className={`main-content transition-all duration-300 ${
-            isActive ?  "ml-48"  :"ml-0"
+            isActive ?  "ml-64"  :"ml-16"
           }`}
         >
           <Routes>
-            <Route path="/" element={<Maintenance />} />
+            <Route path="/" element={<Landing />} />
             <Route path="/home" element={<UserHome />} />
             <Route path="/main" element={<Main />} />
-            <Route path="/landing" element={<Landing />} />
+            <Route path="/maintenance" element={<Maintenance />} />
             <Route path="/NewNote" element={<NewNote />} />
             <Route path="/PublicNotes" element={<PublicNotes />} />
             <Route path="/PrivateNotes" element={<PrivateNotes />} />

@@ -1,7 +1,7 @@
 // components/Card.jsx
 
 const Card = ({ children, className = "", ...props }) => (
-  <div className={`rounded-sm border-1 border-gray-900  text-gray-900 ${className}`} {...props}>
+  <div className={`rounded-sm border-1 border-gray-200  text-gray-900 ${className}`} {...props}>
     {children}
   </div>
 );
@@ -15,11 +15,40 @@ const CardContent = ({ children, className = "" }) => (
 );
 
 const CardTitle = ({ children, className = "" }) => (
-  <h3 className={`text-lg font-semibold text-gray-900 leading-none tracking-tight ${className}`}>{children}</h3>
+  <h3 className={`text-xl font-medium text-gray-900 leading-none tracking-tight hover:underline ${className}`}>{children}</h3>
 );
 
 const CardDescription = ({ children, className = "" }) => (
-  <p className={`text-sm text-gray-700 ${className}`}>{children}</p>
+  <p className={`text-sm text-gray-500 ${className}`}>{children}</p>
 );
 
-export { Card, CardHeader, CardContent, CardTitle, CardDescription };
+// components/NoteCard.jsx
+
+const NoteCard = ({ children, className = "", ...props }) => (
+  <div className={`flex justify-between rounded-sm border-1 border-gray-200  text-gray-900 ${className}`} {...props}>
+    {children}
+  </div>
+);
+
+const NoteCardHeader = ({ children, className = "" }) => (
+  <div className={`flex flex-col space-y-1.5 p-6 ${className}`}>{children}</div>
+);
+
+const NoteCardContent = ({ children, className = "" }) => (
+  <div className={`p-6 pt-0 ${className}`}>{children}</div>
+);
+
+const NoteCardTitle = ({ children, className = "" }) => (
+  <h3 className={`text-xl font-medium text-gray-900 leading-none tracking-tight hover:underline ${className}`}>{children}</h3>
+);
+
+const NoteCardAbout = ({ children, className = "" }) => (
+  <p className={`text-sm text-gray-500 ${className}`}>{children}</p>
+);
+
+const NoteCardStats = ({ children, className = "" }) => (
+  <p className={`text-sm text-gray-500 ${className}`}>{children}</p>
+);
+
+
+export { Card, CardHeader, CardContent, CardTitle, CardDescription, NoteCard, NoteCardHeader, NoteCardContent, NoteCardTitle, NoteCardAbout, NoteCardStats };

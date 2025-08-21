@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../api"
 export default function NewNote() {
   const [title, setTitle] = useState(""); // title state
+  const [about, setAbout] = useState(""); // title state
   const [privatMark, setPrivateMark] = useState(false); // content state
 
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function NewNote() {
     try {
       const note = {
         title: title, 
+        about: about, 
         privatMark: privatMark
       };
       const res = await api.post("/newnote", note);
@@ -37,6 +39,14 @@ export default function NewNote() {
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            varient="transparent"
+          />
+          <label className="text-gray-900 block mb-2 text-sm font-medium mt-4">
+            About
+          </label>
+          <TextArea
+            value={about}
+            onChange={(e) => setAbout(e.target.value)}
             varient="transparent"
           />
         </div>
