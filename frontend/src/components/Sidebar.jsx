@@ -1,7 +1,26 @@
-export default function Sidebar() {
+import { useState } from "react";
+import Button from "../ui/Button/Button";
+import { House, NotebookText, PencilLine, User } from "lucide-react";
+import { Link } from "react-router-dom";
+
+export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
   return (
-    <div className="flex fixed top-0 left-0 h-full w-64 bg-gray-950 text-white text-center p-4">
-      <h1 className="text-lg font-medium w-full">Prashant Patil</h1>
+    <div
+      className={`transition-all duration-300 z-10 flex flex-col items-center justify-between fixed top-0 left-0 h-screen ${sidebarHide} bg-gray-950 text-white p-4`}
+    >
+      <div className="flex flex-col space-y-8 items-center justify-center w-full text-gray-300">
+        <h1 className="flex items-center space-x-2 text-base font-normal w-full mb-4 pb-4 border-b-2"><User />{isActive ? <span>Prashant Patil</span>  : null }</h1>
+        <Link to={`/home`} className="flex items-center space-x-2 text-base font-normal w-full"><House size={24}/> {isActive ? <span>Home</span>  : null }</Link>
+        <Link to={`/newnote`} className="flex items-center space-x-2 text-base font-normal w-full"><PencilLine size={24} /> {isActive ? <span>New Note</span>  : null }</Link>
+        <Link to={`/PrivateNotes`} className="flex items-center space-x-2 text-base font-normal w-full"><NotebookText size={24} />{isActive ? <span>Your Notes</span>  : null }</Link>
+      </div>
+
+      <div className="w-full space-y-2">
+        <button className="text-lg font-medium w-full">Save Point</button>
+        <button className="text-lg font-medium w-full">Public view</button>
+        <button className="text-lg font-medium w-full text-red-500">Delete this note</button>
+        <Button onClick={toggleSidebar} className="w-full mt-8">X</Button>
+      </div>
     </div>
   );
 }
