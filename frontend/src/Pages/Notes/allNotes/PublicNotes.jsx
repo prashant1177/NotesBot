@@ -29,7 +29,7 @@ export default function PublicNotes() {
       {notes.map((note) => (
         <NoteCard key={note._id}>
           <NoteCardHeader className="overflow-hidden flex-9/12">
-        <Link to={`/editor/${note._id}`}>  <NoteCardTitle>{note.title}</NoteCardTitle></Link>
+        <Link to={`/shownote/${note._id}`}>  <NoteCardTitle>{note.title}</NoteCardTitle></Link>
             <NoteCardAbout>{note.about}</NoteCardAbout>
           </NoteCardHeader>
           <NoteCardStats className="flex flex-col items-end justify-baseline p-6 space-y-2 w-full flex-3/12">

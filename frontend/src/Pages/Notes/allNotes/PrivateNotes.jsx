@@ -27,7 +27,7 @@ export default function PrivateNotes() {
         {notes.map((note) => (
           <NoteCard key={note._id}>
             <NoteCardHeader className="overflow-hidden">
-              <Link to={`/editor/${note._id}`}>
+              <Link to={`/shownote/${note._id}`}>
                 {" "}
                 <NoteCardTitle>{note.title}</NoteCardTitle>
               </Link>

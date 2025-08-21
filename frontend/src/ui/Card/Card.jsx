@@ -50,5 +50,30 @@ const NoteCardStats = ({ children, className = "" }) => (
   <p className={`text-sm text-gray-500 ${className}`}>{children}</p>
 );
 
+const DetailsCard = ({ children, className = "", ...props }) => (
+  <div className={`flex flex-col justify-between rounded-sm text-gray-900 ${className}`} {...props}>
+    {children}
+  </div>
+);
 
-export { Card, CardHeader, CardContent, CardTitle, CardDescription, NoteCard, NoteCardHeader, NoteCardContent, NoteCardTitle, NoteCardAbout, NoteCardStats };
+const DetailsCardHeader = ({ children, className = "" }) => (
+  <div className={`flex flex-col space-y-1.5 ${className}`}>{children}</div>
+);
+
+const DetailsCardContent = ({ children, className = "" }) => (
+  <div className={`p-6 pt-0 ${className}`}>{children}</div>
+);
+
+const DetailsCardTitle = ({ children, className = "" }) => (
+  <h3 className={`text-xl font-medium text-gray-900 leading-none tracking-tight hover:underline ${className}`}>{children}</h3>
+);
+
+const DetailsCardAbout = ({ children, className = "" }) => (
+  <p className={`text-sm text-gray-500 ${className}`}>{children}</p>
+);
+
+const DetailsCardStats = ({ children, className = "" }) => (
+  <p className={`text-sm text-gray-500 ${className}`}>{children}</p>
+);
+
+export {DetailsCard,DetailsCardHeader,DetailsCardContent,DetailsCardTitle,DetailsCardAbout,DetailsCardStats, Card, CardHeader, CardContent, CardTitle, CardDescription, NoteCard, NoteCardHeader, NoteCardContent, NoteCardTitle, NoteCardAbout, NoteCardStats };

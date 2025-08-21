@@ -16,6 +16,7 @@ import PublicNotes from "./Pages/Notes/allNotes/PublicNotes";
 import PrivateNotes from "./Pages/Notes/allNotes/PrivateNotes";
 import Sidebar from "./components/Sidebar";
 import UserHome from "./Pages/UserHome/UserHome";
+import NoteDetails from "./Pages/Notes/Note/NoteDetails";
 
 function App() {
   const [isActive, setIsActive] = useState(true);
@@ -47,7 +48,8 @@ const toggleSidebar = () => {
             <Route path="/NewNote" element={<NewNote />} />
             <Route path="/PublicNotes" element={<PublicNotes />} />
             <Route path="/PrivateNotes" element={<PrivateNotes />} />
-            <Route path="/shownote" element={<ShowNote />} />
+            <Route path="/details/:noteId" element={<NoteDetails />} />
+            <Route path="/shownote/:noteId" element={<ShowNote />} />
             <Route path="/editor/:noteId" element={<NoteEditor />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />

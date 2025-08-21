@@ -38,6 +38,13 @@ app.get("/PrivateNotes", async (req, res) => {
   res.json({ notes});
 });
 
+app.get("/note/:id", async (req, res) => {
+  console.log("/note/:id");
+  const note = await Note.findById(req.params.id);
+  console.log(note);
+  res.json({ note});
+});
+
 app.post("/newnote", async (req, res) => {
   const { title, about, privatMark } = req.body;
   const note = new Note({
