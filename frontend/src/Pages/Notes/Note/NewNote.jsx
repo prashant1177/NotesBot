@@ -6,14 +6,15 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../api"
 export default function NewNote() {
   const [title, setTitle] = useState(""); // title state
-  const [content, setContent] = useState(""); // content state
+  const [privatMark, setPrivateMark] = useState(false); // content state
+
   const navigate = useNavigate();
 
   const handleSave = async () => {
     try {
       const note = {
         title: title, 
-        content: content,
+        privatMark: privatMark
       };
       const res = await api.post("/newnote", note);
       const noteId = res.data.id; // MongoDB ID
@@ -39,17 +40,7 @@ export default function NewNote() {
             varient="transparent"
           />
         </div>
-        <div>
-          <label className="text-gray-900 block mb-2 text-sm font-medium">
-            Description
-          </label>
-          <TextArea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows="8"
-            varient="transparent"
-          />
-        </div>
+        
         <div className="flex items-center justify-between space-x-2">
           <div className="flex items-center space-x-2">
             <label className="text-gray-900  mb-2 text-sm font-medium">
@@ -57,6 +48,7 @@ export default function NewNote() {
             </label>
             <input
               type="checkbox"
+              onClick={()=> privatMark ? setPrivateMark(fasle)  : setPrivateMark(true) }
               className="h-4 w-4 text-gray-600 border-gray-300 rounded focus:ring-gray-500"
             />
           </div>

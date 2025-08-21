@@ -18,7 +18,6 @@ button:hover {
 .editor p {
   @apply py-1;
 }
-
 .editor ul {
   @apply list-disc pl-6 py-1;
 }

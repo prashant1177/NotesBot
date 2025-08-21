@@ -1,135 +1,40 @@
-import { AlignCenter, AlignLeft, AlignRight, List, ListOrdered, Quote } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
-import api from "../../../api"
+import api from "../../../api";
 import { useParams } from "react-router-dom";
-
-const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList }) => {
-  return (
-    <div
-      id="toolbar"
-      className="flex flex-col  items-center gap-4 h-screen bg-gray-900 text-gray-100 p-2 sticky top-0"
-    >
-      <button
-        type="button"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          exec("bold");
-        }}
-      >
-        <b>B</b>
-      </button>
-      <button
-        type="button"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          exec("italic");
-        }}
-      >
-        <i>I</i>
-      </button>
-      <button
-        type="button"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          exec("underline");
-        }}
-      >
-        <u>U</u>
-      </button>
-
-      <button
-        type="button"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          toggleHeading("H1");
-        }}
-      >
-        H1
-      </button>
-      <button
-        type="button"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          toggleHeading("H2");
-        }}
-      >
-        H2
-      </button>
-     
-
-      <button
-        type="button"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          toggleList("unordered");
-        }}
-      >
-        <List />
-      </button>
-      <button
-        type="button"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          toggleList("ordered");
-        }}
-      >
-        <ListOrdered />
-      </button>
-
-      <button
-        type="button"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          exec("justifyLeft");
-        }}
-      >
-        <AlignLeft strokeWidth={1} />
-      </button>
-      <button
-        type="button"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          exec("justifyCenter");
-        }}
-      ><AlignCenter strokeWidth={1} />
-      </button>
-      <button
-        type="button"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          exec("justifyRight");
-        }}
-      >
-       <AlignRight  strokeWidth={1} />
-      </button>
-       <button
-        type="button"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          toggleBlockquote();
-        }}
-      >
-        <Quote />
-      </button>
-    </div>
-  );
-};
+import Toolbar from "./Toolbar";
 
 const NoteEditor = () => {
-    const { noteId } = useParams(); // 👈 here you get "id" from the URL
+  const { noteId } = useParams(); // 👈 here you get "id" from the URL
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const editorRef = useRef(null);
   const savedRangeRef = useRef(null);
- useEffect( () => {
+  
+  useEffect(() => {
     async function fetchData() {
-
-  console.log(noteId);
-  const res = await api.get(`/editor/${noteId}`);
-  setContent(res.data.title + res.data.content);
-  console.log(res.data);
+      const res = await api.get(`/editor/${noteId}`);
+      setTitle(res.data.title);
+      setContent(res.data.content);
     }
     fetchData();
-}, []);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await api.put(`/editor/${noteId}`, {
+          title,
+          content: editorRef.current.innerHTML,
+        });
+      } catch (err) {
+        console.error("Failed to update note:", err);
+      }
+    };
+
+    const interval = setInterval(fetchData, 1000);
+
+    return () => clearInterval(interval);
+  }, [noteId, title, editorRef]);
   // ---- Selection helpers ----
   const saveSelectionIfInside = () => {
     const sel = window.getSelection();
@@ -251,15 +156,21 @@ const NoteEditor = () => {
         toggleBlockquote={toggleBlockquote}
         toggleList={toggleList}
       />
-      <div className="w-3/5 transition-colors duration-500 ease-in-out">
+      <div className="w-3/5 transition-colors text-gray-800 duration-500 ease-in-out">
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="text-3xl font-bold  pt-6 px-6 pb-3  bg-gray-50  border-b-2 border-gray-100
+hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colors duration-200"
+        />
         <div
           ref={editorRef}
           contentEditable
           suppressContentEditableWarning
           className="editor p-6 outline-none min-h-screen cursor-text bg-gray-50"
           dangerouslySetInnerHTML={{ __html: content }} // 👈 load saved content
-        >
-        </div>
+        ></div>
       </div>
     </div>
   );

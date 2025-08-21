@@ -15,11 +15,11 @@ const CardContent = ({ children, className = "" }) => (
 );
 
 const CardTitle = ({ children, className = "" }) => (
-  <h3 className={`text-lg font-semibold leading-none tracking-tight ${className}`}>{children}</h3>
+  <h3 className={`text-lg font-semibold text-gray-900 leading-none tracking-tight ${className}`}>{children}</h3>
 );
 
 const CardDescription = ({ children, className = "" }) => (
-  <p className={`text-sm text-muted-foreground ${className}`}>{children}</p>
+  <p className={`text-sm text-gray-700 ${className}`}>{children}</p>
 );
 
 export { Card, CardHeader, CardContent, CardTitle, CardDescription };
