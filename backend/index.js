@@ -54,7 +54,6 @@ app.post("/register", async (req, res) => {
 
     user = new User({ fullname, email, username, password });
     await user.save();
-    console.log(user);
     res.json({ msg: "User registered successfully" });
   } catch (err) {
     res.status(500).json({ msg: "Server error" });
@@ -85,13 +84,17 @@ app.get("/PrivateNotes",authenticateJWT,  async (req, res) => {
 app.get("/note/:id", async (req, res) => {
   const note = await Note.findById(req.params.id)
     .populate("createdBy"); 
-  console.log(note.createdBy.username);
   res.json({ note, createdBy:note.createdBy.username });
 });
 
+app.delete("/note/:id", async (req, res) => {
+  await Note.findByIdAndDelete(req.params.id); 
+  res.json({ message: "Post deleted successfully" });
+});
+
+
 app.post("/newnote",authenticateJWT, async (req, res) => {
   const { title, about, privatMark } = req.body;
-  console.log(req.user);
   const note = new Note({
     title: title || `Add a title here`,
     about: about || ``,
@@ -103,7 +106,6 @@ app.post("/newnote",authenticateJWT, async (req, res) => {
     createdBy: req.user,
   });
   await note.save();
-  console.log(note);
   res.json({ id: note._id });
 });
 

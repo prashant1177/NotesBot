@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import api from "../../../api";
 import { useParams } from "react-router-dom";
 import Toolbar from "./Toolbar";
+import Input from "../../../ui/Input/Input";
 
 const NoteEditor = () => {
   const { noteId } = useParams(); // 👈 here you get "id" from the URL
@@ -9,7 +10,7 @@ const NoteEditor = () => {
   const [content, setContent] = useState("");
   const editorRef = useRef(null);
   const savedRangeRef = useRef(null);
-  
+
   useEffect(() => {
     async function fetchData() {
       const res = await api.get(`/editor/${noteId}`);
@@ -48,7 +49,25 @@ const NoteEditor = () => {
       savedRangeRef.current = range;
     }
   };
+  
+  const saveNote = () => {
+    alert("Save Notes");
+    console.log("Save Notes");
+  };
 
+  const deleteNote = () => {
+    alert("Delete Notes");
+    console.log("Delete Notes");
+  };
+const viewNote = () => {
+    alert("View Notes");
+    console.log("View Notes");
+  };
+  
+const detailsNote = () => {
+    alert("Details Notes");
+    console.log("Details Notes");
+  };
   const restoreSelection = () => {
     const sel = window.getSelection();
     const range = savedRangeRef.current;
@@ -155,15 +174,18 @@ const NoteEditor = () => {
         toggleHeading={toggleHeading}
         toggleBlockquote={toggleBlockquote}
         toggleList={toggleList}
+        deleteNote={deleteNote}
+        detailsNote={detailsNote}
+        viewNote={viewNote}
+        saveNote={saveNote}
       />
       <div className="w-3/5 transition-colors text-gray-800 duration-500 ease-in-out p-6">
-        <input
+        <Input
           type="text"
           value={title}
-  maxLength={70}
+          maxLength={70}
           onChange={(e) => setTitle(e.target.value)}
-          className="text-3xl font-bold   pb-3   border-b-2 border-gray-100
-hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colors duration-200"
+          varient="titleEditor"
         />
         <div
           ref={editorRef}
