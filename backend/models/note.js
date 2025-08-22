@@ -8,6 +8,7 @@ const noteSchema = new mongoose.Schema({
   views: Number,
   like: Number,
   dislike: Number,
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to the User model
 });
 
-module.exports = mongoose.model("Note", noteSchema);;
+module.exports = mongoose.model("Note", noteSchema);

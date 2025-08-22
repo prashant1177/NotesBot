@@ -11,7 +11,7 @@ const Note = require("./models/note.js");
 
 const session = require("express-session");
 const configurePassport = require("./config/passport.js");
-
+const { authenticateJWT}= require("./middleware/middleware.js");
 const JWT_SECRET = "yoursecretkey"; // ⚠️ store in .env in production
 
 app.use(express.json());
@@ -85,14 +85,15 @@ app.get("/PrivateNotes", async (req, res) => {
 });
 
 app.get("/note/:id", async (req, res) => {
-  console.log("/note/:id");
-  const note = await Note.findById(req.params.id);
-  console.log(note);
-  res.json({ note });
+  const note = await Note.findById(req.params.id)
+    .populate("createdBy"); 
+  console.log(note.createdBy.username);
+  res.json({ note, createdBy:note.createdBy.username });
 });
 
-app.post("/newnote", async (req, res) => {
+app.post("/newnote",authenticateJWT, async (req, res) => {
   const { title, about, privatMark } = req.body;
+  console.log(req.user);
   const note = new Note({
     title: title || `Add a title here`,
     about: about || ``,
@@ -101,9 +102,10 @@ app.post("/newnote", async (req, res) => {
     views: 0,
     like: 0,
     dislike: 0,
+    createdBy: req.user,
   });
   await note.save();
-  console.log(note.privatMark);
+  console.log(note);
   res.json({ id: note._id });
 });
 

@@ -52,7 +52,11 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-24 bg-muted/20">
+    <section id="features" className="py-24 bg-muted/20 relative">
+       <div className="absolute inset-0 bg-gradient-to-r from-blue/5 via-chart-1/5 to-chart-2/5"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(120,119,198,0.1),transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(34,197,94,0.1),transparent_50%)]"></div>
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <Badge variant="outline" className="mb-4">

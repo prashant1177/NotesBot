@@ -1,4 +1,4 @@
-import { ThumbsUp, ThumbsDown, Eye } from "lucide-react";
+import { ThumbsUp, ThumbsDown, Eye, CircleEllipsis, SquarePlus, FilePenLine, SquareMinus } from "lucide-react";
 import {
   DetailsCard,
   DetailsCardAbout,
@@ -7,7 +7,7 @@ import {
   NoteCardStats,
 } from "../../../ui/Card/Card";
 import Button from "../../../ui/Button/Button";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import api from "../../../api";
@@ -15,14 +15,15 @@ import api from "../../../api";
 export default function ShowNote() {
   const { noteId } = useParams(); // 👈 here you get "id" from the URL
   const [note, setNote] = useState({});
+  const [creater, setCreater] = useState();
+  const [more, setMore] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       console.log("calling");
       const res = await api.get(`/note/${noteId}`);
-      console.log(res.data.note);
-
       setNote(res.data.note);
+      setCreater(res.data.createdBy);
     }
     fetchData();
   }, []);
@@ -39,10 +40,10 @@ hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colo
           {" "}
           {note.title}
         </h1>
-        <div className="flex min-h-12 justify-between">
-          {" "}
-          <h1>Created By </h1>
-          <div className="flex h-full gap-4">
+        <div className="flex items-center min-h-12 justify-between">
+         
+          <h1>Created By  {creater}</h1>
+          <div className="flex items-center h-full gap-4">
             
           <span className="text-gray-500 flex items-center gap-2">
             {" "}
@@ -57,6 +58,10 @@ hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colo
               <ThumbsDown size={16} strokeWidth={1} />
               {note.dislike}
             </span>
+             <button onClick={() =>setMore((prev) => !prev)} className="text-gray-500 flex items-center gap-2">
+              {more ?
+              <SquareMinus size={24} strokeWidth={1} /> :<SquarePlus size={24} strokeWidth={1} />}
+            </button>
           </div>
         </div></div>
         <div
@@ -64,6 +69,7 @@ hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colo
           dangerouslySetInnerHTML={{ __html: note.content }} // 👈 load saved content
         ></div>
       </div>
+      { more ?  <div className="flex flex-col items-center gap-4  p-4 text-gray-200 h-fit w-16 bg-gray-800 sticky top-0"><Link to={`/editor/${noteId}`} > <FilePenLine size={24} strokeWidth={1} /></Link></div> :null}  
     </div>
   );
 }

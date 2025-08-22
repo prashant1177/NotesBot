@@ -15,7 +15,7 @@ function Login() {
     setLoading(true);
     try {
       const res = await api.post("/login", form);
-      const token = res.data.access_token;
+      const token = res.data.token;
           localStorage.setItem("token", token);
 
       setAuthToken(token);

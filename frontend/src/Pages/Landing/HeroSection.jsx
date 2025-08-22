@@ -25,7 +25,7 @@ export function HeroSection() {
           </p>
 
           <div className="w-100 flex flex-col gap-4 justify-center items-center mb-16">
-            <Link to="/newnote">
+            <Link to="/login">
               {" "}
               <Button className="w-100">Start Writing notes </Button>
             </Link>
