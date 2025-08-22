@@ -4,7 +4,6 @@ const JWT_SECRET = "yoursecretkey"; // ⚠️ store in .env in production
 const User = require("../models/User.js");
 function authenticateJWT(req, res, next) {
   const authHeader = req.headers.authorization;
-  console.log("../models/User.js", req.headers.authorization);
   if (!authHeader) {
     return res.status(401).json({ msg: "No token provided" });
   }

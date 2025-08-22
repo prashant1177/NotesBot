@@ -67,20 +67,18 @@ app.post("/login", (req, res, next) => {
       return res.status(400).json({ msg: info?.message || "Login failed" });
 
     // Issue JWT
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1h" });
-    console.log(token);
+    const token = jwt.sign({ id: user.id, username: user.fullname}, JWT_SECRET, { expiresIn: "1h" });
     return res.json({ token });
   })(req, res, next);
 });
 
 app.get("/PublicNotes", async (req, res) => {
   const notes = await Note.find({ privatMark: false });
-  console.log(notes);
   res.json({ notes });
 });
 
-app.get("/PrivateNotes", async (req, res) => {
-  const notes = await Note.find({ privatMark: true });
+app.get("/PrivateNotes",authenticateJWT,  async (req, res) => {
+  const notes = await Note.find({ createdBy: req.user });
   res.json({ notes });
 });
 

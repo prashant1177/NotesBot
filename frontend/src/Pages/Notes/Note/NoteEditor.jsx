@@ -160,6 +160,7 @@ const NoteEditor = () => {
         <input
           type="text"
           value={title}
+  maxLength={70}
           onChange={(e) => setTitle(e.target.value)}
           className="text-3xl font-bold   pb-3   border-b-2 border-gray-100
 hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colors duration-200"

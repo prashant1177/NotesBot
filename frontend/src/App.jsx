@@ -52,8 +52,7 @@ function App() {
           }`}
         >
           <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/home" element={<UserHome />} />
+            <Route path="/" element={token ?<UserHome />: <Landing />} />
             <Route path="/main" element={<Main />} />
             <Route path="/maintenance" element={<Maintenance />} />
             <Route path="/NewNote" element={<NewNote />} />

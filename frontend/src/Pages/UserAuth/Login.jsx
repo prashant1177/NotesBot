@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { User, Lock, Sparkles, Brain, ArrowRight } from "lucide-react";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
+import {jwtDecode} from "jwt-decode";
 
 function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
@@ -16,11 +17,15 @@ function Login() {
     try {
       const res = await api.post("/login", form);
       const token = res.data.token;
-          localStorage.setItem("token", token);
+      localStorage.setItem("token", token);
+          const decoded = jwtDecode(token);
+      console.log(decoded);
+      localStorage.setItem("username", decoded.username);
 
       setAuthToken(token);
-      localStorage.getItem("token")
-    window.location.href = "/home";
+      
+      localStorage.getItem("token");
+      window.location.href = "/";
     } catch (err) {
       alert(err.response?.data?.msg || "Login failed");
     } finally {

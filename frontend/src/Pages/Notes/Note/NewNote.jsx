@@ -40,6 +40,7 @@ export default function NewNote() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             varient="transparent"
+  maxLength={70}
           />
           <label className="text-gray-900 block mb-2 text-sm font-medium mt-4">
             About

@@ -6,6 +6,7 @@ import { setAuthToken } from "../api";
 
 export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
   const navigate = useNavigate();
+  const username = localStorage.getItem("username");
   const logout = () => {
     localStorage.removeItem("token");
     setAuthToken(null);
@@ -18,10 +19,10 @@ export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
       <div className="flex flex-col space-y-8 items-center justify-center w-full text-gray-300">
         <h1 className="flex items-center space-x-2 text-base font-normal w-full mb-4 pb-4 border-b-2">
           <User />
-          {isActive ? <span>Prashant Patil</span> : null}
+          {isActive ? <span>{username}</span> : null}
         </h1>
         <Link
-          to={`/home`}
+          to={`/`}
           className="flex items-center space-x-2 text-base font-normal w-full"
         >
           <House size={24} /> {isActive ? <span>Home</span> : null}
