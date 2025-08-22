@@ -4,9 +4,9 @@ import Landing from "./Pages/Landing/Landing";
 import Main from "./Pages/Main";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./Pages/Login";
+import Login from "./Pages/UserAuth/Login";
 import Dashboard from "./components/Dashboard";
-import Register from "./Pages/Register";
+import Register from "./Pages/UserAuth/Register";
 import Youtube from "./Pages/Youtube";
 import Maintenance from "./Pages/Maintenance";
 import NewNote from "./Pages/Notes/Note/NewNote";
@@ -17,27 +17,38 @@ import PrivateNotes from "./Pages/Notes/allNotes/PrivateNotes";
 import Sidebar from "./components/Sidebar";
 import UserHome from "./Pages/UserHome/UserHome";
 import NoteDetails from "./Pages/Notes/Note/NoteDetails";
+import { setAuthToken } from "./api";
 
 function App() {
   const [isActive, setIsActive] = useState(true);
-  const [sidebarHide, setSidebarHide] = useState("w-64"); 
-
-const toggleSidebar = () => {
-      setIsActive((prev) => !prev); // toggle class
-       if (isActive) {
+  const [sidebarHide, setSidebarHide] = useState("w-64");
+  const token = localStorage.getItem("token");
+  if (token) {
+    setAuthToken(token);
+  }
+  const toggleSidebar = () => {
+    setIsActive((prev) => !prev); // toggle class
+    if (isActive) {
       setSidebarHide("w-16");
     } else {
       setSidebarHide("w-64");
     }
-    };
-    
+  };
+
   return (
     <Router>
       <div>
-       <Sidebar toggleSidebar={toggleSidebar} sidebarHide={sidebarHide} isActive={isActive}/>
+        {token ? <Sidebar
+          toggleSidebar={toggleSidebar}
+          sidebarHide={sidebarHide}
+          isActive={isActive}
+        /> : <Navbar/>} 
+        
         <div
           className={`main-content transition-all duration-300 ${
-            isActive ?  "ml-64"  :"ml-16"
+            token ? `${
+            isActive ? "ml-64" : "ml-16"
+          }` : ""
           }`}
         >
           <Routes>

@@ -4,7 +4,15 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const passport = require("passport");
+const User = require("./models/User.js");
 const Note = require("./models/note.js");
+
+const session = require("express-session");
+const configurePassport = require("./config/passport.js");
+
+const JWT_SECRET = "yoursecretkey"; // ⚠️ store in .env in production
 
 app.use(express.json());
 app.use(
@@ -13,6 +21,16 @@ app.use(
     credentials: true,
   })
 );
+app.use(
+  session({
+    secret: "yoursecretkey",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+configurePassport(passport);
 
 database()
   .then(() => {
@@ -26,23 +44,51 @@ async function database() {
   await mongoose.connect(process.env.MONGO_URL);
 }
 
+app.post("/register", async (req, res) => {
+  const { fullname, email, username, password } = req.body;
+  try {
+    let user = await User.findOne({ username });
+    let emailcheck = await User.findOne({ email });
+    if (user || emailcheck)
+      return res.status(400).json({ msg: "User already exists" });
+
+    user = new User({ fullname, email, username, password });
+    await user.save();
+    console.log(user);
+    res.json({ msg: "User registered successfully" });
+  } catch (err) {
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", { session: false }, (err, user, info) => {
+    if (err || !user)
+      return res.status(400).json({ msg: info?.message || "Login failed" });
+
+    // Issue JWT
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1h" });
+    console.log(token);
+    return res.json({ token });
+  })(req, res, next);
+});
 
 app.get("/PublicNotes", async (req, res) => {
   const notes = await Note.find({ privatMark: false });
   console.log(notes);
-  res.json({ notes});
+  res.json({ notes });
 });
 
 app.get("/PrivateNotes", async (req, res) => {
   const notes = await Note.find({ privatMark: true });
-  res.json({ notes});
+  res.json({ notes });
 });
 
 app.get("/note/:id", async (req, res) => {
   console.log("/note/:id");
   const note = await Note.findById(req.params.id);
   console.log(note);
-  res.json({ note});
+  res.json({ note });
 });
 
 app.post("/newnote", async (req, res) => {

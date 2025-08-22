@@ -1,12 +1,15 @@
 import { useState } from "react";
 import Button from "../ui/Button/Button";
 import { House, NotebookText, PencilLine, User } from "lucide-react";
-import { Link,  useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { setAuthToken } from "../api";
 
 export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const logout = () => {
-    navigate("/");
+    localStorage.removeItem("token");
+    setAuthToken(null);
+    window.location.href = "/";
   };
   return (
     <div
