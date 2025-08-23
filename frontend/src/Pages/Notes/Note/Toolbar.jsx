@@ -2,23 +2,37 @@ import {
   AlignCenter,
   AlignLeft,
   AlignRight,
+  Bold,
+  Heading1,
+  Heading2,
   Info,
+  Italic,
   List,
   ListOrdered,
   Quote,
   Save,
   Trash2,
+  Underline,
   View,
 } from "lucide-react";
 
-const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote, detailsNote, viewNote, saveNote }) => {
+const Toolbar = ({
+  toggleHeading,
+  toggleBlockquote,
+  exec,
+  toggleList,
+  deleteNote,
+  detailsNote,
+  viewNote,
+  saveNote,
+}) => {
   return (
     <div
       id="toolbar"
-      className="flex flex-col items-center justify-between py-4 h-screen bg-gray-50 text-gray-600  sticky top-0"
+      className="flex flex-col items-center justify-between py-4 h-screen bg-gray-50 text-gray-600 border-r-1 border-gray-200 sticky top-0"
     >
       {/* Text styles */}
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center justify-center w-full">
         <button
           type="button"
           className="hover:bg-gray-100 hover:text-gray-800 w-full p-2"
@@ -27,7 +41,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             exec("bold");
           }}
         >
-          <b>B</b>
+          <Bold strokeWidth={1} size={20}/>
         </button>
         <button
           type="button"
@@ -37,7 +51,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             exec("italic");
           }}
         >
-          <i>I</i>
+          <Italic strokeWidth={1} size={20}/>
         </button>
         <button
           type="button"
@@ -47,9 +61,9 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             exec("underline");
           }}
         >
-          <u>U</u>
+          <Underline strokeWidth={1} size={20}/>
         </button>
-
+        <div className="w-6 border-b border-gray-600 my-2"></div>
         {/* Headings */}
         <button
           type="button"
@@ -59,7 +73,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             toggleHeading("H1");
           }}
         >
-          H1
+         <Heading1 strokeWidth={1} size={20}/>
         </button>
         <button
           type="button"
@@ -69,9 +83,9 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             toggleHeading("H2");
           }}
         >
-          H2
+          <Heading2 strokeWidth={1} size={20}/>
         </button>
-
+        <div className="w-6 border-b border-gray-600 my-2"></div>
         {/* Lists */}
         <button
           type="button"
@@ -81,7 +95,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             toggleList("unordered");
           }}
         >
-          <List strokeWidth={1} size={20}/>
+          <List strokeWidth={1} size={20} />
         </button>
         <button
           type="button"
@@ -93,7 +107,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
         >
           <ListOrdered strokeWidth={1} size={20} />
         </button>
-
+        <div className="w-6 border-b border-gray-600 my-2"></div>
         {/* Alignments */}
         <button
           type="button"
@@ -125,7 +139,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
         >
           <AlignRight strokeWidth={1} size={20} />
         </button>
-
+        <div className="w-6 border-b border-gray-600 my-2"></div>
         {/* Blockquote */}
         <button
           type="button"
@@ -138,7 +152,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
           <Quote strokeWidth={1} size={20} />
         </button>
       </div>
-      <div className="flex flex-col items-center ">
+      <div className="flex flex-col items-center justify-center">
         <button
           type="button"
           className=" hover:text-blue-500 hover:bg-gray-100 w-full p-2 "
@@ -177,7 +191,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             deleteNote();
           }}
         >
-          <Trash2 strokeWidth={1} size={20}/>
+          <Trash2 strokeWidth={1} size={20} />
         </button>
       </div>
     </div>

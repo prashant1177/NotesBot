@@ -1,4 +1,13 @@
-import { ThumbsUp, ThumbsDown, Eye, CircleEllipsis, SquarePlus, FilePenLine, SquareMinus } from "lucide-react";
+import {
+  ThumbsUp,
+  ThumbsDown,
+  Eye,
+  CircleEllipsis,
+  SquarePlus,
+  FilePenLine,
+  SquareMinus,
+  BookMarked,
+} from "lucide-react";
 import {
   DetailsCard,
   DetailsCardAbout,
@@ -30,45 +39,66 @@ export default function ShowNote() {
   return (
     <div className="min-h-screen w-full flex justify-center relative">
       <div className="w-3/5 transition-colors text-gray-800 duration-500 ease-in-out p-6">
-        
-        <div className="border-b-2 border-gray-100
-hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colors duration-200">
-        <h1
-          className="text-3xl font-bold pb-3     "
+        <div
+          className="border-b-2 border-gray-100
+hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colors duration-200"
         >
-          {" "}
-          {note.title}
-        </h1>
-        <div className="flex items-center min-h-12 justify-between">
-         
-          <h1>Created By<Link to={`/author/${creater._id}`}> {creater.username}</Link> </h1>
-          <div className="flex items-center h-full gap-4">
-            
-          <span className="text-gray-500 flex items-center gap-2">
-            {" "}
-            <Eye size={16} strokeWidth={1} /> {note.views}
-          </span>{" "}
-            <span className="text-gray-500 flex items-center gap-2">
-              {" "}
-              <ThumbsUp size={16} strokeWidth={1} /> {note.like}
-            </span>
-            <span className="text-gray-500 flex items-center gap-2">
-              {" "}
-              <ThumbsDown size={16} strokeWidth={1} />
-              {note.dislike}
-            </span>
-             <button onClick={() =>setMore((prev) => !prev)} className="text-gray-500 flex items-center gap-2">
-              {more ?
-              <SquareMinus size={24} strokeWidth={1} /> :<SquarePlus size={24} strokeWidth={1} />}
-            </button>
+          <h1 className="text-3xl font-bold pb-3     "> {note.title}</h1>
+          <div className="flex items-center min-h-12 justify-between">
+            <h1>
+              Created By
+              <Link to={`/author/${creater._id}`}>
+                {" "}
+                {creater.username}
+              </Link>{" "}
+            </h1>
+            <div className="flex items-center h-full gap-4">
+              <span className="text-gray-500 flex items-center gap-2">
+                {" "}
+                <Eye size={16} strokeWidth={1} /> {note.views}
+              </span>{" "}
+              <span className="text-gray-500 flex items-center gap-2">
+                {" "}
+                <ThumbsUp size={16} strokeWidth={1} /> {note.like}
+              </span>
+              <span className="text-gray-500 flex items-center gap-2">
+                {" "}
+                <ThumbsDown size={16} strokeWidth={1} />
+                {note.dislike}
+              </span>
+            </div>
           </div>
-        </div></div>
+        </div>
         <div
           className="editor outline-none min-h-screen cursor-text mt-4"
           dangerouslySetInnerHTML={{ __html: note.content }} // 👈 load saved content
         ></div>
       </div>
-      { more ?  <div className="flex flex-col items-center gap-4  p-4 text-gray-200 h-fit w-16 bg-gray-800 sticky top-0"><Link to={`/editor/${noteId}`} > <FilePenLine size={24} strokeWidth={1} /></Link></div> :null}  
+      <div className="flex flex-col items-center gap-4  p-4  h-fit w-16 text-gray-500 sticky top-0">
+        {" "}
+        <button
+          onClick={() => setMore((prev) => !prev)}
+          className="text-gray-500 flex items-center gap-2"
+        >
+          {more ? (
+            <SquareMinus size={24} strokeWidth={1} />
+          ) : (
+            <SquarePlus size={24} strokeWidth={1} />
+          )}
+        </button>
+        {more ? (
+          <>
+            <Link to={`/editor/${noteId}`}>
+              {" "}
+              <FilePenLine size={24} strokeWidth={1} />
+            </Link>
+            <Link to={`/reference/${noteId}`}>
+              <BookMarked strokeWidth={1} />
+            </Link>
+            
+          </>
+        ) : null}
+      </div>
     </div>
   );
 }

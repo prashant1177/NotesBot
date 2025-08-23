@@ -19,10 +19,11 @@ import UserHome from "./Pages/UserHome/UserHome";
 import NoteDetails from "./Pages/Notes/Note/NoteDetails";
 import { setAuthToken } from "./api";
 import UserView from "./Pages/UserView/UserView";
+import { AnimatePresence, motion } from "framer-motion";
 
 function App() {
-  const [isActive, setIsActive] = useState(true);
-  const [sidebarHide, setSidebarHide] = useState("w-64");
+  const [isActive, setIsActive] = useState(false);
+  const [sidebarHide, setSidebarHide] = useState("w-16");
   const token = localStorage.getItem("token");
   if (token) {
     setAuthToken(token);
@@ -45,6 +46,7 @@ function App() {
           isActive={isActive}
         /> : <Navbar/>} 
         
+
         <div
           className={`main-content transition-all duration-300 ${
             token ? `${
@@ -53,6 +55,7 @@ function App() {
           }`}
         >
           <Routes>
+            <Route path="/*" element={<h1 className="text-center mt-8">404 - Something will be here in few days</h1>} />
             <Route path="/" element={token ?<UserHome />: <Landing />} />
             <Route path="/main" element={<Main />} />
             <Route path="/maintenance" element={<Maintenance />} />

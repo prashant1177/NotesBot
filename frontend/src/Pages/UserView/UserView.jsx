@@ -3,7 +3,6 @@ import AuthorNotes from "../Notes/allNotes/AuthorNotes";
 import Profile from "./Profile";
 import { useEffect, useState } from "react";
 import api from "../../api";
-import ProfileSide from "./ProfileSide";
 
 export default function UserView() {
   const { authorId } = useParams(); // title state

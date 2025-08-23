@@ -8,7 +8,9 @@ import {
 } from "../../../ui/Card/Card";
 import api from "../../../api";
 import { Link } from "react-router-dom";
-import { Eye,ThumbsDown,ThumbsUp } from "lucide-react";
+import { Eye, LibraryBig, Search, ThumbsDown, ThumbsUp } from "lucide-react";
+import Button from "../../../ui/Button/Button";
+import Input from "../../../ui/Input/Input";
 
 export default function PublicNotes() {
   const [notes, setNotes] = useState([]); // title state
@@ -21,24 +23,83 @@ export default function PublicNotes() {
     fetchData();
   }, []);
   return (
-    <div className="mt-8 flex flex-col w-full px-16">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">
-        Trending Notes
+    <div className="mt-8 flex  w-full px-16 ">
+      <div className="flex-3/4 flex flex-col w-full px-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">
+          <h1 className="flex text-gray-900 mb-4 items-center gap-2 text-lg">
+            <LibraryBig strokeWidth={1} size={20} /> Published Notes
+          </h1>
         </h1>
-    <div className="flex flex-col  gap-8">
-      {notes.map((note) => (
-        <NoteCard key={note._id}>
-          <NoteCardHeader className="overflow-hidden flex-9/12">
-        <Link to={`/shownote/${note._id}`}>  <NoteCardTitle>{note.title}</NoteCardTitle></Link>
-            <NoteCardAbout>{note.about}</NoteCardAbout>
-          </NoteCardHeader>
-          <NoteCardStats className="flex flex-col items-end justify-baseline p-6 space-y-2 w-full flex-3/12">
-          <span className="text-gray-500 flex items-center gap-2"> <Eye size={16} strokeWidth={1} /> {note.views}</span>
-          <span className="text-gray-500 flex items-center gap-2"> <ThumbsUp size={16} strokeWidth={1} /> {note.like}</span>
-          <span className="text-gray-500 flex items-center gap-2"> <ThumbsDown size={16} strokeWidth={1} />{note.dislike}</span>
-          </NoteCardStats>
-        </NoteCard>
-      ))}
-    </div></div>
+        <div className="flex flex-col  gap-8">
+          {notes.map((note) => (
+            <NoteCard key={note._id}>
+              <NoteCardHeader className="overflow-hidden flex-9/12">
+                <Link to={`/shownote/${note._id}`}>
+                  {" "}
+                  <NoteCardTitle>{note.title}</NoteCardTitle>
+                </Link>
+                <NoteCardAbout>{note.about}</NoteCardAbout>
+              </NoteCardHeader>
+              <NoteCardStats className="flex flex-col items-end justify-baseline p-6 space-y-2 w-full flex-3/12">
+                <span className="text-gray-500 flex items-center gap-2">
+                  {" "}
+                  <Eye size={16} strokeWidth={1} /> {note.views}
+                </span>
+                <span className="text-gray-500 flex items-center gap-2">
+                  {" "}
+                  <ThumbsUp size={16} strokeWidth={1} /> {note.like}
+                </span>
+                <span className="text-gray-500 flex items-center gap-2">
+                  {" "}
+                  <ThumbsDown size={16} strokeWidth={1} />
+                  {note.dislike}
+                </span>
+              </NoteCardStats>
+            </NoteCard>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex-1/4">
+        <div className="w-full p-4">
+          <div className="flex flex-col">
+            <div className="flex items-center justify-between rounded-lg w-full bg-gray-50 text-gray-700 hover:bg-gray-100 focus:ring-gray-500">
+              <input
+                placeholder="Search Anything..."
+                className="w-full h-full focus:outline-none focus:ring-0 p-2.5"
+              ></input>
+              <Button varient="transparent">
+                <Search size={20} strokeWidth={1} />
+              </Button>
+            </div>{" "}
+            <div className="border-b-1 border-gray-300 py-4">
+              <h1 className="text-lg text-gray-900">Sort By</h1>
+
+              <div className="flex flex-col gap-1 mt-2">
+                <h1 className="text-gray-500 cursor-pointer hover:underline">Most Viewed</h1>
+                <h1 className="text-gray-500 cursor-pointer hover:underline">Most Liked</h1>
+                <h1 className="text-gray-500 cursor-pointer hover:underline">Most Recent</h1>
+              </div>
+            </div> 
+           
+            <div>
+              <h1 className="text-lg my-4">Topics</h1>
+              <div className="flex flex-wrap gap-2">
+                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
+                  Engineering
+                </h1>
+                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
+                  Examples
+                </h1>
+
+                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
+                  Tobe Added
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
