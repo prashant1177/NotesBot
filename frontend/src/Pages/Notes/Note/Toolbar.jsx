@@ -81,7 +81,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             toggleList("unordered");
           }}
         >
-          <List />
+          <List strokeWidth={1} size={20}/>
         </button>
         <button
           type="button"
@@ -91,7 +91,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             toggleList("ordered");
           }}
         >
-          <ListOrdered />
+          <ListOrdered strokeWidth={1} size={20} />
         </button>
 
         {/* Alignments */}
@@ -103,7 +103,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             exec("justifyLeft");
           }}
         >
-          <AlignLeft strokeWidth={1} />
+          <AlignLeft strokeWidth={1} size={20} />
         </button>
         <button
           type="button"
@@ -113,7 +113,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             exec("justifyCenter");
           }}
         >
-          <AlignCenter strokeWidth={1} />
+          <AlignCenter strokeWidth={1} size={20} />
         </button>
         <button
           type="button"
@@ -123,7 +123,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             exec("justifyRight");
           }}
         >
-          <AlignRight strokeWidth={1} />
+          <AlignRight strokeWidth={1} size={20} />
         </button>
 
         {/* Blockquote */}
@@ -135,7 +135,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             toggleBlockquote();
           }}
         >
-          <Quote strokeWidth={1} />
+          <Quote strokeWidth={1} size={20} />
         </button>
       </div>
       <div className="flex flex-col items-center ">
@@ -147,7 +147,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             saveNote();
           }}
         >
-          <Save strokeWidth={1} />
+          <Save strokeWidth={1} size={20} />
         </button>
         <button
           type="button"
@@ -157,7 +157,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             detailsNote();
           }}
         >
-          <Info strokeWidth={1} />
+          <Info strokeWidth={1} size={20} />
         </button>
         <button
           type="button"
@@ -167,7 +167,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             viewNote();
           }}
         >
-          <View strokeWidth={1} />
+          <View strokeWidth={1} size={20} />
         </button>
         <button
           type="button"
@@ -177,7 +177,7 @@ const Toolbar = ({ toggleHeading, toggleBlockquote, exec, toggleList, deleteNote
             deleteNote();
           }}
         >
-          <Trash2 strokeWidth={1} />
+          <Trash2 strokeWidth={1} size={20}/>
         </button>
       </div>
     </div>

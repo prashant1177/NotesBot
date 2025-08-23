@@ -15,12 +15,11 @@ import api from "../../../api";
 export default function ShowNote() {
   const { noteId } = useParams(); // 👈 here you get "id" from the URL
   const [note, setNote] = useState({});
-  const [creater, setCreater] = useState();
+  const [creater, setCreater] = useState([]);
   const [more, setMore] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
-      console.log("calling");
       const res = await api.get(`/note/${noteId}`);
       setNote(res.data.note);
       setCreater(res.data.createdBy);
@@ -42,7 +41,7 @@ hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colo
         </h1>
         <div className="flex items-center min-h-12 justify-between">
          
-          <h1>Created By  {creater}</h1>
+          <h1>Created By<Link to={`/author/${creater._id}`}> {creater.username}</Link> </h1>
           <div className="flex items-center h-full gap-4">
             
           <span className="text-gray-500 flex items-center gap-2">

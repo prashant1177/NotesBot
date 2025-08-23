@@ -11,7 +11,7 @@ const Note = require("./models/note.js");
 
 const session = require("express-session");
 const configurePassport = require("./config/passport.js");
-const { authenticateJWT}= require("./middleware/middleware.js");
+const { authenticateJWT, viewCount } = require("./middleware/middleware.js");
 const JWT_SECRET = "yoursecretkey"; // ⚠️ store in .env in production
 
 app.use(express.json());
@@ -66,7 +66,11 @@ app.post("/login", (req, res, next) => {
       return res.status(400).json({ msg: info?.message || "Login failed" });
 
     // Issue JWT
-    const token = jwt.sign({ id: user.id, username: user.fullname}, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign(
+      { id: user.id, username: user.fullname },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
     return res.json({ token });
   })(req, res, next);
 });
@@ -76,24 +80,33 @@ app.get("/PublicNotes", async (req, res) => {
   res.json({ notes });
 });
 
-app.get("/PrivateNotes",authenticateJWT,  async (req, res) => {
+app.get("/PrivateNotes", authenticateJWT, async (req, res) => {
   const notes = await Note.find({ createdBy: req.user });
   res.json({ notes });
 });
 
-app.get("/note/:id", async (req, res) => {
-  const note = await Note.findById(req.params.id)
-    .populate("createdBy"); 
-  res.json({ note, createdBy:note.createdBy.username });
+app.get("/AuthorNotes/:id", async (req, res) => {
+  const notes = await Note.find({ createdBy: req.params.id });
+  const author = await Note.findOne({ createdBy: req.params.id }).populate(
+    "createdBy"
+  );
+  console.log(author.createdBy);
+
+  res.json({ notes, author:author.createdBy });
+});
+
+//show
+app.get("/note/:id", viewCount, async (req, res) => {
+  const note = await Note.findById(req.params.id).populate("createdBy");
+  res.json({ note, createdBy: note.createdBy });
 });
 
 app.delete("/note/:id", async (req, res) => {
-  await Note.findByIdAndDelete(req.params.id); 
+  await Note.findByIdAndDelete(req.params.id);
   res.json({ message: "Post deleted successfully" });
 });
 
-
-app.post("/newnote",authenticateJWT, async (req, res) => {
+app.post("/newnote", authenticateJWT, async (req, res) => {
   const { title, about, privatMark } = req.body;
   const note = new Note({
     title: title || `Add a title here`,
@@ -119,7 +132,7 @@ app.put("/editor/:id", async (req, res) => {
   const updatedNote = await Note.findByIdAndUpdate(
     req.params.id,
     { title, content },
-    { new: true } // return updated document instead of old one
+    { new: true }
   );
 
   if (!updatedNote) {

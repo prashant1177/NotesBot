@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "yoursecretkey"; // ⚠️ store in .env in production
-
+const Note = require("../models/note.js");
 const User = require("../models/User.js");
 function authenticateJWT(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -24,5 +24,14 @@ function authenticateJWT(req, res, next) {
     }
   });
 }
+async function viewCount(req, res, next) {
+  const note = await Note.findById(req.params.id)
+   await Note.findByIdAndUpdate(
+    req.params.id,
+    { views: note.views+1 },
+     { new: true } );
+      next();
+}
 
-module.exports = { authenticateJWT };
+
+module.exports = { authenticateJWT,viewCount };

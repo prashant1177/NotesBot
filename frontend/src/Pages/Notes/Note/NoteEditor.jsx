@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import api from "../../../api";
-import { useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import Toolbar from "./Toolbar";
 import Input from "../../../ui/Input/Input";
 
@@ -10,7 +10,7 @@ const NoteEditor = () => {
   const [content, setContent] = useState("");
   const editorRef = useRef(null);
   const savedRangeRef = useRef(null);
-
+const navigate = useNavigate();
   useEffect(() => {
     async function fetchData() {
       const res = await api.get(`/editor/${noteId}`);
@@ -60,13 +60,11 @@ const NoteEditor = () => {
     console.log("Delete Notes");
   };
 const viewNote = () => {
-    alert("View Notes");
-    console.log("View Notes");
+    navigate(`/shownote/${noteId}`) ;
   };
   
 const detailsNote = () => {
-    alert("Details Notes");
-    console.log("Details Notes");
+    navigate(`/details/${noteId}`) ;
   };
   const restoreSelection = () => {
     const sel = window.getSelection();

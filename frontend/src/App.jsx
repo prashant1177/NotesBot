@@ -18,6 +18,7 @@ import Sidebar from "./components/Sidebar";
 import UserHome from "./Pages/UserHome/UserHome";
 import NoteDetails from "./Pages/Notes/Note/NoteDetails";
 import { setAuthToken } from "./api";
+import UserView from "./Pages/UserView/UserView";
 
 function App() {
   const [isActive, setIsActive] = useState(true);
@@ -61,6 +62,7 @@ function App() {
             <Route path="/details/:noteId" element={<NoteDetails />} />
             <Route path="/shownote/:noteId" element={<ShowNote />} />
             <Route path="/editor/:noteId" element={<NoteEditor />} />
+            <Route path="/author/:authorId" element={<UserView />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
