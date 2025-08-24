@@ -7,6 +7,7 @@ import {
   FilePenLine,
   SquareMinus,
   BookMarked,
+  Info,
 } from "lucide-react";
 import {
   DetailsCard,
@@ -20,18 +21,21 @@ import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import api from "../../../api";
+import Reaction from "../components/Reaction";
 
 export default function ShowNote() {
   const { noteId } = useParams(); // 👈 here you get "id" from the URL
   const [note, setNote] = useState({});
   const [creater, setCreater] = useState([]);
   const [more, setMore] = useState(false);
+  const [allowEdit, setAllowEdit] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       const res = await api.get(`/note/${noteId}`);
       setNote(res.data.note);
       setCreater(res.data.createdBy);
+      setAllowEdit(res.data.allowEdit);
     }
     fetchData();
   }, []);
@@ -52,21 +56,7 @@ hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colo
                 {creater.username}
               </Link>{" "}
             </h1>
-            <div className="flex items-center h-full gap-4">
-              <span className="text-gray-500 flex items-center gap-2">
-                {" "}
-                <Eye size={16} strokeWidth={1} /> {note.views}
-              </span>{" "}
-              <span className="text-gray-500 flex items-center gap-2">
-                {" "}
-                <ThumbsUp size={16} strokeWidth={1} /> {note.like}
-              </span>
-              <span className="text-gray-500 flex items-center gap-2">
-                {" "}
-                <ThumbsDown size={16} strokeWidth={1} />
-                {note.dislike}
-              </span>
-            </div>
+            <Reaction note={note} />
           </div>
         </div>
         <div
@@ -88,14 +78,18 @@ hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colo
         </button>
         {more ? (
           <>
-            <Link to={`/editor/${noteId}`}>
-              {" "}
-              <FilePenLine size={24} strokeWidth={1} />
-            </Link>
+            {allowEdit ? (
+              <Link to={`/editor/${noteId}`}>
+                {" "}
+                <FilePenLine size={24} strokeWidth={1} />
+              </Link>
+            ) : null}
             <Link to={`/reference/${noteId}`}>
               <BookMarked strokeWidth={1} />
             </Link>
-            
+            <Link to={`/details/${noteId}`}>
+              <Info strokeWidth={1} />
+            </Link>
           </>
         ) : null}
       </div>

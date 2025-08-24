@@ -6,9 +6,15 @@ const noteSchema = new mongoose.Schema({
   content: String,
   privatMark: Boolean,
   views: Number,
-  like: Number,
-  dislike: Number,
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to the User model
+  like: {
+    type: [String], // 👈 this makes it an array of strings
+    default: [],
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  }, // Reference to the User model
 });
 
 module.exports = mongoose.model("Note", noteSchema);

@@ -8,7 +8,7 @@ import {
 } from "../../../ui/Card/Card";
 import api from "../../../api";
 import { Link } from "react-router-dom";
-import { Eye,ThumbsDown,ThumbsUp } from "lucide-react";
+import { Eye,Heart,ThumbsDown,ThumbsUp } from "lucide-react";
 
 export default function PrivateNotes() {
   const [notes, setNotes] = useState([]); // title state
@@ -36,9 +36,8 @@ export default function PrivateNotes() {
               </NoteCardAbout>
             </NoteCardHeader>
           <NoteCardStats className="flex flex-col items-end justify-baseline p-6 space-y-2 w-full flex-3/12">
-          <span className="text-gray-500 flex items-center gap-2"> <Eye size={16} strokeWidth={1} /> {note.views}</span>
-          <span className="text-gray-500 flex items-center gap-2"> <ThumbsUp size={16} strokeWidth={1} /> {note.like}</span>
-          <span className="text-gray-500 flex items-center gap-2"> <ThumbsDown size={16} strokeWidth={1} />{note.dislike}</span>
+          <span className="text-gray-500 flex items-center gap-2"> <Eye size={16} strokeWidth={2} /> {note.views}</span>
+          <span className="text-gray-500 flex items-center gap-2"> <Heart size={16} strokeWidth={2} /> {note.like.length}</span>
           </NoteCardStats>
           </NoteCard>
         ))}

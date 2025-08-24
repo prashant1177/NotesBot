@@ -8,7 +8,7 @@ import {
 } from "../../../ui/Card/Card";
 import api from "../../../api";
 import { Link } from "react-router-dom";
-import { Eye, LibraryBig, Search, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Eye, Heart, LibraryBig, Search, ThumbsDown, ThumbsUp } from "lucide-react";
 import Button from "../../../ui/Button/Button";
 import Input from "../../../ui/Input/Input";
 
@@ -25,11 +25,11 @@ export default function PublicNotes() {
   return (
     <div className="mt-8 flex  w-full px-16 ">
       <div className="flex-3/4 flex flex-col w-full px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">
+        <div className="text-3xl font-bold text-gray-900 mb-6">
           <h1 className="flex text-gray-900 mb-4 items-center gap-2 text-lg">
             <LibraryBig strokeWidth={1} size={20} /> Published Notes
           </h1>
-        </h1>
+        </div>
         <div className="flex flex-col  gap-8">
           {notes.map((note) => (
             <NoteCard key={note._id}>
@@ -43,16 +43,11 @@ export default function PublicNotes() {
               <NoteCardStats className="flex flex-col items-end justify-baseline p-6 space-y-2 w-full flex-3/12">
                 <span className="text-gray-500 flex items-center gap-2">
                   {" "}
-                  <Eye size={16} strokeWidth={1} /> {note.views}
+                  <Eye size={16} strokeWidth={2} /> {note.views}
                 </span>
                 <span className="text-gray-500 flex items-center gap-2">
                   {" "}
-                  <ThumbsUp size={16} strokeWidth={1} /> {note.like}
-                </span>
-                <span className="text-gray-500 flex items-center gap-2">
-                  {" "}
-                  <ThumbsDown size={16} strokeWidth={1} />
-                  {note.dislike}
+                  <Heart size={16} strokeWidth={2} /> {note.like.length}
                 </span>
               </NoteCardStats>
             </NoteCard>

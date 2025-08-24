@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import api from "../../../api";
-import {  useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Toolbar from "./Toolbar";
 import Input from "../../../ui/Input/Input";
 
@@ -10,12 +10,16 @@ const NoteEditor = () => {
   const [content, setContent] = useState("");
   const editorRef = useRef(null);
   const savedRangeRef = useRef(null);
-const navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     async function fetchData() {
-      const res = await api.get(`/editor/${noteId}`);
-      setTitle(res.data.title);
-      setContent(res.data.content);
+      try {
+        const res = await api.get(`/editor/${noteId}`);
+        setTitle(res.data.title);
+        setContent(res.data.content);
+      } catch (error) {
+        navigate(`/shownote/${noteId}`);
+      }
     }
     fetchData();
   }, []);
@@ -49,22 +53,24 @@ const navigate = useNavigate();
       savedRangeRef.current = range;
     }
   };
-  
+
   const saveNote = () => {
     alert("Save Notes");
     console.log("Save Notes");
   };
 
-  const deleteNote = () => {
+  const deleteNote = async () => {
     alert("Delete Notes");
+    await api.delete(`/note/${noteId}`);
+    navigate(`/`);
     console.log("Delete Notes");
   };
-const viewNote = () => {
-    navigate(`/shownote/${noteId}`) ;
+  const viewNote = () => {
+    navigate(`/shownote/${noteId}`);
   };
-  
-const detailsNote = () => {
-    navigate(`/details/${noteId}`) ;
+
+  const detailsNote = () => {
+    navigate(`/details/${noteId}`);
   };
   const restoreSelection = () => {
     const sel = window.getSelection();

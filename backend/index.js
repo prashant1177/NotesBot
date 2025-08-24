@@ -92,13 +92,21 @@ app.get("/AuthorNotes/:id", async (req, res) => {
   );
   console.log(author.createdBy);
 
-  res.json({ notes, author:author.createdBy });
+  res.json({ notes, author: author.createdBy });
 });
 
 //show
-app.get("/note/:id", viewCount, async (req, res) => {
+app.get("/note/:id", authenticateJWT, viewCount, async (req, res) => {
   const note = await Note.findById(req.params.id).populate("createdBy");
-  res.json({ note, createdBy: note.createdBy });
+  let allowEdit;
+  if (req.user._id.equals(note.createdBy._id)) {
+    allowEdit = true;
+  } else {
+    allowEdit = false;
+  }
+  note.like = note.like.length;
+
+  res.json({ note, createdBy: note.createdBy, allowEdit });
 });
 
 app.delete("/note/:id", async (req, res) => {
@@ -114,20 +122,32 @@ app.post("/newnote", authenticateJWT, async (req, res) => {
     content: `<p>Start writing from here...</p>`,
     privatMark: privatMark,
     views: 0,
-    like: 0,
-    dislike: 0,
+    like: [],
     createdBy: req.user,
   });
   await note.save();
   res.json({ id: note._id });
 });
 
-app.get("/editor/:id", async (req, res) => {
+app.get("/editor/:id", authenticateJWT, async (req, res) => {
   const note = await Note.findById(req.params.id);
-  res.json({ id: note._id, title: note.title, content: note.content });
+  if (req.user._id.equals(note.createdBy._id)) {
+    res.json({ id: note._id, title: note.title, content: note.content });
+  } else {
+    return res
+      .status(403)
+      .json({ error: "Invalid access: you cannot edit this note" });
+  }
 });
 
-app.put("/editor/:id", async (req, res) => {
+app.put("/editor/:id", authenticateJWT, async (req, res) => {
+  const note = await Note.findById(req.params.id);
+
+  if (!req.user._id.equals(note.createdBy._id)) {
+    return res
+      .status(403)
+      .json({ error: "Invalid access: you cannot edit this note" });
+  }
   const { title, content } = req.body;
   const updatedNote = await Note.findByIdAndUpdate(
     req.params.id,
@@ -140,6 +160,33 @@ app.put("/editor/:id", async (req, res) => {
   }
 
   res.json(updatedNote);
+});
+
+// Like
+app.put("/like/:id", authenticateJWT, async (req, res) => {
+  console.log("ask to like by " + req.params.id);
+  const note = await Note.findById(req.params.id);
+
+  if (note.like.includes(req.user.username)) {
+    // Unlike
+    await Note.findByIdAndUpdate(
+      req.params.id,
+      { $pull: { like: req.user.username } },
+      { new: true }
+    );
+    res.json({ like: note.like.length - 1, likesSate: false });
+  } else {
+    // Like
+    await Note.findByIdAndUpdate(
+      req.params.id,
+      { $addToSet: { like: req.user.username } },
+      { new: true }
+    );
+    res.json({ like: note.like.length + 1, likesSate: true });
+  }
+
+  console.log("Like by " + note.like.length);
+  console.log("Like by " + req.user.username);
 });
 
 app.listen(8080, () => {

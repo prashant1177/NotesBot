@@ -1,4 +1,4 @@
-import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { ThumbsUp, ThumbsDown, Eye, MoveLeft } from "lucide-react";
 import {
   DetailsCard,
   DetailsCardAbout,
@@ -6,20 +6,23 @@ import {
   DetailsCardTitle,
 } from "../../../ui/Card/Card";
 import Button from "../../../ui/Button/Button";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import api from "../../../api";
+import Reaction from "../components/Reaction";
 
 export default function NoteDetails() {
   const { noteId } = useParams(); // 👈 here you get "id" from the URL
-  const [note, setNote] = useState( {});
+  const [note, setNote] = useState({});
+  const [creater, setCreater] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       console.log("calling");
       const res = await api.get(`/note/${noteId}`);
       console.log(res.data.note);
+      setCreater(res.data.createdBy);
 
       setNote(res.data.note);
     }
@@ -27,38 +30,63 @@ export default function NoteDetails() {
   }, []);
 
   return (
-    <div className="h-screen w-full flex  flex-col items-center justify-center ">
-      <div className="w-4/6 border-2 border-gray-200 p-6 flex ">
-        <DetailsCard className="flex-1">
-          <DetailsCardHeader>
-            <DetailsCardTitle>{note.title}</DetailsCardTitle>
-            <DetailsCardAbout>{note.about}</DetailsCardAbout>
-          </DetailsCardHeader>
-          <div>
-            <div className="flex items-center gap-4 h-16">
-              <ThumbsUp size={16} />
-              {note.like}
-              <ThumbsDown size={16} />
-              {note.dislike}
-              <h1>from {note.views} Views</h1>
+    <div className="min-h-screen w-full flex  flex-col items-center">
+      <div className="w-3/5 transition-colors text-gray-800 duration-500 ease-in-out p-6">
+        <div
+          className="border-b-2 border-gray-100
+      hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colors duration-200"
+        >
+          <h1 className="text-3xl font-bold pb-3     "> {note.title}</h1>
+          <div className="flex items-center min-h-12 justify-between">
+            <h1>
+              Created By
+              <Link to={`/author/${creater._id}`}>
+                {" "}
+                {creater.username}
+              </Link>{" "}
+            </h1>
+            <Reaction note={note} />
+          </div>
+        </div>
+        <div className="w-full flex flex-col">
+          <div className="flex flex-1 mt-4 justify-between">
+            <div className="flex-1 pl-4">
+              <h1 className="mb-2">About</h1>
+              <DetailsCardAbout>{note.about}</DetailsCardAbout>
+              <div className="mt-4">
+                <h1 className="mb-2">Topics</h1>
+              </div>{" "}
+            </div>
+            <div className="flex-1 space-y-4 pl-4 border-l-1 border-gray-200">
+              {" "}
+              <div>
+                <h1>Owners</h1>
+                <h1 className="text-gray-500">
+                  <Link to={`/author/${creater._id}`}> {creater.fullname}</Link>{" "}
+                </h1>{" "}
+              </div>
+              <div>
+                <h1>Contributer</h1>
+                <div className="h-16"></div>
+              </div>
             </div>
           </div>
-        </DetailsCard>
-        <div className="flex-1 pl-4 border-l-2 border-gray-200">
-          <div>
-            <h1>Owner</h1>
-            <div className="h-16"></div>
-          </div>
-
-          <div>
-            <h1>Contributer</h1>
-            <div className="h-16"></div>
+          <div className="flex justify-between py-4 border-t-1 border-gray-100">
+            <Link to={`/shownote/${note._id}`}>
+              <Button
+                varient="transparent"
+                className="w-fit  flex gap-2 items-center"
+              >
+                <MoveLeft size={20} strokeWidth={1} />
+                Go Back
+              </Button>
+            </Link>
+            <Button varient="primary" className="w-fit">
+              Edit Your Version
+            </Button>
           </div>
         </div>
       </div>
-      <Button varient="muted" className="mt-8">
-        Edit Your Version
-      </Button>
     </div>
   );
 }
