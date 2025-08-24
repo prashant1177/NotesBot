@@ -90,31 +90,49 @@ app.get("/AuthorNotes/:id", async (req, res) => {
   const author = await Note.findOne({ createdBy: req.params.id }).populate(
     "createdBy"
   );
-  console.log(author.createdBy);
 
   res.json({ notes, author: author.createdBy });
 });
 
 //show
 app.get("/note/:id", authenticateJWT, viewCount, async (req, res) => {
-  const note = await Note.findById(req.params.id).populate("createdBy");
-  let allowEdit;
+  let allowEdit = false;
+  const note = await Note.findById(req.params.id).populate(
+    "createdBy",
+    "-password"
+  );
+  note.like = note.like.length;
+  if (!req.user) {
+    res.json({ note, allowEdit });
+    return;
+  }
   if (req.user._id.equals(note.createdBy._id)) {
     allowEdit = true;
-  } else {
-    allowEdit = false;
   }
-  note.like = note.like.length;
 
-  res.json({ note, createdBy: note.createdBy, allowEdit });
+  res.json({ note, allowEdit });
 });
 
-app.delete("/note/:id", async (req, res) => {
-  await Note.findByIdAndDelete(req.params.id);
-  res.json({ message: "Post deleted successfully" });
+app.delete("/note/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.status(403).json({ error: "Login error: Login to continue" });
+  }
+  const note = await Note.findById(req.params.id).populate(
+    "createdBy",
+    "-password"
+  );
+
+  if (req.user._id.equals(note.createdBy._id)) {
+    await Note.findByIdAndDelete(req.params.id);
+    res.json({ message: "Post deleted successfully" });
+  }
+  res.json({ message: "Post Not deleted successfully, You are not the owner" });
 });
 
 app.post("/newnote", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.status(403).json({ error: "Login error: Login to continue" });
+  }
   const { title, about, privatMark } = req.body;
   const note = new Note({
     title: title || `Add a title here`,
@@ -130,6 +148,11 @@ app.post("/newnote", authenticateJWT, async (req, res) => {
 });
 
 app.get("/editor/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res
+      .status(403)
+      .json({ error: "Login error: you cannot edit this note" });
+  }
   const note = await Note.findById(req.params.id);
   if (req.user._id.equals(note.createdBy._id)) {
     res.json({ id: note._id, title: note.title, content: note.content });
@@ -141,6 +164,11 @@ app.get("/editor/:id", authenticateJWT, async (req, res) => {
 });
 
 app.put("/editor/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res
+      .status(403)
+      .json({ error: "Login error: you cannot edit this note" });
+  }
   const note = await Note.findById(req.params.id);
 
   if (!req.user._id.equals(note.createdBy._id)) {
@@ -164,6 +192,9 @@ app.put("/editor/:id", authenticateJWT, async (req, res) => {
 
 // Like
 app.put("/like/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.status(403).json({ error: "Login error: Login to like this" });
+  }
   console.log("ask to like by " + req.params.id);
   const note = await Note.findById(req.params.id);
 

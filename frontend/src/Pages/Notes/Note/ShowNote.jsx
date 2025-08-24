@@ -34,7 +34,7 @@ export default function ShowNote() {
     async function fetchData() {
       const res = await api.get(`/note/${noteId}`);
       setNote(res.data.note);
-      setCreater(res.data.createdBy);
+      setCreater(res.data.note.createdBy);
       setAllowEdit(res.data.allowEdit);
     }
     fetchData();

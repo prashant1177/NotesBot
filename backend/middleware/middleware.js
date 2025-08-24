@@ -5,7 +5,8 @@ const User = require("../models/User.js");
 function authenticateJWT(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    return res.status(401).json({ msg: "No token provided" });
+    next();
+    return;
   }
 
   const token = authHeader.split(" ")[1]; // "Bearer <token>"
@@ -25,13 +26,13 @@ function authenticateJWT(req, res, next) {
   });
 }
 async function viewCount(req, res, next) {
-  const note = await Note.findById(req.params.id)
-   await Note.findByIdAndUpdate(
+  const note = await Note.findById(req.params.id);
+  await Note.findByIdAndUpdate(
     req.params.id,
-    { views: note.views+1 },
-     { new: true } );
-      next();
+    { views: note.views + 1 },
+    { new: true }
+  );
+  next();
 }
 
-
-module.exports = { authenticateJWT,viewCount };
+module.exports = { authenticateJWT, viewCount };
