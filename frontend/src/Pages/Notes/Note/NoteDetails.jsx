@@ -22,7 +22,7 @@ export default function NoteDetails() {
       console.log("calling");
       const res = await api.get(`/note/${noteId}`);
       console.log(res.data.note);
-      setCreater(res.data.createdBy);
+      setCreater(res.data.note.createdBy);
 
       setNote(res.data.note);
     }
