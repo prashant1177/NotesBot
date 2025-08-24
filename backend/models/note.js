@@ -4,6 +4,13 @@ const noteSchema = new mongoose.Schema({
   title: String,
   about: String,
   content: String,
+  reference: [
+    {
+      title: { type: String, required: true },
+      details: { type: String },
+      link: { type: String },
+    },
+  ],
   privatMark: Boolean,
   views: Number,
   like: {

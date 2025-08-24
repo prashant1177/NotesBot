@@ -54,11 +54,33 @@ export default function NoteDetails() {
               <h1 className="mb-2">About</h1>
               <DetailsCardAbout>{note.about}</DetailsCardAbout>
               <div className="mt-4">
-                <h1 className="mb-2">Topics</h1>
+                <h1>Reference</h1>
+                <div className="list-decimal list-inside mt-2">
+                  {note?.reference?.map((reference) => (
+                    <li key={reference._id} className=" text-gray-500">
+                     <a href={reference.link} target="_blank" className=" hover:underline"> {reference.title}</a>
+                    </li>
+                  ))}
+                </div>
               </div>{" "}
             </div>
             <div className="flex-1 space-y-4 pl-4 border-l-1 border-gray-200">
               {" "}
+              <div>
+                <h1>Topics</h1>
+                <div className="flex flex-wrap gap-2 my-2">
+                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
+                  Engineering
+                </h1>
+                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
+                  Examples
+                </h1>
+
+                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
+                  Tobe Added
+                </h1>
+              </div>
+              </div>{" "}
               <div>
                 <h1>Owners</h1>
                 <h1 className="text-gray-500">
@@ -67,7 +89,9 @@ export default function NoteDetails() {
               </div>
               <div>
                 <h1>Contributer</h1>
-                <div className="h-16"></div>
+                <h1 className="text-gray-500">
+                 Coming Soon in Version 2...
+                </h1>{" "}
               </div>
             </div>
           </div>

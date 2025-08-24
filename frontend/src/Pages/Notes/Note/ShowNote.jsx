@@ -84,9 +84,13 @@ hover:border-gray-200 focus:border-gray-400  outline-none w-full transition-colo
                 <FilePenLine size={24} strokeWidth={1} />
               </Link>
             ) : null}
-            <Link to={`/reference/${noteId}`}>
-              <BookMarked strokeWidth={1} />
-            </Link>
+
+            {allowEdit ? (
+              <Link to={`/reference/${noteId}`}>
+                <BookMarked strokeWidth={1} />
+              </Link>
+            ) : null}
+
             <Link to={`/details/${noteId}`}>
               <Info strokeWidth={1} />
             </Link>

@@ -138,6 +138,7 @@ app.post("/newnote", authenticateJWT, async (req, res) => {
     title: title || `Add a title here`,
     about: about || ``,
     content: `<p>Start writing from here...</p>`,
+    reference: `<p>Add reference details from here...</p>`,
     privatMark: privatMark,
     views: 0,
     like: [],
@@ -163,6 +164,8 @@ app.get("/editor/:id", authenticateJWT, async (req, res) => {
   }
 });
 
+//reference
+
 app.put("/editor/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res
@@ -186,16 +189,56 @@ app.put("/editor/:id", authenticateJWT, async (req, res) => {
   if (!updatedNote) {
     return res.status(404).json({ message: "Note not found" });
   }
-
   res.json(updatedNote);
 });
 
+//Reference Edits
+app.get("/reference/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res
+      .status(403)
+      .json({ error: "Login error: you cannot edit this note" });
+  }
+  const note = await Note.findById(req.params.id);
+  if (req.user._id.equals(note.createdBy._id)) {
+    res.json({ note });
+  } else {
+    return res
+      .status(403)
+      .json({ error: "Invalid access: you cannot edit this note" });
+  }
+});
+app.put("/reference/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res
+      .status(403)
+      .json({ error: "Login error: you cannot edit this note" });
+  }
+  const note = await Note.findById(req.params.id);
+
+  if (!req.user._id.equals(note.createdBy._id)) {
+    return res
+      .status(403)
+      .json({ error: "Invalid access: you cannot edit this note" });
+  }
+  const { reference } = req.body;
+  const updatedNote = await Note.findByIdAndUpdate(
+    req.params.id,
+    { $push: { reference: reference } },
+    { new: true }
+  );
+
+  if (!updatedNote) {
+    return res.status(404).json({ message: "Note not found" });
+  }
+
+  res.json(updatedNote);
+});
 // Like
 app.put("/like/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.status(403).json({ error: "Login error: Login to like this" });
   }
-  console.log("ask to like by " + req.params.id);
   const note = await Note.findById(req.params.id);
 
   if (note.like.includes(req.user.username)) {
@@ -216,8 +259,6 @@ app.put("/like/:id", authenticateJWT, async (req, res) => {
     res.json({ like: note.like.length + 1, likesSate: true });
   }
 
-  console.log("Like by " + note.like.length);
-  console.log("Like by " + req.user.username);
 });
 
 app.listen(8080, () => {
