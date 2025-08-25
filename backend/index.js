@@ -52,7 +52,15 @@ app.post("/register", async (req, res) => {
     if (user || emailcheck)
       return res.status(400).json({ msg: "User already exists" });
 
-    user = new User({ fullname, email, username, password });
+    user = new User({
+      fullname,
+      email,
+      username,
+      userabout: "",
+      followers: [],
+      following: [],
+      password,
+    });
     await user.save();
     res.json({ msg: "User registered successfully" });
   } catch (err) {
@@ -74,12 +82,47 @@ app.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
+app.get("/searchnotes", async (req, res) => {
+  try {
+    const { search, sort = "recent" } = req.query;
+
+    let query = {};
+
+    // 🔎 Search filter
+    if (search) {
+      query = {
+        $or: [
+          { title: { $regex: search, $options: "i" } }, // case-insensitive partial match
+          { about: { $regex: search, $options: "i" } },
+          { topics: { $regex: search, $options: "i" } },
+        ],
+      };
+    }
+
+    // 📊 Sorting (always descending)
+    let sortOption = {};
+    if (sort === "views") {
+      sortOption = { views: -1 };
+    } else {
+      sortOption = { createdAt: -1 }; // default: most recent
+    }
+
+    const notes = await Note.find(query).sort(sortOption);
+
+    res.json({ notes });
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 app.get("/PublicNotes", async (req, res) => {
   const notes = await Note.find({ privatMark: false });
   let topicsRes = [];
   for (note of notes) {
     for (topic of note.topics) {
+      if (topic.length > 3) {
       topicsRes.push(topic);
+    }
     }
   }
   res.json({ notes, topicsRes });
@@ -89,9 +132,11 @@ app.get("/topics/:id", async (req, res) => {
   const note = await Note.findById({ _id: req.params.id });
   let topicsRes = [];
   for (topic of note.topics) {
-    topicsRes.push(topic);
+    if (topic.length > 3) {
+      topicsRes.push(topic);
+    }
   }
-  res.json({topicsRes });
+  res.json({ topicsRes });
 });
 
 app.get("/PrivateNotes", authenticateJWT, async (req, res) => {
@@ -99,13 +144,19 @@ app.get("/PrivateNotes", authenticateJWT, async (req, res) => {
   res.json({ notes });
 });
 
-app.get("/AuthorNotes/:id", async (req, res) => {
+app.get("/AuthorNotes/:id", authenticateJWT, async (req, res) => {
   const notes = await Note.find({ createdBy: req.params.id });
   const author = await Note.findOne({ createdBy: req.params.id }).populate(
     "createdBy"
   );
-
-  res.json({ notes, author: author.createdBy });
+  if (
+    req.user &&
+    req.user.following?.includes(author.createdBy._id.toString())
+  ) {
+    res.json({ notes, author: author.createdBy, following: true });
+    return;
+  }
+  res.json({ notes, author: author.createdBy, following: false });
 });
 
 //show
@@ -139,7 +190,7 @@ app.delete("/note/:id", authenticateJWT, async (req, res) => {
 
   if (req.user._id.equals(note.createdBy._id)) {
     await Note.findByIdAndDelete(req.params.id);
-    res.json({ message: "Post deleted successfully" });
+    return res.json({ message: "Post deleted successfully" });
   }
   res.json({ message: "Post Not deleted successfully, You are not the owner" });
 });
@@ -276,6 +327,44 @@ app.put("/like/:id", authenticateJWT, async (req, res) => {
   }
 });
 
+// Follow
+app.put("/follow/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res
+      .status(403)
+      .json({ error: "Login error: You need to login to follow" });
+  }
+
+  if (req.user.following?.includes(req.params.id.toString())) {
+    await User.findByIdAndUpdate(
+      req.params.id,
+      { $pull: { followers: req.user._id } },
+      { new: true }
+    );
+
+    await User.findByIdAndUpdate(
+      req.user._id,
+      { $pull: { following: req.params.id } },
+      { new: true }
+    );
+
+    res.json({ message: "Unfollow success" });
+    return;
+  }
+  await User.findByIdAndUpdate(
+    req.params.id,
+    { $addToSet: { followers: req.user._id } },
+    { new: true }
+  );
+
+  await User.findByIdAndUpdate(
+    req.user._id,
+    { $addToSet: { following: req.params.id } },
+    { new: true }
+  );
+
+  res.json({ message: "Following success" });
+});
 app.listen(8080, () => {
   console.log("server is listening to port 8080");
 });

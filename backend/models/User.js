@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
@@ -6,7 +5,16 @@ const UserSchema = new mongoose.Schema({
   fullname: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  userabout: { type: String,  },
+  followers: {
+    type: [String],
+    default: [],
+  },
+  following: {
+    type: [String],
+    default: [],
+  },
+  password: { type: String, required: true },
 });
 
 // Hash password before save
@@ -21,4 +29,4 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports =  mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema);

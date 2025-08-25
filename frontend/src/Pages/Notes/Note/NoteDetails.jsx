@@ -1,9 +1,6 @@
 import { ThumbsUp, ThumbsDown, Eye, MoveLeft } from "lucide-react";
 import {
-  DetailsCard,
   DetailsCardAbout,
-  DetailsCardHeader,
-  DetailsCardTitle,
 } from "../../../ui/Card/Card";
 import Button from "../../../ui/Button/Button";
 import { useParams, Link } from "react-router-dom";
