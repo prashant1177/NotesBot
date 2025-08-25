@@ -21,6 +21,7 @@ import { setAuthToken } from "./api";
 import UserView from "./Pages/UserView/UserView";
 import { AnimatePresence, motion } from "framer-motion";
 import NoteReference from "./Pages/Notes/Note/NoteReference";
+import UserEdit from "./Pages/UserView/UserEdit";
 
 function App() {
   const [isActive, setIsActive] = useState(false);
@@ -67,6 +68,7 @@ function App() {
             <Route path="/shownote/:noteId" element={<ShowNote />} />
             <Route path="/editor/:noteId" element={<NoteEditor />} />
             <Route path="/author/:authorId" element={<UserView />} />
+            <Route path="/user" element={<UserEdit />} />
             <Route path="/reference/:noteId" element={<NoteReference />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />

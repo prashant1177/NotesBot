@@ -121,8 +121,8 @@ app.get("/PublicNotes", async (req, res) => {
   for (note of notes) {
     for (topic of note.topics) {
       if (topic.length > 3) {
-      topicsRes.push(topic);
-    }
+        topicsRes.push(topic);
+      }
     }
   }
   res.json({ notes, topicsRes });
@@ -142,6 +142,34 @@ app.get("/topics/:id", async (req, res) => {
 app.get("/PrivateNotes", authenticateJWT, async (req, res) => {
   const notes = await Note.find({ createdBy: req.user });
   res.json({ notes });
+});
+
+app.get("/user", authenticateJWT, async (req, res) => {
+  if (req.user) {
+    const user = await User.findById(req.user.id);
+    res.json({ user });
+    return;
+  }
+  return res.err({ message: "User login in first" });
+});
+
+app.put("/user", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res
+      .status(403)
+      .json({ error: "Authentication error: you cannot edit this note" });
+  }
+  const { fullname, email, username, userabout } = req.body;
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { fullname, email, username, userabout },
+    { new: true }
+  );
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  res.json(user);
 });
 
 app.get("/AuthorNotes/:id", authenticateJWT, async (req, res) => {

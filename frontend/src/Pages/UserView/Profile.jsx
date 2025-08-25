@@ -16,7 +16,7 @@ export default function Profile({
             {author.fullname}
           </h1>
           <h1 className="text-gray-600">
-            This is the about text, that user will add
+            {author?.userabout}
           </h1>
         </div>
 
