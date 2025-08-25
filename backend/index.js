@@ -117,26 +117,26 @@ app.get("/searchnotes", async (req, res) => {
 
 app.get("/PublicNotes", async (req, res) => {
   const notes = await Note.find({ privatMark: false });
-  let topicsRes = [];
+  let topicsRes = new Set(); 
   for (note of notes) {
     for (topic of note.topics) {
       if (topic.length > 3) {
-        topicsRes.push(topic);
+        topicsRes.add(topic);
       }
     }
   }
-  res.json({ notes, topicsRes });
+  res.json({ notes, topicsRes: Array.from(topicsRes) });
 });
 
 app.get("/topics/:id", async (req, res) => {
   const note = await Note.findById({ _id: req.params.id });
-  let topicsRes = [];
+  let topicsRes = new Set(); 
   for (topic of note.topics) {
     if (topic.length > 3) {
-      topicsRes.push(topic);
+      topicsRes.add(topic);
     }
   }
-  res.json({ topicsRes });
+  res.json({  topicsRes: Array.from(topicsRes)  });
 });
 
 app.get("/PrivateNotes", authenticateJWT, async (req, res) => {
