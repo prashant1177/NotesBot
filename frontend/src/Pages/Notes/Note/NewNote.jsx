@@ -7,6 +7,7 @@ import api from "../../../api"
 export default function NewNote() {
   const [title, setTitle] = useState(""); // title state
   const [about, setAbout] = useState(""); // title state
+  const [topics, setTopics] = useState(""); // content state
   const [privatMark, setPrivateMark] = useState(false); // content state
 
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function NewNote() {
       const note = {
         title: title, 
         about: about, 
+        topics: topics, 
         privatMark: privatMark
       };
       const res = await api.post("/newnote", note);
@@ -49,6 +51,14 @@ export default function NewNote() {
             value={about}
             onChange={(e) => setAbout(e.target.value)}
             varient="transparent"
+          />
+          <Input
+            value={topics}
+            onChange={(e) => setTopics(e.target.value)}
+            varient="transparent"
+            placeholder="Adde relavant topics separated with commas"
+            className=" mt-4"
+            type="text"
           />
         </div>
         

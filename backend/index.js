@@ -68,8 +68,7 @@ app.post("/login", (req, res, next) => {
     // Issue JWT
     const token = jwt.sign(
       { id: user.id, username: user.fullname },
-      JWT_SECRET,
-      { expiresIn: "1h" }
+      JWT_SECRET
     );
     return res.json({ token });
   })(req, res, next);
@@ -77,7 +76,22 @@ app.post("/login", (req, res, next) => {
 
 app.get("/PublicNotes", async (req, res) => {
   const notes = await Note.find({ privatMark: false });
-  res.json({ notes });
+  let topicsRes = [];
+  for (note of notes) {
+    for (topic of note.topics) {
+      topicsRes.push(topic);
+    }
+  }
+  res.json({ notes, topicsRes });
+});
+
+app.get("/topics/:id", async (req, res) => {
+  const note = await Note.findById({ _id: req.params.id });
+  let topicsRes = [];
+  for (topic of note.topics) {
+    topicsRes.push(topic);
+  }
+  res.json({topicsRes });
 });
 
 app.get("/PrivateNotes", authenticateJWT, async (req, res) => {
@@ -101,6 +115,7 @@ app.get("/note/:id", authenticateJWT, viewCount, async (req, res) => {
     "createdBy",
     "-password"
   );
+
   note.like = note.like.length;
   if (!req.user) {
     res.json({ note, allowEdit });
@@ -133,12 +148,13 @@ app.post("/newnote", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.status(403).json({ error: "Login error: Login to continue" });
   }
-  const { title, about, privatMark } = req.body;
+  const { title, about, topics, privatMark } = req.body;
   const note = new Note({
     title: title || `Add a title here`,
     about: about || ``,
     content: `<p>Start writing from here...</p>`,
-    reference: `<p>Add reference details from here...</p>`,
+    reference: [],
+    topics: topics.split(",").map((topic) => topic.trim()),
     privatMark: privatMark,
     views: 0,
     like: [],
@@ -152,7 +168,7 @@ app.get("/editor/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res
       .status(403)
-      .json({ error: "Login error: you cannot edit this note" });
+      .json({ error: "Authentication error: you cannot edit this note" });
   }
   const note = await Note.findById(req.params.id);
   if (req.user._id.equals(note.createdBy._id)) {
@@ -170,7 +186,7 @@ app.put("/editor/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res
       .status(403)
-      .json({ error: "Login error: you cannot edit this note" });
+      .json({ error: "Authentication error: you cannot edit this note" });
   }
   const note = await Note.findById(req.params.id);
 
@@ -197,7 +213,7 @@ app.get("/reference/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res
       .status(403)
-      .json({ error: "Login error: you cannot edit this note" });
+      .json({ error: "Authentication error: you cannot edit this note" });
   }
   const note = await Note.findById(req.params.id);
   if (req.user._id.equals(note.createdBy._id)) {
@@ -258,7 +274,6 @@ app.put("/like/:id", authenticateJWT, async (req, res) => {
     );
     res.json({ like: note.like.length + 1, likesSate: true });
   }
-
 });
 
 app.listen(8080, () => {

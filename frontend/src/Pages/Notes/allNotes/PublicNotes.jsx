@@ -8,17 +8,26 @@ import {
 } from "../../../ui/Card/Card";
 import api from "../../../api";
 import { Link } from "react-router-dom";
-import { Eye, Heart, LibraryBig, Search, ThumbsDown, ThumbsUp } from "lucide-react";
+import {
+  Eye,
+  Heart,
+  LibraryBig,
+  Search,
+  ThumbsDown,
+  ThumbsUp,
+} from "lucide-react";
 import Button from "../../../ui/Button/Button";
 import Input from "../../../ui/Input/Input";
 
 export default function PublicNotes() {
+  const [topicsRes, setTopicsRes] = useState([]); // title state
   const [notes, setNotes] = useState([]); // title state
   useEffect(() => {
     async function fetchData() {
       const res = await api.get(`/PublicNotes`);
       console.log(res.data.notes);
       setNotes(res.data.notes);
+      setTopicsRes(res.data.topicsRes);
     }
     fetchData();
   }, []);
@@ -71,25 +80,25 @@ export default function PublicNotes() {
               <h1 className="text-lg text-gray-900">Sort By</h1>
 
               <div className="flex flex-col gap-1 mt-2">
-                <h1 className="text-gray-500 cursor-pointer hover:underline">Most Viewed</h1>
-                <h1 className="text-gray-500 cursor-pointer hover:underline">Most Liked</h1>
-                <h1 className="text-gray-500 cursor-pointer hover:underline">Most Recent</h1>
+                <h1 className="text-gray-500 cursor-pointer hover:underline">
+                  Most Viewed
+                </h1>
+                <h1 className="text-gray-500 cursor-pointer hover:underline">
+                  Most Liked
+                </h1>
+                <h1 className="text-gray-500 cursor-pointer hover:underline">
+                  Most Recent
+                </h1>
               </div>
-            </div> 
-           
+            </div>
             <div>
               <h1 className="text-lg my-4">Topics</h1>
               <div className="flex flex-wrap gap-2">
-                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
-                  Engineering
-                </h1>
-                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
-                  Examples
-                </h1>
-
-                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
-                  Tobe Added
-                </h1>
+                {topicsRes.map((topic) => (
+                  <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
+                    {topic}
+                  </h1>
+                ))}
               </div>
             </div>
           </div>

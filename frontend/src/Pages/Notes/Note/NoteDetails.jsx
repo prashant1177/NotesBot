@@ -16,14 +16,16 @@ export default function NoteDetails() {
   const { noteId } = useParams(); // 👈 here you get "id" from the URL
   const [note, setNote] = useState({});
   const [creater, setCreater] = useState([]);
+  const [topicsRes, setTopicsRes] = useState([]); // title state
 
   useEffect(() => {
     async function fetchData() {
       console.log("calling");
       const res = await api.get(`/note/${noteId}`);
+      const top = await api.get(`/topics/${noteId}`);
       console.log(res.data.note);
       setCreater(res.data.note.createdBy);
-
+      setTopicsRes(top.data.topicsRes);
       setNote(res.data.note);
     }
     fetchData();
@@ -58,7 +60,14 @@ export default function NoteDetails() {
                 <div className="list-decimal list-inside mt-2">
                   {note?.reference?.map((reference) => (
                     <li key={reference._id} className=" text-gray-500">
-                     <a href={reference.link} target="_blank" className=" hover:underline"> {reference.title}</a>
+                      <a
+                        href={reference.link}
+                        target="_blank"
+                        className=" hover:underline"
+                      >
+                        {" "}
+                        {reference.title}
+                      </a>
                     </li>
                   ))}
                 </div>
@@ -69,17 +78,12 @@ export default function NoteDetails() {
               <div>
                 <h1>Topics</h1>
                 <div className="flex flex-wrap gap-2 my-2">
-                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
-                  Engineering
-                </h1>
-                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
-                  Examples
-                </h1>
-
-                <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
-                  Tobe Added
-                </h1>
-              </div>
+                  {topicsRes.map((topic) => (
+                    <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
+                      {topic}
+                    </h1>
+                  ))}
+                </div>
               </div>{" "}
               <div>
                 <h1>Owners</h1>
@@ -90,7 +94,7 @@ export default function NoteDetails() {
               <div>
                 <h1>Contributer</h1>
                 <h1 className="text-gray-500">
-                 Coming Soon in Version 2...
+                  Coming Soon in Version 2...
                 </h1>{" "}
               </div>
             </div>

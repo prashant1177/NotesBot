@@ -8,12 +8,10 @@ function authenticateJWT(req, res, next) {
     next();
     return;
   }
-
   const token = authHeader.split(" ")[1]; // "Bearer <token>"
 
   jwt.verify(token, JWT_SECRET, async (err, decoded) => {
     if (err) return res.status(403).json({ msg: "Invalid token" });
-
     try {
       const user = await User.findById(decoded.id).select("-password"); // exclude password
       if (!user) return res.status(404).json({ msg: "User not found" });
