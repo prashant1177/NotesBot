@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const User = require("./models/User.js");
 const Note = require("./models/note.js");
+const projectRoutes = require("./routes/projectRoutes");
 
 const session = require("express-session");
 const configurePassport = require("./config/passport.js");
@@ -50,6 +51,7 @@ async function database() {
   await mongoose.connect(process.env.MONGO_URL);
 }
 
+app.use("/projects", projectRoutes); // all routes start with /api/projects
 
 // API to compile LaTeX using Tectonic
 app.post("/compile", (req, res) => {

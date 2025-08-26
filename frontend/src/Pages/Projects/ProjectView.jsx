@@ -1,7 +1,33 @@
 import { FileType2, Folder, LetterText, LibraryBig } from "lucide-react";
 import Button from "../../ui/Button/Button";
+import { useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import api from "../../api";
 
 export default function ProjectView() {
+  const navigate = useNavigate();
+  const { projectid} = useParams(); // 👈 here you get "id" from the URL
+  const [folder, setFolder] = useState(); // content state
+  const [path, setPath] = useState(""); // content state
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get(`/projects/view/${projectid}`);
+        setFolder(res.data.rootFile);
+        console.log(res.data.rootFile);
+      } catch (err) {
+        console.error("Error fetching project:", err);
+      }
+    };
+
+    fetchData();
+  }, [projectid]);
+
+  const openFile = async (path, fileName) => {
+    console.log(path, fileName);
+    navigate(`/latex/${projectid}/${path}/${fileName}`);
+  };
   return (
     <div className="">
       <div className="flex justify-between p-4 px-8 bg-gray-100">
@@ -25,16 +51,22 @@ export default function ProjectView() {
             <div className="flex justify-between gap-4 pe-8">
               <h1>Project files listed below</h1>
               <div className="flex gap-4">
-              <h1>Version 0.1</h1>
-              <h1>Last Changed 26-08-2025</h1></div>
+                <h1>Version 0.1</h1>
+                <h1>Last Changed 26-08-2025</h1>
+              </div>
             </div>
           </div>
           <div className="flex flex-col">
-            <h1 className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"><Folder size={16} />Reference</h1>
-            <h1 className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"><FileType2 size={16} />Filename.txt</h1>
-            <h1 className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"><FileType2 size={16} />Filename.txt</h1>
-            <h1 className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"><FileType2 size={16} />Filename.txt</h1>
-            <h1 className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"><FileType2 size={16} />Filename.txt</h1>
+            {folder?.filesInside?.map((filesInside, i) => (
+              <button
+                onClick={() => openFile(path, filesInside)}
+                className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"
+                key={i}
+              >
+                <FileType2 size={16} />
+                {filesInside}
+              </button>
+            ))}
           </div>
         </div>
 
