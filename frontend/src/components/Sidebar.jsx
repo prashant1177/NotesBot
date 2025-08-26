@@ -3,6 +3,7 @@ import {
   ArrowLeftToLine,
   ArrowRightFromLine,
   BadgeInfo,
+  FolderDot,
   House,
   Landmark,
   LogOut,
@@ -37,6 +38,12 @@ export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
         >
           <House size={24} /> {isActive ? <span>Home</span> : null}
+        </Link>
+         <Link
+          to={`/view/project`}
+          className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
+        >
+          <FolderDot /> {isActive ? <span>Your project</span> : null}
         </Link>
         <Link
           to={`/newnote`}

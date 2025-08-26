@@ -14,7 +14,13 @@ const configurePassport = require("./config/passport.js");
 const { authenticateJWT, viewCount } = require("./middleware/middleware.js");
 const JWT_SECRET = "yoursecretkey"; // ⚠️ store in .env in production
 
-app.use(express.json());
+//Latex 
+
+const { exec } = require("child_process");
+const tmp = require("tmp");
+const fs = require("fs");
+
+app.use(express.json({ limit: "2mb" }));
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN?.split(",") || ["http://localhost:5173"],
@@ -43,6 +49,33 @@ database()
 async function database() {
   await mongoose.connect(process.env.MONGO_URL);
 }
+
+
+// API to compile LaTeX using Tectonic
+app.post("/compile", (req, res) => {
+  const { content } = req.body;
+
+  // create temporary directory
+  tmp.dir({ unsafeCleanup: true }, (err, dirPath, cleanup) => {
+    if (err) return res.status(500).send("Temp dir error");
+
+    const texPath = `${dirPath}/document.tex`;
+    const pdfPath = `${dirPath}/document.pdf`;
+
+    fs.writeFileSync(texPath, content);
+
+    // compile with Tectonic
+    exec(`tectonic "${texPath}" --outdir="${dirPath}"`, (err, stdout, stderr) => {
+      if (err) return res.status(500).send(stderr);
+
+      const pdfBuffer = fs.readFileSync(pdfPath);
+      res.setHeader("Content-Type", "application/pdf");
+      res.send(pdfBuffer);
+
+      cleanup(); // delete temp files
+    });
+  });
+});
 
 app.post("/register", async (req, res) => {
   const { fullname, email, username, password } = req.body;
@@ -187,6 +220,14 @@ app.get("/AuthorNotes/:id", authenticateJWT, async (req, res) => {
   res.json({ notes, author: author.createdBy, following: false });
 });
 
+//Get author details
+app.get("/userdetails", authenticateJWT, async (req, res) => {
+  const notes = await Note.find({ createdBy: req.user.id });
+  const author = await Note.findOne({ createdBy: req.user.id }).populate(
+    "createdBy"
+  );
+  res.json({ notes, author: author.createdBy });
+});
 //show
 app.get("/note/:id", authenticateJWT, viewCount, async (req, res) => {
   let allowEdit = false;

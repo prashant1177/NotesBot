@@ -52,7 +52,7 @@ export default function PublicNotes() {
       <div className="flex-3/4 flex flex-col w-full px-8">
         <div className="text-3xl font-bold text-gray-900 mb-6">
           <h1 className="flex text-gray-900 mb-4 items-center gap-2 text-lg">
-            <LibraryBig strokeWidth={1} size={20} /> Published Notes
+            <LibraryBig strokeWidth={1} size={20} /> Published Drafts
           </h1>
         </div>
         <div className="flex flex-col gap-8">

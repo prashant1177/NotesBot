@@ -22,7 +22,7 @@ export default function PrivateNotes() {
   }, []);
   return (
     <div className="mt-8 flex flex-col w-full px-16">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Private Notes</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">Private Drafts</h1>
       <div className="flex flex-col gap-8">
         {notes.map((note) => (
           <NoteCard key={note._id}>

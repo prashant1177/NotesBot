@@ -22,6 +22,9 @@ import UserView from "./Pages/UserView/UserView";
 import { AnimatePresence, motion } from "framer-motion";
 import NoteReference from "./Pages/Notes/Note/NoteReference";
 import UserEdit from "./Pages/UserView/UserEdit";
+import LatexEditor from "./Pages/LatexEditor/LatexEditor";
+import ProjectView from "./Pages/Projects/ProjectView";
+import UserProject from "./Pages/Projects/UserProjects";
 
 function App() {
   const [isActive, setIsActive] = useState(false);
@@ -57,7 +60,6 @@ function App() {
           }`}
         >
           <Routes>
-            <Route path="/*" element={<h1 className="text-center mt-8">404 - Something will be here in few days</h1>} />
             <Route path="/" element={token ?<UserHome />: <Landing />} />
             <Route path="/main" element={<Main />} />
             <Route path="/maintenance" element={<Maintenance />} />
@@ -67,9 +69,12 @@ function App() {
             <Route path="/details/:noteId" element={<NoteDetails />} />
             <Route path="/shownote/:noteId" element={<ShowNote />} />
             <Route path="/editor/:noteId" element={<NoteEditor />} />
+            <Route path="/latex" element={<LatexEditor />} />
             <Route path="/author/:authorId" element={<UserView />} />
             <Route path="/user" element={<UserEdit />} />
             <Route path="/reference/:noteId" element={<NoteReference />} />
+            <Route path="/view/project" element={<ProjectView />} />
+            <Route path="/projects" element={<UserProject />} />            
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
