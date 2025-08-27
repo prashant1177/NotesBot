@@ -7,14 +7,15 @@ import api from "../../api";
 
 export default function ProjectView() {
   const navigate = useNavigate();
-  const { projectid} = useParams(); // 👈 here you get "id" from the URL
-  const [folder, setFolder] = useState(); // content state
-  const [path, setPath] = useState(""); // content state
+  const { projectid } = useParams(); // 👈 here you get "id" from the URL
+  const [folder, setFolder] = useState([]); // content state
+  const [folderName, setFolderName] = useState(""); // content state
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await api.get(`/projects/view/${projectid}`);
-        setFolder(res.data.rootFile);
+        setFolder(res.data.currFolder);
+        setFolderName(res.data.currFolder.name);
         console.log(res.data.rootFile);
       } catch (err) {
         console.error("Error fetching project:", err);
@@ -24,9 +25,14 @@ export default function ProjectView() {
     fetchData();
   }, [projectid]);
 
-  const openFile = async (path, fileName) => {
-    console.log(path, fileName);
-    navigate(`/latex/${projectid}/${path}/${fileName}`);
+  const openFile = async (fileName) => {
+    console.log(folder, fileName);
+    navigate(`/latex/${projectid}/${folderName}/${fileName}`);
+  };
+
+  const openFolder = (folderName) => {
+    setPath((prev) => (prev ? `${prev}/${folderName}` : folderName));
+    // ensures correct slashes
   };
   return (
     <div className="">
@@ -59,7 +65,7 @@ export default function ProjectView() {
           <div className="flex flex-col">
             {folder?.filesInside?.map((filesInside, i) => (
               <button
-                onClick={() => openFile(path, filesInside)}
+                onClick={() => openFile(filesInside)}
                 className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"
                 key={i}
               >

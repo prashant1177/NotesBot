@@ -26,6 +26,7 @@ import LatexEditor from "./Pages/LatexEditor/LatexEditor";
 import ProjectView from "./Pages/Projects/ProjectView";
 import UserProject from "./Pages/Projects/UserProjects";
 import CreateProject from "./Pages/Projects/CreateProject";
+import EditorIndex from "./Pages/LatexEditor/EditorIndex";
 
 function App() {
   const [isActive, setIsActive] = useState(false);
@@ -70,7 +71,7 @@ function App() {
             <Route path="/details/:noteId" element={<NoteDetails />} />
             <Route path="/shownote/:noteId" element={<ShowNote />} />
             <Route path="/editor/:noteId" element={<NoteEditor />} />
-            <Route path="/latex/:projectid/:path/:fileName" element={<LatexEditor />} />
+            <Route path="/latexeditor/:projectid" element={<EditorIndex />} />
             <Route path="/author/:authorId" element={<UserView />} />
             <Route path="/user" element={<UserEdit />} />
             <Route path="/reference/:noteId" element={<NoteReference />} />

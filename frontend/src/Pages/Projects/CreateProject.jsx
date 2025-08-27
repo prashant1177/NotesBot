@@ -22,8 +22,9 @@ export default function CreateProject() {
       };
       const res = await api.post("/projects/create", Project);
       const ProjectID = res.data.id; // MongoDB ID
+      const foldername = res.data.foldername; // MongoDB ID
       console.log("Saved Note ID:", ProjectID);
-      // navigate(`/editor/${noteId}`);
+      navigate(`/latex/${ProjectID}/${foldername}/main.tex`);
     } catch (err) {
       console.error("Failed to save note:", err);
     }
@@ -32,7 +33,7 @@ export default function CreateProject() {
     <div className="flex flex-col items-center min-h-screen w-full p-4">
       <div className="w-3/6 flex flex-col space-y-8 p-6 rounded-lg mt-32">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">
-          Create New Note
+          Create New Project
         </h1>
         <div>
           <label className="text-gray-900 block mb-2 text-sm font-medium">

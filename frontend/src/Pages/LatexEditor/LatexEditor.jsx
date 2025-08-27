@@ -7,13 +7,14 @@ import { useParams } from "react-router-dom";
 import api from "../../api";
 
 export default function LatexEditor() {
-  const { projectid, path,fileName } = useParams(); // 👈 here you get "id" from the URL
+  const { projectid, path, fileName } = useParams(); // 👈 here you get "id" from the URL
   console.log(projectid, path);
   const [latex, setLatex] = useState(
     "\\documentclass{article}\n\\begin{document}\nHello Tectonic!\n\\end{document}"
   );
   const [pdfUrl, setPdfUrl] = useState("");
   const [viewPdf, setviewPdf] = useState(false);
+  const [currentFolder, setCurrentFolder] = useState(path);
 
   useEffect(() => {
     const openFile = async () => {
@@ -28,6 +29,12 @@ export default function LatexEditor() {
     openFile();
   }, [projectid]);
 
+  const newFile = async (filename) => {
+    console.log(path, currentFolder, filename);
+    const res = await api.post(`/projects/newfile`, { path, currentFolder, filename});
+    setLatex(res.data.fileContent);
+    console.log(res.data.fileContent);
+  };
 
   // compile LaTeX and set PDF URL
   const compileLatex = async (code) => {
@@ -66,6 +73,7 @@ export default function LatexEditor() {
         </div>
         <div></div>
       </div>
+      
       <div className="flex h-full">
         {/* Right: PDF Preview */}
 
@@ -86,7 +94,7 @@ export default function LatexEditor() {
                 <button className="hover:border-b-2 hover:text-blue-500 hover:border-blue-500 p-2">
                   New Folder
                 </button>
-                <button className="hover:border-b-2 hover:text-blue-500 hover:border-blue-500 p-2">
+                <button onClick={() => newFile("reference.tex")} className="hover:border-b-2 hover:text-blue-500 hover:border-blue-500 p-2">
                   New File
                 </button>
                 <button className="hover:border-b-2 hover:text-blue-500 hover:border-blue-500 p-2">

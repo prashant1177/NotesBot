@@ -22,10 +22,11 @@ const projectSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  folderName: {
-    type: String, // will store the ID/name of the root folder created
+  rootFolder: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Folder",
     required: true,
-  },
+  }, // 👈 Add this
   createdAt: {
     type: Date,
     default: Date.now,

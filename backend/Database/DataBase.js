@@ -14,12 +14,12 @@ function createProject(user, projectName) {
   if (!fs.existsSync(userPath)) {
     fs.mkdirSync(userPath);
   }
-  console.log(projectPath);
   // Create project folder
   if (!fs.existsSync(projectPath)) {
     fs.mkdirSync(projectPath);
   }
 
+  console.log(projectPath);
   // Create default main.tex
   const texTemplate = `
 \\documentclass{article}
@@ -39,12 +39,12 @@ Hello, world! This is a new LaTeX project.
 `;
 
   fs.writeFileSync(path.join(projectPath, "main.tex"), texTemplate);
-  return { message: "Project created", projectPath };
+  return { message: "Project created" };
 }
 
-function createFile(parents, fileName) {
-  const parentsPath = path.join(PROJECTS_DIR, parents);
-
+function createFile(username, folderpath, fileName) {
+  const parentsPath = path.join(PROJECTS_DIR, username, folderpath);
+  console.log(parentsPath);
   // Create default main.tex
   const texTemplate = `
 \\documentclass{article}
@@ -58,24 +58,25 @@ function createFile(parents, fileName) {
 
 \\maketitle
 
-Hello, world! This is a new LaTeX project.
+Hello, world! This is a ${fileName} LaTeX File.
 
 \\end{document}
 `;
 
   fs.writeFileSync(path.join(parentsPath, fileName), texTemplate);
-  return { message: "File created", parentsPath };
+  return { message: "File created" };
 }
 
-function createFolder(parents, folderName) {
-  const folderPath = path.join(PROJECTS_DIR, parents, folderName);
+function createFolder(user, parents, folderName) {
+  const folderPath = path.join(PROJECTS_DIR,user, parents,folderName);
+  console.log(folderPath)
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
   } else {
     console.log("Folder Already Exists");
   }
 
-  return { message: "Folder created", folderPath };
+  return { message: "Folder created" };
 }
 
 async function openFile(file) {

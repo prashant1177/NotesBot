@@ -1,16 +1,25 @@
 const mongoose = require("mongoose");
 
 const folderSchema = new mongoose.Schema({
-  name: String, // folder name
-  parent: String, // parent folder
+  name: { type: String, required: true, unique: true },
+  parent: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Folder",
+  }, // parent folder
   foldersInside: [{ type: mongoose.Schema.Types.ObjectId, ref: "Folder" }],
-  filesInside: [{ type: String }], // store filenames like ["image.jpg", "doc.tex"]
+  filesInside: [{ type: mongoose.Schema.Types.ObjectId, ref: "File" }], // store filenames like ["image.jpg", "doc.tex"]
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
-  // related roject name  && store ath 
+  project: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Project",
+    required: true,
+  },
+  path: { type: String },
+  // related roject name  && store ath
 });
 
 module.exports = mongoose.model("Folder", folderSchema);

@@ -40,7 +40,7 @@ export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
           <House size={24} /> {isActive ? <span>Home</span> : null}
         </Link>
          <Link
-          to={`/view/project`}
+          to={`/projects`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
         >
           <FolderDot /> {isActive ? <span>Your project</span> : null}
