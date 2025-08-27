@@ -67,7 +67,11 @@ router.post("/newfile/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
-  const { currFolder, filename } = req.body;
+  let { currFolder, filename } = req.body;
+  if (!filename.toLowerCase().endsWith(".tex")) {
+    filename += ".tex";
+  }
+  console.log(filename)
   const projects = await Project.findById(req.params.id).populate("rootFolder");
   const folder = await Folder.findById(currFolder);
 
