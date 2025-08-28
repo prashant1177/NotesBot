@@ -17,7 +17,8 @@ const fileSchema = new mongoose.Schema({
     ref: "Project",
     required: true,
   },
-  path: { type: String, default: "" },
+  blobId: { type: mongoose.Schema.Types.ObjectId, ref: "Blob", required: true },
+  isBinary: { type: Boolean, default: false }, // true for images, false for text
 });
 
 module.exports = mongoose.model("File", fileSchema);

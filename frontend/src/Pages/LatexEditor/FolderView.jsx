@@ -5,9 +5,10 @@ import api from "../../api";
 import Input from "../../ui/Input/Input";
 
 export default function FolderView({ latex, projectid, setLatex }) {
-  const [currFolder, setCurrFolder] = useState({});
+  const [currFolder, setCurrFolder] = useState("");
   const [currfile, setCurrFile] = useState({}); // content state
-  const [folder, setFolder] = useState({}); // content state
+  const [folders, setFolders] = useState([]); // content state
+  const [files, setFiles] = useState([]); // content state
   const [createNew, setCreateNew] = useState(null); // content state
   const [newName, setNewName] = useState(""); // content state
 
@@ -15,9 +16,10 @@ export default function FolderView({ latex, projectid, setLatex }) {
     const fetchData = async () => {
       try {
         const res = await api.get(`/projects/loadEditor/${projectid}`);
-        setFolder(res.data.rootFolder);
-        setCurrFolder(res.data.rootFolder._id);
-        setCurrFile(res.data.rootFile);
+        setFolders(res.data.Folders);
+        setFiles(res.data.Files);
+        setCurrFolder(res.data.rootFolder);
+        setCurrFile(res.data.rootFile._id);
       } catch (err) {
         console.error("Error fetching project:", err);
       }
@@ -37,21 +39,22 @@ export default function FolderView({ latex, projectid, setLatex }) {
     const res = await api.get(`/projects/getfolder/${projectid}`, {
       params: { folderID: folderID },
     });
-    console.log(res.data.folder);
-    setFolder(res.data.folder);
-    setCurrFolder(res.data.folder._id);
+    setFolders(res.data.Folders);
+    setFiles(res.data.Files);
+    setCurrFolder(folderID);
   };
 
   const newFile = async (filename) => {
     if (!filename.trim()) return;
 
-    await api.post(`/projects/newfile/${projectid}`, {
+    const res = await api.post(`/projects/newfile/${projectid}`, {
       currFolder,
       filename,
     });
 
     setNewName("");
     setCreateNew(null);
+    setFiles(res.data.Files);
     console.log(
       "File Created Successfully +   setLatex(res.data.fileContent);"
     );
@@ -59,13 +62,11 @@ export default function FolderView({ latex, projectid, setLatex }) {
 
   const newFolder = async (foldername) => {
     if (!foldername.trim()) return;
-
-    console.log(foldername);
-    await api.post(`/projects/newfolder/${projectid}`, {
+    const res = await api.post(`/projects/newfolder/${projectid}`, {
       currFolder,
       foldername,
     });
-
+    setFolders(res.data.Folders);
     setNewName("");
     setCreateNew(null);
     console.log(
@@ -76,7 +77,6 @@ export default function FolderView({ latex, projectid, setLatex }) {
   //  save file
   const saveFile = async () => {
     await api.post(`/projects/savefile/${projectid}`, {
-      currFolder,
       currfile,
       latex,
     });
@@ -114,7 +114,7 @@ export default function FolderView({ latex, projectid, setLatex }) {
             />
           </div>
         )}
-        {folder?.foldersInside?.map((folderInside, i) => (
+        {folders?.map((folderInside, i) => (
           <button
             onClick={() => openFolder(folderInside._id)}
             className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"
@@ -124,7 +124,7 @@ export default function FolderView({ latex, projectid, setLatex }) {
             {folderInside.name}
           </button>
         ))}
-        {folder?.filesInside?.map((filesInside, i) => (
+        {files?.map((filesInside, i) => (
           <button
             onClick={() => openFile(filesInside._id)}
             className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"

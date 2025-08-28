@@ -1,6 +1,9 @@
 // routes/projectRoutes.js
 const express = require("express");
 const router = express.Router();
+const crypto = require("crypto");
+const { ObjectId } = require("mongoose").Types;
+
 const Project = require("../models/Project");
 const {
   createProject,
@@ -13,24 +16,49 @@ const { authenticateJWT } = require("../middleware/middleware.js");
 const Folder = require("../models/Folder.js");
 const File = require("../models/File.js");
 const User = require("../models/User.js");
+const Blob = require("../models/Blob.js");
+
+const texTemplate = `
+\\documentclass{article}
+\\usepackage[utf8]{inputenc}
+
+\\title{My New Project}
+\\author{Author Name}
+\\date{\\today}
+
+\\begin{document}
+
+\\maketitle
+
+Hello, world! This is a LaTeX File, Created Later.
+
+\\end{document}
+`;
 
 // GetFile
 router.get("/loadEditor/:id", authenticateJWT, async (req, res) => {
   try {
     const projects = await Project.findById(req.params.id);
 
-   if (req.user.id.toString() !== projects.owner.toString()) {
-  return res.status(403).json({ error: "You are not the owner" });
-}
-    const rootFolder = await Folder.findById(projects.rootFolder._id).populate([
-      "foldersInside",
-      "filesInside",
-    ]);
-
-    const fileContent = await openFile(
-      "/" + req.user.username + "/" + rootFolder.name + "/main.tex"
+    if (req.user.id.toString() !== projects.owner.toString()) {
+      return res.status(403).json({ error: "You are not the owner" });
+    }
+    const Folders = await Folder.find({
+      parent: projects.rootFolder.toString(),
+    });
+    const Files = await File.find({
+      parent: projects.rootFolder.toString(),
+    });
+    const rootFile = await File.findById(projects.rootFile.toString()).populate(
+      "blobId"
     );
-    res.json({ fileContent, rootFolder, rootFile: projects.rootFile });
+    res.json({
+      fileContent: rootFile.blobId.content.toString(),
+      Folders,
+      Files,
+      rootFile,
+      rootFolder: projects.rootFolder.toString(),
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -40,11 +68,13 @@ router.get("/loadEditor/:id", authenticateJWT, async (req, res) => {
 router.get("/getfolder/:id", authenticateJWT, async (req, res) => {
   try {
     const { folderID } = req.query;
-    const folder = await Folder.findById(folderID).populate([
-      "foldersInside",
-      "filesInside",
-    ]);
-    res.json({ folder });
+    const Folders = await Folder.find({
+      parent: folderID,
+    });
+    const Files = await File.find({
+      parent: folderID,
+    });
+    res.json({ Folders, Files });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -54,13 +84,9 @@ router.get("/getfolder/:id", authenticateJWT, async (req, res) => {
 router.get("/getfile/:id", authenticateJWT, async (req, res) => {
   try {
     const { fileID } = req.query;
+    const file = await File.findById(fileID).populate("blobId");
 
-    const file = await File.findById(fileID);
-    const fileContent = await openFile(
-      "/" + req.user.username + "/" + file.path + "/" + file.name
-    );
-
-    res.json({ fileContent });
+    res.json({ fileContent: file.blobId.content.toString() });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -71,30 +97,28 @@ router.post("/newfile/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
-  let { currFolder, filename } = req.body;
-  if (!filename.toLowerCase().endsWith(".tex")) {
-    filename += ".tex";
-  }
-  console.log(filename);
-  const projects = await Project.findById(req.params.id).populate("rootFolder");
-  const folder = await Folder.findById(currFolder);
-
-  const newpath = folder.path;
-  const newFile = new File({
-    name: filename,
-    parent: currFolder,
-    owner: req.user._id,
-    project: req.params.id,
-    path: newpath,
-  });
   try {
-    createFile(req.user.username, newpath, filename);
+    let { currFolder, filename } = req.body;
+
+    if (!filename.toLowerCase().endsWith(".tex")) {
+      filename += ".tex";
+    }
+
+    const newFile = new File({
+      name: filename,
+      parent: currFolder,
+      owner: req.user._id,
+      project: req.params.id,
+      blobId: "68b04aa931426fa1bed3eaf2",
+      isBinary: false,
+    });
+
     await newFile.save();
 
-    folder.filesInside.push(newFile._id);
-    await folder.save(); // <--- missing in your code
-
-    res.json({ message: "Succces", folder });
+    const Files = await File.find({
+      parent: currFolder,
+    });
+    res.json({ message: "Succces", Files });
   } catch (err) {
     res.status(400).json({ message: "Different error" });
   }
@@ -106,31 +130,24 @@ router.post("/newfolder/:id", authenticateJWT, async (req, res) => {
     return res.status(400).json({ message: "Authentication issue" });
   }
   const { currFolder, foldername } = req.body;
-  const folder = await Folder.findById(currFolder);
   try {
-    createFolder(req.user.username, folder.path, foldername);
-
-    const newpath = folder.path + "/" + foldername;
-
     const newFolder = new Folder({
       name: foldername,
       parent: currFolder,
-      foldersInside: [],
-      filesInside: [],
       owner: req.user._id,
       project: req.params.id,
-      path: newpath,
     });
     await newFolder.save();
-    folder.foldersInside.push(newFolder._id);
-    await folder.save(); // <--- missing in your code
-    res.json({ message: "Succces", newFolder });
+    const Folders = await Folder.find({
+      parent: currFolder,
+    });
+    res.json({ message: "Succces", Folders });
   } catch (err) {
     res.status(400).json({ message: "Different error" });
   }
 });
 
-// Example: Get all projects
+// Example: Get all projects from ProjectView
 router.get("/view/:id", authenticateJWT, async (req, res) => {
   try {
     const projects = await Project.findById(req.params.id);
@@ -167,28 +184,37 @@ router.post("/create", authenticateJWT, async (req, res) => {
     private,
   });
 
-  createProject(req.user.username, foldername);
   const newFolder = new Folder({
     name: foldername,
     parent: null,
-    foldersInside: [],
-    filesInside: [],
     owner: req.user._id,
     project: project._id,
-    path: "/" + foldername,
   });
+  const hash = crypto.createHash("sha1").update(texTemplate).digest("hex");
+  // Check if the file already exists
+  let blob = await Blob.findOne({ hash });
+  if (!blob) {
+    blob = await Blob.create({
+      hash,
+      content: Buffer.from(texTemplate, "utf-8"),
+      mime: "application/x-tex",
+    });
+  } else {
+    console.log("File already exists in database:", hash);
+  }
+
   const mainFile = new File({
     name: "main.tex",
     parent: newFolder._id,
     owner: req.user._id,
     project: project._id,
-    path: foldername,
+    blobId: blob._id,
+    isBinary: false,
   });
 
   await mainFile.save();
 
-  newFolder.filesInside.push(mainFile._id);
-  await newFolder.save(); // <--- missing in your code
+  await newFolder.save();
 
   // link root folder id to project
   project.rootFile = mainFile._id;
@@ -208,11 +234,23 @@ router.post("/savefile/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
-  const { currFolder, currfile, latex } = req.body;
-  const fileData = await File.findById(currfile);
-  const folder = await Folder.findById(currFolder);
+  const { currfile, latex } = req.body;
   try {
-    saveFile(req.user.username, folder.path, fileData.name, latex);
+    const hash = crypto.createHash("sha1").update(latex).digest("hex");
+    // Check if the file already exists
+    let blob = await Blob.findOne({ hash });
+    if (!blob) {
+      blob = await Blob.create({
+        hash,
+        content: Buffer.from(latex, "utf-8"),
+        mime: "application/x-tex",
+      });
+
+  await File.findByIdAndUpdate(currfile, { blobId: blob._id});
+      
+    } else {
+      console.log("File already exists in database:", hash);
+    }
     res.json({ message: "Succces" });
   } catch (err) {
     res.status(400).json({ message: "Different error" });

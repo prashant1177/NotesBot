@@ -42,7 +42,7 @@ Hello, world! This is a new LaTeX project.
   return { message: "Project created" };
 }
 
-function createFile(username, folderpath, fileName) {
+function createFileOld(username, folderpath, fileName) {
   const parentsPath = path.join(PROJECTS_DIR, username, folderpath);
   console.log(parentsPath);
   // Create default main.tex
@@ -108,6 +108,29 @@ async function saveFile(user, folder, file, latex) {
     return { message: "Error saving file", error: err };
   }
 }
+
+
+function createFile() {
+  const texTemplate = `
+\\documentclass{article}
+\\usepackage[utf8]{inputenc}
+
+\\title{My New Project}
+\\author{Author Name}
+\\date{\\today}
+
+\\begin{document}
+
+\\maketitle
+
+Hello, world! This is a LaTeX File.
+
+\\end{document}
+`;
+return texTemplate;
+}
+
+
 
 module.exports = {
   createFile,

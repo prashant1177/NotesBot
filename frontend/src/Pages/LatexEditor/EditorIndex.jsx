@@ -27,8 +27,6 @@ export default function EditorIndex() {
         const res = await api.get(`/projects/loadEditor/${projectid}`);
         setLatex(res.data.fileContent);
       } catch (err) {
-        alert(err.response.data.error);
-        navigate(`/project/${projectid}`);
       }
     };
 
