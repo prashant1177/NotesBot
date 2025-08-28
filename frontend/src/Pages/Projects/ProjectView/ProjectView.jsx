@@ -1,22 +1,23 @@
 import { FileType2, Folder, LetterText, LibraryBig } from "lucide-react";
-import Button from "../../ui/Button/Button";
+import Button from "../../../ui/Button/Button";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import ProjectTools from "./ProjectTools";
 import { useState } from "react";
-import api from "../../api";
+import api from "../../../api";
 
 export default function ProjectView() {
   const navigate = useNavigate();
   const { projectid } = useParams(); // 👈 here you get "id" from the URL
   const [folder, setFolder] = useState([]); // content state
-  const [folderName, setFolderName] = useState(""); // content state
+
+  const [currFolder, setCurrFolder] = useState();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await api.get(`/projects/view/${projectid}`);
         setFolder(res.data.currFolder);
-        setFolderName(res.data.currFolder.name);
-        console.log(res.data.rootFile);
+        setCurrFolder(res.data.currFolder.id);
       } catch (err) {
         console.error("Error fetching project:", err);
       }
@@ -27,26 +28,19 @@ export default function ProjectView() {
 
   const openFile = async (fileName) => {
     console.log(folder, fileName);
-    navigate(`/latex/${projectid}/${folderName}/${fileName}`);
+    
   };
 
-  const openFolder = (folderName) => {
-    setPath((prev) => (prev ? `${prev}/${folderName}` : folderName));
-    // ensures correct slashes
+  const openFolder = async (folderID) => {
+    const res = await api.get(`/projects/getfolder/${projectid}`, {
+      params: { folderID: folderID },
+    });
+    setFolder(res.data.folder);
+    setCurrFolder(res.data.folder._id);
   };
   return (
     <div className="">
-      <div className="flex justify-between p-4 px-8 bg-gray-100">
-        <div className="flex items-center gap-8">
-          <h1>Project</h1>
-          <h1>Issues</h1>
-          <h1>Contribution Requests</h1>
-          <h1>Approvals</h1>
-        </div>
-        <div>
-          <Button>Fork This</Button>
-        </div>
-      </div>
+      <ProjectTools projectid={projectid}/>
       <div className="mt-8 flex w-full px-8">
         <div className="flex-3/4 flex flex-col w-full">
           <div className=" text-gray-900 pb-2  border-b-8 border-gray-100">
@@ -63,14 +57,24 @@ export default function ProjectView() {
             </div>
           </div>
           <div className="flex flex-col">
+            {folder?.foldersInside?.map((folderInside, i) => (
+              <button
+                onClick={() => openFolder(folderInside._id)}
+                className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"
+                key={i}
+              >
+                <Folder size={16} />
+                {folderInside.name}
+              </button>
+            ))}
             {folder?.filesInside?.map((filesInside, i) => (
               <button
-                onClick={() => openFile(filesInside)}
+                onClick={() => openFile(filesInside.id)}
                 className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"
                 key={i}
               >
                 <FileType2 size={16} />
-                {filesInside}
+                {filesInside.name}
               </button>
             ))}
           </div>

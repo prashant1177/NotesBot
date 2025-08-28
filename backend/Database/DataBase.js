@@ -68,8 +68,8 @@ Hello, world! This is a ${fileName} LaTeX File.
 }
 
 function createFolder(user, parents, folderName) {
-  const folderPath = path.join(PROJECTS_DIR,user, parents,folderName);
-  console.log(folderPath)
+  const folderPath = path.join(PROJECTS_DIR, user, parents, folderName);
+  console.log(folderPath);
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
   } else {
@@ -89,4 +89,30 @@ async function openFile(file) {
   }
 }
 
-module.exports = { createFile, createFolder, createProject, openFile };
+async function saveFile(user, folder, file, latex) {
+  try {
+    const filePath = path.join(PROJECTS_DIR,user, folder, file);
+
+    console.log(filePath);
+    // Ensure parent directory exists
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+      return { message: "Directory does not exist" };
+    }
+    // Write content to file
+    await fspromises.writeFile(filePath, latex, "utf8");
+
+    return { message: "File saved successfully" };
+  } catch (err) {
+    console.error("Error saving file:", err);
+    return { message: "Error saving file", error: err };
+  }
+}
+
+module.exports = {
+  createFile,
+  createFolder,
+  createProject,
+  openFile,
+  saveFile,
+};

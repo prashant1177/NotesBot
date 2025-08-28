@@ -1,6 +1,6 @@
 import api from "../../api";
 
-export default function FolderTools({ setCreateNew, projectid }) {
+export default function FolderTools({saveFile, setCreateNew, projectid }) {
   
   return (
     <div className="w-full bg-gray-950 px-8 text-gray-300">
@@ -22,6 +22,11 @@ export default function FolderTools({ setCreateNew, projectid }) {
         </button>
         <button className="hover:border-b-2 hover:text-blue-500 hover:border-blue-500 p-2">
           Upload Image
+        </button> <button
+          onClick={() => saveFile()}
+          className="hover:border-b-2 hover:text-blue-500 hover:border-blue-500 p-2"
+        >
+          Save File
         </button>
       </div>
     </div>

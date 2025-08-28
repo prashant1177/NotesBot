@@ -1,32 +1,19 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import Landing from "./Pages/Landing/Landing";
-import Main from "./Pages/Main";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./Pages/UserAuth/Login";
-import Dashboard from "./components/Dashboard";
 import Register from "./Pages/UserAuth/Register";
-import Youtube from "./Pages/Youtube";
 import Maintenance from "./Pages/Maintenance";
-import NewNote from "./Pages/Notes/Note/NewNote";
-import NoteEditor from "./Pages/Notes/Note/NoteEditor";
-import ShowNote from "./Pages/Notes/Note/ShowNote";
-import PublicNotes from "./Pages/Notes/allNotes/PublicNotes";
-import PrivateNotes from "./Pages/Notes/allNotes/PrivateNotes";
 import Sidebar from "./components/Sidebar";
-import UserHome from "./Pages/UserHome/UserHome";
-import NoteDetails from "./Pages/Notes/Note/NoteDetails";
 import { setAuthToken } from "./api";
-import UserView from "./Pages/UserView/UserView";
-import { AnimatePresence, motion } from "framer-motion";
-import NoteReference from "./Pages/Notes/Note/NoteReference";
 import UserEdit from "./Pages/UserView/UserEdit";
-import LatexEditor from "./Pages/LatexEditor/LatexEditor";
-import ProjectView from "./Pages/Projects/ProjectView";
-import UserProject from "./Pages/Projects/UserProjects";
+import ProjectView from "./Pages/Projects/ProjectView/ProjectView";
 import CreateProject from "./Pages/Projects/CreateProject";
 import EditorIndex from "./Pages/LatexEditor/EditorIndex";
+import MyProject from "./Pages/Projects/MyProjectsList/UserProfileIndex";
+import UserProfileIndex from "./Pages/Projects/MyProjectsList/UserProfileIndex";
 
 function App() {
   const [isActive, setIsActive] = useState(false);
@@ -62,26 +49,14 @@ function App() {
           }`}
         >
           <Routes>
-            <Route path="/" element={token ?<UserHome />: <Landing />} />
-            <Route path="/main" element={<Main />} />
-            <Route path="/maintenance" element={<Maintenance />} />
-            <Route path="/NewNote" element={<NewNote />} />
-            <Route path="/PublicNotes" element={<PublicNotes />} />
-            <Route path="/PrivateNotes" element={<PrivateNotes />} />
-            <Route path="/details/:noteId" element={<NoteDetails />} />
-            <Route path="/shownote/:noteId" element={<ShowNote />} />
-            <Route path="/editor/:noteId" element={<NoteEditor />} />
-            <Route path="/latexeditor/:projectid" element={<EditorIndex />} />
-            <Route path="/author/:authorId" element={<UserView />} />
-            <Route path="/user" element={<UserEdit />} />
-            <Route path="/reference/:noteId" element={<NoteReference />} />
-            <Route path="/project/:projectid" element={<ProjectView />} />
-            <Route path="/create/project" element={<CreateProject />} />
-            <Route path="/projects" element={<UserProject />} />            
+            <Route path="/" element={token ?<MyProject />: <Landing />} /> 
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/youtube" element={<Youtube />} />
+            <Route path="/latexeditor/:projectid" element={<EditorIndex />} />
+            <Route path="/user" element={<UserEdit />} />
+            <Route path="/project/:projectid" element={<ProjectView />} />
+            <Route path="/profile/:username" element={<UserProfileIndex />} />
+            <Route path="/create/project" element={<CreateProject />} />   
           </Routes>
         </div>
       </div>

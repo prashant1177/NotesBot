@@ -26,7 +26,12 @@ const projectSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Folder",
     required: true,
-  }, // 👈 Add this
+  }, 
+  rootFile: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "File",
+    required: true,
+  }, 
   createdAt: {
     type: Date,
     default: Date.now,

@@ -4,13 +4,11 @@ import { useEffect, useState } from "react";
 import api from "../../api";
 import Input from "../../ui/Input/Input";
 
-export default function FolderView({ projectid, setLatex }) {
+export default function FolderView({ latex, projectid, setLatex }) {
   const [currFolder, setCurrFolder] = useState({});
-
+  const [currfile, setCurrFile] = useState({}); // content state
   const [folder, setFolder] = useState({}); // content state
-
   const [createNew, setCreateNew] = useState(null); // content state
-
   const [newName, setNewName] = useState(""); // content state
 
   useEffect(() => {
@@ -19,6 +17,7 @@ export default function FolderView({ projectid, setLatex }) {
         const res = await api.get(`/projects/loadEditor/${projectid}`);
         setFolder(res.data.rootFolder);
         setCurrFolder(res.data.rootFolder._id);
+        setCurrFile(res.data.rootFile);
       } catch (err) {
         console.error("Error fetching project:", err);
       }
@@ -31,6 +30,7 @@ export default function FolderView({ projectid, setLatex }) {
       params: { fileID: fileID },
     });
     setLatex(res.data.fileContent);
+    setCurrFile(fileID);
   };
 
   const openFolder = async (folderID) => {
@@ -72,18 +72,29 @@ export default function FolderView({ projectid, setLatex }) {
       "File Created Successfully +   setLatex(res.data.fileContent);"
     );
   };
+
+  //  save file
+  const saveFile = async () => {
+    await api.post(`/projects/savefile/${projectid}`, {
+      currFolder,
+      currfile,
+      latex,
+    });
+  };
   return (
     <div className="flex-1">
-      <FolderTools setCreateNew={setCreateNew} projectid={projectid} />
+      <FolderTools
+        saveFile={saveFile}
+        setCreateNew={setCreateNew}
+        projectid={projectid}
+      />
       <div className="flex flex-col px-8">
         {createNew && (
           <div className="w-full flex items-center gap-4 mt-2">
             <Input
               className="border-2 border-blue-500"
               placeholder={
-                createNew === "folder"
-                  ? "Enter folder name"
-                  : "Enter file name"
+                createNew === "folder" ? "Enter folder name" : "Enter file name"
               }
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
@@ -98,9 +109,7 @@ export default function FolderView({ projectid, setLatex }) {
             <CirclePlus
               className="text-green-500 cursor-pointer"
               onClick={() =>
-                createNew === "folder"
-                  ? newFolder(newName)
-                  : newFile(newName)
+                createNew === "folder" ? newFolder(newName) : newFile(newName)
               }
             />
           </div>

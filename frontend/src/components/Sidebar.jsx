@@ -34,30 +34,24 @@ export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
           {isActive ? <span>{username}</span> : null}
         </Link>
         <Link
-          to={`/`}
+          to={`/profile/${username}`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
         >
           <House size={24} /> {isActive ? <span>Home</span> : null}
         </Link>
          <Link
-          to={`/projects`}
+          to={`/myprojects`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
         >
           <FolderDot /> {isActive ? <span>Your project</span> : null}
         </Link>
         <Link
-          to={`/newnote`}
+          to={`/create/project`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
         >
           <PencilLine size={24} /> {isActive ? <span>New Note</span> : null}
         </Link>
-        <Link
-          to={`/PrivateNotes`}
-          className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
-        >
-          <NotebookText size={24} />
-          {isActive ? <span>Your Notes</span> : null}
-        </Link>
+        
         <Link
           to={`/Pricing`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}

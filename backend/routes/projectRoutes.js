@@ -7,6 +7,7 @@ const {
   openFile,
   createFile,
   createFolder,
+  saveFile,
 } = require("../Database/DataBase");
 const { authenticateJWT } = require("../middleware/middleware.js");
 const Folder = require("../models/Folder.js");
@@ -18,6 +19,9 @@ router.get("/loadEditor/:id", authenticateJWT, async (req, res) => {
   try {
     const projects = await Project.findById(req.params.id);
 
+   if (req.user.id.toString() !== projects.owner.toString()) {
+  return res.status(403).json({ error: "You are not the owner" });
+}
     const rootFolder = await Folder.findById(projects.rootFolder._id).populate([
       "foldersInside",
       "filesInside",
@@ -26,7 +30,7 @@ router.get("/loadEditor/:id", authenticateJWT, async (req, res) => {
     const fileContent = await openFile(
       "/" + req.user.username + "/" + rootFolder.name + "/main.tex"
     );
-    res.json({ fileContent, rootFolder });
+    res.json({ fileContent, rootFolder, rootFile: projects.rootFile });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -71,7 +75,7 @@ router.post("/newfile/:id", authenticateJWT, async (req, res) => {
   if (!filename.toLowerCase().endsWith(".tex")) {
     filename += ".tex";
   }
-  console.log(filename)
+  console.log(filename);
   const projects = await Project.findById(req.params.id).populate("rootFolder");
   const folder = await Folder.findById(currFolder);
 
@@ -130,10 +134,10 @@ router.post("/newfolder/:id", authenticateJWT, async (req, res) => {
 router.get("/view/:id", authenticateJWT, async (req, res) => {
   try {
     const projects = await Project.findById(req.params.id);
-    const currFolder = await Folder.findOne({
-      owner: req.user._id,
-      name: projects.folderName,
-    });
+    const currFolder = await Folder.findById(projects.rootFolder).populate([
+      "foldersInside",
+      "filesInside",
+    ]);
     res.json({ projects, currFolder });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -187,6 +191,7 @@ router.post("/create", authenticateJWT, async (req, res) => {
   await newFolder.save(); // <--- missing in your code
 
   // link root folder id to project
+  project.rootFile = mainFile._id;
   project.rootFolder = newFolder._id;
   await project.save();
 
@@ -196,6 +201,22 @@ router.post("/create", authenticateJWT, async (req, res) => {
   );
 
   res.status(201).json({ id: project._id, foldername });
+});
+
+// Example: Create a new folder
+router.post("/savefile/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.status(400).json({ message: "Authentication issue" });
+  }
+  const { currFolder, currfile, latex } = req.body;
+  const fileData = await File.findById(currfile);
+  const folder = await Folder.findById(currFolder);
+  try {
+    saveFile(req.user.username, folder.path, fileData.name, latex);
+    res.json({ message: "Succces" });
+  } catch (err) {
+    res.status(400).json({ message: "Different error" });
+  }
 });
 
 module.exports = router; // export the router

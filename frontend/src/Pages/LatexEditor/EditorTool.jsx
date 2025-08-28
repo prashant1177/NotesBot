@@ -14,7 +14,9 @@ export default function EditorTool({ handleViewToggle, viewPdf }) {
         <h1>Contribution Requests</h1>
         <h1>Approvals</h1>
       </div>
-      <div></div>
+      <div>
+       
+      </div>
     </div>
   );
 }

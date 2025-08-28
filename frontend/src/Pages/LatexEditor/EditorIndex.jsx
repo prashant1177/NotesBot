@@ -5,12 +5,13 @@ import FolderView from "./FolderView";
 import { Editor } from "@monaco-editor/react";
 import { debounce } from "lodash";
 import api from "../../api";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditorIndex() {
   const { projectid } = useParams(); // 👈 here you get "id" from the URL
 
   const [viewPdf, setviewPdf] = useState(false);
+    const navigate = useNavigate();
   const [pdfUrl, setPdfUrl] = useState("");
   const [latex, setLatex] = useState(
     "\\documentclass{article}\n\\begin{document}\nHello Tectonic!\n\\end{document}"
@@ -22,8 +23,13 @@ export default function EditorIndex() {
 
   useEffect(() => {
     const loadEditor = async () => {
-      const res = await api.get(`/projects/loadEditor/${projectid}`);
-      setLatex(res.data.fileContent);
+      try {
+        const res = await api.get(`/projects/loadEditor/${projectid}`);
+        setLatex(res.data.fileContent);
+      } catch (err) {
+        alert(err.response.data.error);
+        navigate(`/project/${projectid}`);
+      }
     };
 
     loadEditor();
@@ -48,16 +54,18 @@ export default function EditorIndex() {
     return debouncedCompile.cancel;
   }, [latex]);
 
-
-
   return (
     <div className="flex flex-col h-screen">
-      <EditorTool handleViewToggle={handleViewToggle} viewPdf={viewPdf} />
+      <EditorTool
+        projectid={projectid}
+        handleViewToggle={handleViewToggle}
+        viewPdf={viewPdf}
+      />
       <div className="flex h-full">
         {viewPdf ? (
           <PdfViewer pdfUrl={pdfUrl} />
         ) : (
-          <FolderView projectid={projectid} setLatex={setLatex}/>
+          <FolderView latex={latex} projectid={projectid} setLatex={setLatex} />
         )}
         <div className="flex-1">
           <Editor

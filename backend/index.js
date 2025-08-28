@@ -15,11 +15,12 @@ const configurePassport = require("./config/passport.js");
 const { authenticateJWT, viewCount } = require("./middleware/middleware.js");
 const JWT_SECRET = "yoursecretkey"; // ⚠️ store in .env in production
 
-//Latex 
+//Latex
 
 const { exec } = require("child_process");
 const tmp = require("tmp");
 const fs = require("fs");
+const Project = require("./models/Project.js");
 
 app.use(express.json({ limit: "2mb" }));
 app.use(
@@ -67,15 +68,18 @@ app.post("/compile", (req, res) => {
     fs.writeFileSync(texPath, content);
 
     // compile with Tectonic
-    exec(`tectonic "${texPath}" --outdir="${dirPath}"`, (err, stdout, stderr) => {
-      if (err) return res.status(500).send(stderr);
+    exec(
+      `tectonic "${texPath}" --outdir="${dirPath}"`,
+      (err, stdout, stderr) => {
+        if (err) return res.status(500).send(stderr);
 
-      const pdfBuffer = fs.readFileSync(pdfPath);
-      res.setHeader("Content-Type", "application/pdf");
-      res.send(pdfBuffer);
+        const pdfBuffer = fs.readFileSync(pdfPath);
+        res.setHeader("Content-Type", "application/pdf");
+        res.send(pdfBuffer);
 
-      cleanup(); // delete temp files
-    });
+        cleanup(); // delete temp files
+      }
+    );
   });
 });
 
@@ -150,35 +154,7 @@ app.get("/searchnotes", async (req, res) => {
   }
 });
 
-app.get("/PublicNotes", async (req, res) => {
-  const notes = await Note.find({ privatMark: false });
-  let topicsRes = new Set(); 
-  for (note of notes) {
-    for (topic of note.topics) {
-      if (topic.length > 3) {
-        topicsRes.add(topic);
-      }
-    }
-  }
-  res.json({ notes, topicsRes: Array.from(topicsRes) });
-});
-
-app.get("/topics/:id", async (req, res) => {
-  const note = await Note.findById({ _id: req.params.id });
-  let topicsRes = new Set(); 
-  for (topic of note.topics) {
-    if (topic.length > 3) {
-      topicsRes.add(topic);
-    }
-  }
-  res.json({  topicsRes: Array.from(topicsRes)  });
-});
-
-app.get("/PrivateNotes", authenticateJWT, async (req, res) => {
-  const notes = await Note.find({ createdBy: req.user });
-  res.json({ notes });
-});
-
+// user get Details
 app.get("/user", authenticateJWT, async (req, res) => {
   if (req.user) {
     const user = await User.findById(req.user.id);
@@ -188,6 +164,7 @@ app.get("/user", authenticateJWT, async (req, res) => {
   return res.err({ message: "User login in first" });
 });
 
+// user update Details
 app.put("/user", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res
@@ -207,172 +184,40 @@ app.put("/user", authenticateJWT, async (req, res) => {
   res.json(user);
 });
 
-app.get("/AuthorNotes/:id", authenticateJWT, async (req, res) => {
-  const notes = await Note.find({ createdBy: req.params.id });
-  const author = await Note.findOne({ createdBy: req.params.id }).populate(
-    "createdBy"
-  );
-  if (
-    req.user &&
-    req.user.following?.includes(author.createdBy._id.toString())
-  ) {
-    res.json({ notes, author: author.createdBy, following: true });
-    return;
-  }
-  res.json({ notes, author: author.createdBy, following: false });
+app.get("/MyProject", authenticateJWT, async (req, res) => {
+  const projects = await Project.find({ owner: req.user.id });
+  const author = await User.findById(req.user.id);
+  res.json({ projects, author });
 });
 
 //Get author details
 app.get("/userdetails", authenticateJWT, async (req, res) => {
-  const notes = await Note.find({ createdBy: req.user.id });
-  const author = await Note.findOne({ createdBy: req.user.id }).populate(
-    "createdBy"
-  );
-  res.json({ notes, author: author.createdBy });
-});
-//show
-app.get("/note/:id", authenticateJWT, viewCount, async (req, res) => {
-  let allowEdit = false;
-  const note = await Note.findById(req.params.id).populate(
-    "createdBy",
-    "-password"
-  );
-
-  note.like = note.like.length;
-  if (!req.user) {
-    res.json({ note, allowEdit });
-    return;
-  }
-  if (req.user._id.equals(note.createdBy._id)) {
-    allowEdit = true;
-  }
-
-  res.json({ note, allowEdit });
+  const author = await User.findById(req.user.id);
+  res.json({ author });
 });
 
-app.delete("/note/:id", authenticateJWT, async (req, res) => {
-  if (!req.user) {
-    return res.status(403).json({ error: "Login error: Login to continue" });
-  }
-  const note = await Note.findById(req.params.id).populate(
-    "createdBy",
-    "-password"
-  );
-
-  if (req.user._id.equals(note.createdBy._id)) {
-    await Note.findByIdAndDelete(req.params.id);
-    return res.json({ message: "Post deleted successfully" });
-  }
-  res.json({ message: "Post Not deleted successfully, You are not the owner" });
-});
-
-app.post("/newnote", authenticateJWT, async (req, res) => {
-  if (!req.user) {
-    return res.status(403).json({ error: "Login error: Login to continue" });
-  }
-  const { title, about, topics, privatMark } = req.body;
-  const note = new Note({
-    title: title || `Add a title here`,
-    about: about || ``,
-    content: `<p>Start writing from here...</p>`,
-    reference: [],
-    topics: topics.split(",").map((topic) => topic.trim()),
-    privatMark: privatMark,
-    views: 0,
-    like: [],
-    createdBy: req.user,
+//Get author details
+app.get("/profile/:username", authenticateJWT, async (req, res) => {
+  const author = await User.findOne({
+    username: req.params.username.toLowerCase(),
   });
-  await note.save();
-  res.json({ id: note._id });
+  if (!author) {
+  return res.status(404).json({ error: "Username does not exist" });
+  }
+  const projects = await Project.find({ owner: author._id });
+  res.json({ author, projects });
 });
 
-app.get("/editor/:id", authenticateJWT, async (req, res) => {
-  if (!req.user) {
-    return res
-      .status(403)
-      .json({ error: "Authentication error: you cannot edit this note" });
-  }
-  const note = await Note.findById(req.params.id);
-  if (req.user._id.equals(note.createdBy._id)) {
-    res.json({ id: note._id, title: note.title, content: note.content });
+app.get("/openeditor/:id", authenticateJWT, async (req, res) => {
+  const projects = await Project.findById(req.params.id);
+  console.log(projects.owner);
+  if (projects.owner.toString() == req.user.id) {
+    return res.json({ message: "Success" });
   } else {
-    return res
-      .status(403)
-      .json({ error: "Invalid access: you cannot edit this note" });
+  return res.status(404).json({ error: "You are not the owner" });
   }
 });
 
-//reference
-
-app.put("/editor/:id", authenticateJWT, async (req, res) => {
-  if (!req.user) {
-    return res
-      .status(403)
-      .json({ error: "Authentication error: you cannot edit this note" });
-  }
-  const note = await Note.findById(req.params.id);
-
-  if (!req.user._id.equals(note.createdBy._id)) {
-    return res
-      .status(403)
-      .json({ error: "Invalid access: you cannot edit this note" });
-  }
-  const { title, content } = req.body;
-  const updatedNote = await Note.findByIdAndUpdate(
-    req.params.id,
-    { title, content },
-    { new: true }
-  );
-
-  if (!updatedNote) {
-    return res.status(404).json({ message: "Note not found" });
-  }
-  res.json(updatedNote);
-});
-
-//Reference Edits
-app.get("/reference/:id", authenticateJWT, async (req, res) => {
-  if (!req.user) {
-    return res
-      .status(403)
-      .json({ error: "Authentication error: you cannot edit this note" });
-  }
-  const note = await Note.findById(req.params.id);
-  if (req.user._id.equals(note.createdBy._id)) {
-    res.json({ note });
-  } else {
-    return res
-      .status(403)
-      .json({ error: "Invalid access: you cannot edit this note" });
-  }
-});
-app.put("/reference/:id", authenticateJWT, async (req, res) => {
-  if (!req.user) {
-    return res
-      .status(403)
-      .json({ error: "Login error: you cannot edit this note" });
-  }
-  const note = await Note.findById(req.params.id);
-
-  if (!req.user._id.equals(note.createdBy._id)) {
-    return res
-      .status(403)
-      .json({ error: "Invalid access: you cannot edit this note" });
-  }
-  const { reference } = req.body;
-  const updatedNote = await Note.findByIdAndUpdate(
-    req.params.id,
-    { $push: { reference: reference } },
-    { new: true }
-  );
-
-  if (!updatedNote) {
-    return res.status(404).json({ message: "Note not found" });
-  }
-
-  res.json(updatedNote);
-});
-// Like
 app.put("/like/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.status(403).json({ error: "Login error: Login to like this" });
