@@ -210,7 +210,6 @@ app.get("/profile/:username", authenticateJWT, async (req, res) => {
 
 app.get("/openeditor/:id", authenticateJWT, async (req, res) => {
   const projects = await Project.findById(req.params.id);
-  console.log(projects.owner);
   if (projects.owner.toString() == req.user.id) {
     return res.json({ message: "Success" });
   } else {

@@ -2,7 +2,9 @@
 const express = require("express");
 const router = express.Router();
 const crypto = require("crypto");
-const { ObjectId } = require("mongoose").Types;
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() }); // store file in memory buffer
+
 
 const Project = require("../models/Project");
 const {
@@ -17,6 +19,77 @@ const Folder = require("../models/Folder.js");
 const File = require("../models/File.js");
 const User = require("../models/User.js");
 const Blob = require("../models/Blob.js");
+
+
+const tmp = require("tmp-promise");
+const fs = require("fs");
+const path = require("path");
+const { exec } = require("child_process");
+const util = require("util");
+const execPromise = util.promisify(exec);
+
+// Helper function to recursively write files and folders
+async function writeProjectToTemp(dirPath, folders, files, parentId) {
+  // Create all folders under parentId
+  const childFolders = folders.filter(f => f.parent?.toString() === parentId?.toString());
+  for (const folder of childFolders) {
+    const folderPath = path.join(dirPath, folder.name);
+    fs.mkdirSync(folderPath, { recursive: true });
+    await writeProjectToTemp(folderPath, folders, files, folder._id);
+  }
+
+  // Write files under parentId
+  const childFiles = files.filter(f => f.parent?.toString() === parentId?.toString());
+  for (const file of childFiles) {
+    const filePath = path.join(dirPath, file.name);
+if (/\.(png|jpg|jpeg|pdf|svg)$/.test(file.name.toLowerCase())) {
+    fs.writeFileSync(filePath, file.blobId.content); // write as binary
+} else {
+    fs.writeFileSync(filePath, file.blobId.content.toString()); // write as text
+}
+  }
+}
+
+
+// Compile LaTeX project route
+router.post("/compile/:id", authenticateJWT, async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) return res.status(404).json({ error: "Project not found" });
+    
+    console.log("Loading......");
+    // Fetch all project files and folders
+    const folders = await Folder.find({ project: project._id });
+    const files = await File.find({ project: project._id }).populate("blobId");
+
+    // Create a temporary folder
+    const tmpDir = await tmp.dir({ unsafeCleanup: true });
+    const tempPath = tmpDir.path;
+
+    // Write all files and folders recursively
+    await writeProjectToTemp(tempPath, folders, files, project.rootFolder);
+
+    // Compile the main file (main.tex)
+    const mainFile = files.find(f => f._id.toString() === project.rootFile.toString());
+    if (!mainFile) return res.status(404).json({ error: "Main file not found" });
+
+    const mainFilePath = path.join(tempPath, mainFile.name);
+    await execPromise(`tectonic "${mainFilePath}" --outdir="${tempPath}"`);
+
+    const pdfPath = path.join(tempPath, mainFile.name.replace(".tex", ".pdf"));
+    const pdfBuffer = fs.readFileSync(pdfPath);
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.send(pdfBuffer);
+    console.log(pdfBuffer);
+    // Clean up temp folder
+    tmpDir.cleanup();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.stderr || "Compilation failed" });
+  }
+});
+
 
 const texTemplate = `
 \\documentclass{article}
@@ -92,6 +165,52 @@ router.get("/getfile/:id", authenticateJWT, async (req, res) => {
   }
 });
 
+
+// Upload Image to a folder
+router.post("/uploadimage/:id", authenticateJWT, upload.single("image"), async (req, res) => {
+  try {
+  console.log(req.user);
+    if (!req.user) return res.status(400).json({ message: "Authentication issue" });
+
+    const { currFolder } = req.body;
+    const file = req.file;
+
+    if (!file) return res.status(400).json({ message: "No file uploaded" });
+
+    // Create hash for deduplication
+    const hash = crypto.createHash("sha1").update(file.buffer).digest("hex");
+
+    // Check if the blob already exists
+    let blob = await Blob.findOne({ hash });
+    if (!blob) {
+      blob = await Blob.create({
+        hash,
+        content: file.buffer,
+        mime: file.mimetype,
+      });
+    }
+
+    // Create File document
+    const newFile = new File({
+      name: file.originalname,
+      parent: currFolder,
+      owner: req.user._id,
+      project: req.params.id,
+      blobId: blob._id,
+      isBinary: true,
+    });
+
+    await newFile.save();
+
+    // Return updated file list
+    const Files = await File.find({ parent: currFolder });
+    res.json({ message: "Image uploaded successfully", Files });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Upload failed" });
+  }
+});
+
 // Example: Create a new file
 router.post("/newfile/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
@@ -100,9 +219,7 @@ router.post("/newfile/:id", authenticateJWT, async (req, res) => {
   try {
     let { currFolder, filename } = req.body;
 
-    if (!filename.toLowerCase().endsWith(".tex")) {
-      filename += ".tex";
-    }
+  
 
     const newFile = new File({
       name: filename,
@@ -259,10 +376,3 @@ router.post("/savefile/:id", authenticateJWT, async (req, res) => {
 
 module.exports = router; // export the router
 
-/* const file = new File({
-      name: filename,
-      parent: currentPath,
-      owner: req.user._id,
-    });
-
-    await file.save(); */

@@ -19,9 +19,11 @@
     "jsonwebtoken": "^9.0.2",
     "latex": "^0.0.1",
     "mongoose": "^8.17.2",
+    "multer": "^2.0.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
-    "tmp": "^0.2.5"
+    "tmp": "^0.2.5",
+    "tmp-promise": "^3.0.3"
   }
 }
