@@ -11,7 +11,7 @@ export default function EditorIndex() {
   const { projectid } = useParams(); // 👈 here you get "id" from the URL
 
   const [viewPdf, setviewPdf] = useState(false);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [pdfUrl, setPdfUrl] = useState("");
   const [latex, setLatex] = useState(
     "\\documentclass{article}\n\\begin{document}\nHello Tectonic!\n\\end{document}"
@@ -26,44 +26,54 @@ export default function EditorIndex() {
       try {
         const res = await api.get(`/projects/loadEditor/${projectid}`);
         setLatex(res.data.fileContent);
-      } catch (err) {
-      }
+      } catch (err) {}
     };
 
     loadEditor();
   }, [projectid]);
 
-  // compile LaTeX and set PDF URL
-  const compileLatex = async (code) => {
-    const res = await fetch("http://localhost:8080/compile", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: code }),
-    });
-    const blob = await res.blob();
+  const compileLatexWithImage = async () => {
+    const res = await api.post(
+      `/projects/compile/${projectid}`,
+      { content: latex },
+      {
+        responseType: "blob", // important to receive binary PDF
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    const blob = res.data; // Axios stores response in data
+    console.log(blob);
+
     setPdfUrl(URL.createObjectURL(blob));
   };
-
-  // debounce typing
-  const debouncedCompile = debounce(compileLatex, 800);
-
+  {
+    /*
+  const debouncedCompile = debounce(compileLatexWithImage, 800);
   useEffect(() => {
     debouncedCompile(latex);
     return debouncedCompile.cancel;
   }, [latex]);
 
+*/
+  }
   return (
     <div className="flex flex-col h-screen">
       <EditorTool
-        projectid={projectid}
+        compileLatexWithImage={compileLatexWithImage}
         handleViewToggle={handleViewToggle}
         viewPdf={viewPdf}
+        com={viewPdf}
       />
       <div className="flex h-full">
         {viewPdf ? (
           <PdfViewer pdfUrl={pdfUrl} />
         ) : (
-          <FolderView latex={latex} projectid={projectid} setLatex={setLatex} />
+          <FolderView
+            latex={latex}
+            projectid={projectid}
+            setLatex={setLatex}
+          />
         )}
         <div className="flex-1">
           <Editor

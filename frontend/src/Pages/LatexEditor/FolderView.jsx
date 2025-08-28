@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import api from "../../api";
 import Input from "../../ui/Input/Input";
 
-export default function FolderView({ latex, projectid, setLatex }) {
+export default function FolderView({
+  latex,
+  projectid,
+  setLatex,
+}) {
   const [currFolder, setCurrFolder] = useState("");
   const [currfile, setCurrFile] = useState({}); // content state
   const [folders, setFolders] = useState([]); // content state
@@ -73,7 +77,16 @@ export default function FolderView({ latex, projectid, setLatex }) {
       "File Created Successfully +   setLatex(res.data.fileContent);"
     );
   };
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("currFolder", currFolder);
 
+    const res = await api.post(`/projects/uploadimage/${projectid}`, formData);
+    setFiles(res.data.Files);
+    const data = await res.data.json();
+    console.log(data);
+  };
   //  save file
   const saveFile = async () => {
     await api.post(`/projects/savefile/${projectid}`, {
@@ -87,6 +100,7 @@ export default function FolderView({ latex, projectid, setLatex }) {
         saveFile={saveFile}
         setCreateNew={setCreateNew}
         projectid={projectid}
+        uploadImage={uploadImage}
       />
       <div className="flex flex-col px-8">
         {createNew && (
