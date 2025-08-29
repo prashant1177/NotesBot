@@ -9,6 +9,7 @@ const passport = require("passport");
 const User = require("./models/User.js");
 const Note = require("./models/note.js");
 const projectRoutes = require("./routes/projectRoutes");
+const versionsRoutes = require("./routes/versionsRoutes");
 
 const session = require("express-session");
 const configurePassport = require("./config/passport.js");
@@ -53,6 +54,8 @@ async function database() {
 }
 
 app.use("/projects", projectRoutes); // all routes start with /api/projects
+app.use("/versions", versionsRoutes); // all routes start with /api/projects
+
 
 // API to compile LaTeX using Tectonic
 app.post("/compile", (req, res) => {

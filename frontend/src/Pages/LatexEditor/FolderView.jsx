@@ -3,31 +3,22 @@ import FolderTools from "./FolderTools";
 import { useEffect, useState } from "react";
 import api from "../../api";
 import Input from "../../ui/Input/Input";
-import { debounce } from "lodash";
 
-export default function FolderView({ compileLatexWithImage,latex, projectid, setLatex }) {
-  const [currFolder, setCurrFolder] = useState("");
-  const [currfile, setCurrFile] = useState({}); // content state
-  const [folders, setFolders] = useState([]); // content state
-  const [files, setFiles] = useState([]); // content state
+export default function FolderView({
+  currFolder,
+  setCurrFolder,
+  currFile,
+  setCurrFile,
+  folders,
+  setFolders,
+  files,
+  setFiles,
+  saveFile,
+  projectid,
+  setLatex,
+}) {
   const [createNew, setCreateNew] = useState(null); // content state
   const [newName, setNewName] = useState(""); // content state
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await api.get(`/projects/loadEditor/${projectid}`);
-        setFolders(res.data.Folders);
-        setFiles(res.data.Files);
-        setCurrFolder(res.data.rootFolder);
-        setCurrFile(res.data.rootFile._id);
-        setLatex(res.data.fileContent);
-      } catch (err) {
-        console.error("Error fetching project:", err);
-      }
-    };
-    fetchData();
-  }, [projectid]);
 
   const openFile = async (fileID) => {
     const res = await api.get(`/projects/getfile/${projectid}`, {
@@ -85,19 +76,6 @@ export default function FolderView({ compileLatexWithImage,latex, projectid, set
     const data = await res.data.json();
     console.log(data);
   };
-  //  save file
-  const saveFile = async () => {
-    await api.post(`/projects/savefile/${projectid}`, {
-      currfile,
-      latex,
-    });
-  };
-
-  const debouncedCompile = debounce(saveFile, 800);
-  useEffect(() => {
-    debouncedCompile();
-    return debouncedCompile.cancel;
-  }, [latex]);
 
   return (
     <div className="flex-1">
@@ -107,9 +85,9 @@ export default function FolderView({ compileLatexWithImage,latex, projectid, set
         projectid={projectid}
         uploadImage={uploadImage}
       />
-      <div className="flex flex-col px-8">
+      <div className="flex flex-col text-gray-800">
         {createNew && (
-          <div className="w-full flex items-center gap-4 mt-2">
+          <div className="w-full flex items-center gap-4 mt-2  px-8">
             <Input
               className="border-2 border-blue-500"
               placeholder={
@@ -136,7 +114,7 @@ export default function FolderView({ compileLatexWithImage,latex, projectid, set
         {folders?.map((folderInside, i) => (
           <button
             onClick={() => openFolder(folderInside._id)}
-            className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"
+            className="border-b-2 border-gray-200 p-2 flex gap-2 items-center  px-8"
             key={i}
           >
             <Folder size={16} />
@@ -145,11 +123,11 @@ export default function FolderView({ compileLatexWithImage,latex, projectid, set
         ))}
         {files?.map((filesInside, i) => (
           <button
-            onClick={() => openFile(filesInside._id)}
-            className="border-b-2 border-gray-200 p-2 flex gap-2 items-center"
+            onClick={() => openFile(filesInside)}
+            className={`border-b-2 border-gray-200 p-2 flex gap-2 items-center ${currFile == filesInside._id &&"text-blue-800" }  px-8`}
             key={i}
           >
-            <FileType2 size={16} />
+            <FileType2 size={16} className={``} />
             {filesInside.name}
           </button>
         ))}

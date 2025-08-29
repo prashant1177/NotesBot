@@ -354,32 +354,72 @@ router.post("/create", authenticateJWT, async (req, res) => {
   res.status(201).json({ id: project._id, foldername });
 });
 
-// Example: Saving changes
 router.post("/savefile/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
+
   const { currfile, latex } = req.body;
+
   try {
     const hash = crypto.createHash("sha1").update(latex).digest("hex");
-    // Check if the file already exists
+
+    // Fetch the file first
+    const file = await File.findById(currfile);
+    if (!file) return res.status(404).json({ message: "File not found" });
+
+    const oldBlobId = file.blobId;
+
+    // Find or create the new blob
     let blob = await Blob.findOne({ hash });
     if (!blob) {
       blob = await Blob.create({
         hash,
         content: Buffer.from(latex, "utf-8"),
         mime: "application/x-tex",
+        filesIDs: [currfile],
       });
-      console.log("Changed");
-      await File.findByIdAndUpdate(currfile, { blobId: blob._id });
+      console.log("New blob created id add", currfile);
     } else {
-      console.log("File already exists in database:", hash);
+      // Add current file ID if not already present
+      await Blob.findByIdAndUpdate(blob._id, {
+        $addToSet: { filesIDs: currfile }, // add only if not exists
+      });
     }
-    res.json({ message: "Succces" });
+
+    // Update file with new blob
+    file.blobId = blob._id;
+    await file.save();
+
+    // Handle old blob cleanup
+    // Handle old blob cleanup
+    if (oldBlobId && oldBlobId.toString() !== blob._id.toString()) {
+      const oldBlob = await Blob.findById(oldBlobId);
+      if (oldBlob) {
+        // Ensure filesIDs is an array
+            const updatedOldBlob = await Blob.findByIdAndUpdate(
+          oldBlobId,
+          { $pull: { filesIDs: currfile } },
+          { new: true }
+        );
+
+        if (
+          (!updatedOldBlob.filesIDs || updatedOldBlob.filesIDs.length === 0) &&
+          (!updatedOldBlob.commitIDs || updatedOldBlob.commitIDs.length === 0)
+        ) {
+          await Blob.findByIdAndDelete(oldBlobId);
+          console.log("Old blob deleted:", oldBlobId);
+        } else {
+          await oldBlob.save();
+          console.log("Old blob updated, one file ID removed:", oldBlobId);
+        }
+      }
+    }
+
+    res.json({ message: "File saved successfully" });
   } catch (err) {
-    res.status(400).json({ message: "Different error" });
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
-
-
 module.exports = router; // export the router

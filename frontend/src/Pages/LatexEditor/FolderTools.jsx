@@ -4,7 +4,6 @@ import api from "../../api";
 export default function FolderTools({
   saveFile,
   setCreateNew,
-  projectid,
   uploadImage,
 }) {
   
