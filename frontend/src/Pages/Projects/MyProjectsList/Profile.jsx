@@ -1,6 +1,6 @@
-import Button from "../../ui/Button/Button";
+import Button from "../../../ui/Button/Button";
 import { Dot, UsersRound } from "lucide-react";
-export default function Profile({
+export default function MyProfile({
   author,
   follow,
   following,

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Button from "../../../ui/Button/Button";
-import Input from "../../../ui/Input/Input";
-import TextArea from "../../../ui/Input/TextArea";
+import Button from "../../ui/Button/Button";
+import Input from "../../ui/Input/Input";
+import TextArea from "../../ui/Input/TextArea";
 import { useNavigate } from "react-router-dom";
-import api from "../../../api"
-export default function NewNote() {
+import api from "../../api";
+export default function CreateProject() {
   const [title, setTitle] = useState(""); // title state
   const [about, setAbout] = useState(""); // title state
   const [topics, setTopics] = useState(""); // content state
@@ -14,16 +14,17 @@ export default function NewNote() {
 
   const handleSave = async () => {
     try {
-      const note = {
-        title: title, 
-        about: about, 
-        topics: topics, 
-        privatMark: privatMark
+      const Project = {
+        title: title,
+        about: about,
+        topics: topics,
+        privatMark: privatMark,
       };
-      const res = await api.post("/newnote", note);
-      const noteId = res.data.id; // MongoDB ID
-      console.log("Saved Note ID:", noteId);
-      navigate(`/editor/${noteId}`);
+      const res = await api.post("/projects/create", Project);
+      const ProjectID = res.data.id; // MongoDB ID
+      const foldername = res.data.foldername; // MongoDB ID
+      console.log("Saved Note ID:", ProjectID);
+      navigate(`/latex/${ProjectID}/${foldername}/main.tex`);
     } catch (err) {
       console.error("Failed to save note:", err);
     }
@@ -32,7 +33,7 @@ export default function NewNote() {
     <div className="flex flex-col items-center min-h-screen w-full p-4">
       <div className="w-3/6 flex flex-col space-y-8 p-6 rounded-lg mt-32">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">
-          Create New Note
+          Create New Project
         </h1>
         <div>
           <label className="text-gray-900 block mb-2 text-sm font-medium">
@@ -42,7 +43,7 @@ export default function NewNote() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             varient="transparent"
-  maxLength={70}
+            maxLength={70}
           />
           <label className="text-gray-900 block mb-2 text-sm font-medium mt-4">
             About
@@ -61,7 +62,6 @@ export default function NewNote() {
             type="text"
           />
         </div>
-        
         <div className="flex items-center justify-between space-x-2">
           <div className="flex items-center space-x-2">
             <label className="text-gray-900  mb-2 text-sm font-medium">
@@ -69,7 +69,9 @@ export default function NewNote() {
             </label>
             <input
               type="checkbox"
-              onClick={()=> privatMark ? setPrivateMark(fasle)  : setPrivateMark(true) }
+              onClick={() =>
+                privatMark ? setPrivateMark(fasle) : setPrivateMark(true)
+              }
               className="h-4 w-4 text-gray-600 border-gray-300 rounded focus:ring-gray-500"
             />
           </div>
