@@ -7,6 +7,7 @@ export default function FolderTools({
   projectid,
   uploadImage,
 }) {
+  
   return (
     <div className="w-full bg-gray-950 px-8 text-gray-300">
       <div className="flex items-center gap-8 text-gray-300 h-full">

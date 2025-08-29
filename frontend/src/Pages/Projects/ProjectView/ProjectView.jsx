@@ -28,7 +28,6 @@ export default function ProjectView() {
 
   const openFile = async (fileName) => {
     console.log(folder, fileName);
-    
   };
 
   const openFolder = async (folderID) => {
@@ -38,9 +37,10 @@ export default function ProjectView() {
     setFolder(res.data.folder);
     setCurrFolder(res.data.folder._id);
   };
+
   return (
     <div className="">
-      <ProjectTools projectid={projectid}/>
+      <ProjectTools projectid={projectid} />
       <div className="mt-8 flex w-full px-8">
         <div className="flex-3/4 flex flex-col w-full">
           <div className=" text-gray-900 pb-2  border-b-8 border-gray-100">

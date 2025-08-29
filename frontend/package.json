@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
+    "@react-pdf-viewer/core": "^3.12.0",
+    "@react-pdf-viewer/default-layout": "^3.12.0",
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.10.0",
     "framer-motion": "^12.23.12",

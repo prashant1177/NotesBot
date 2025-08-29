@@ -3,12 +3,9 @@ import FolderTools from "./FolderTools";
 import { useEffect, useState } from "react";
 import api from "../../api";
 import Input from "../../ui/Input/Input";
+import { debounce } from "lodash";
 
-export default function FolderView({
-  latex,
-  projectid,
-  setLatex,
-}) {
+export default function FolderView({ compileLatexWithImage,latex, projectid, setLatex }) {
   const [currFolder, setCurrFolder] = useState("");
   const [currfile, setCurrFile] = useState({}); // content state
   const [folders, setFolders] = useState([]); // content state
@@ -24,6 +21,7 @@ export default function FolderView({
         setFiles(res.data.Files);
         setCurrFolder(res.data.rootFolder);
         setCurrFile(res.data.rootFile._id);
+        setLatex(res.data.fileContent);
       } catch (err) {
         console.error("Error fetching project:", err);
       }
@@ -94,6 +92,13 @@ export default function FolderView({
       latex,
     });
   };
+
+  const debouncedCompile = debounce(saveFile, 800);
+  useEffect(() => {
+    debouncedCompile();
+    return debouncedCompile.cancel;
+  }, [latex]);
+
   return (
     <div className="flex-1">
       <FolderTools

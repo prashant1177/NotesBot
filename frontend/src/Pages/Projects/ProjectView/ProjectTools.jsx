@@ -6,6 +6,11 @@ import api from "../../../api";
 export default function ProjectTools({ projectid }) {
   const navigate = useNavigate();
 
+  const fork = async () => {
+    const res = await api.post(`/projects/fork/${projectid}`);
+    navigate(`/latexeditor/${res.data.newProjectId}`);
+  };
+
   const openeditor = async () => {
     try {
       await api.get(`/openeditor/${projectid}`);
@@ -23,7 +28,7 @@ export default function ProjectTools({ projectid }) {
         <h1>Approvals</h1>
       </div>
       <div className="flex gap-8">
-        <Button>View PDF</Button>
+        <Button onClick={fork}>FORK THIS</Button>
         <Button onClick={openeditor} varient="primary">Open in Editor</Button>
       </div>
     </div>

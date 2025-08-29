@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import EditorTool from "./EditorTool";
 import PdfViewer from "./PdfViewer";
 import FolderView from "./FolderView";
-import { Editor } from "@monaco-editor/react";
-import { debounce } from "lodash";
 import api from "../../api";
 import { useNavigate, useParams } from "react-router-dom";
+import MonacoEditor from "./MonacoEditor";
 
 export default function EditorIndex() {
   const { projectid } = useParams(); // 👈 here you get "id" from the URL
@@ -19,18 +18,10 @@ export default function EditorIndex() {
 
   const handleViewToggle = () => {
     setviewPdf((prev) => !prev);
+    if (!viewPdf) {
+      compileLatexWithImage();
+    }
   };
-
-  useEffect(() => {
-    const loadEditor = async () => {
-      try {
-        const res = await api.get(`/projects/loadEditor/${projectid}`);
-        setLatex(res.data.fileContent);
-      } catch (err) {}
-    };
-
-    loadEditor();
-  }, [projectid]);
 
   const compileLatexWithImage = async () => {
     const res = await api.post(
@@ -47,16 +38,7 @@ export default function EditorIndex() {
 
     setPdfUrl(URL.createObjectURL(blob));
   };
-  {
-    /*
-  const debouncedCompile = debounce(compileLatexWithImage, 800);
-  useEffect(() => {
-    debouncedCompile(latex);
-    return debouncedCompile.cancel;
-  }, [latex]);
 
-*/
-  }
   return (
     <div className="flex flex-col h-screen">
       <EditorTool
@@ -69,19 +51,10 @@ export default function EditorIndex() {
         {viewPdf ? (
           <PdfViewer pdfUrl={pdfUrl} />
         ) : (
-          <FolderView
-            latex={latex}
-            projectid={projectid}
-            setLatex={setLatex}
-          />
+          <FolderView latex={latex} projectid={projectid} setLatex={setLatex} />
         )}
         <div className="flex-1">
-          <Editor
-            height="100%"
-            defaultLanguage="latex"
-            value={latex}
-            onChange={setLatex}
-          />
+          <MonacoEditor latex={latex} setLatex={setLatex} />
         </div>
       </div>
     </div>
