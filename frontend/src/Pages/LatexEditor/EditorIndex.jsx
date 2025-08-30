@@ -11,13 +11,14 @@ import Commit from "./Commit";
 import Versions from "./Versions";
 export default function EditorIndex() {
   const { projectid } = useParams(); // 👈 here you get "id" from the URL
+  const [loading, setLoading] = useState(false);
 
   const [currFolder, setCurrFolder] = useState("");
   const [currfile, setCurrFile] = useState({}); // content state
   const [folders, setFolders] = useState([]); // content state
   const [files, setFiles] = useState([]); // content state
 
-  const [viewPdf, setviewPdf] = useState(false);
+  const [leftView, setLeftView] = useState("files");
   const [rightView, setRightView] = useState("Editor");
   const navigate = useNavigate();
   const [pdfUrl, setPdfUrl] = useState("");
@@ -38,29 +39,38 @@ export default function EditorIndex() {
       }
     };
     fetchData();
+    compileLatexWithImage();
   }, [projectid]);
 
-  const handleViewToggle = () => {
-    setviewPdf((prev) => !prev);
+  const handleViewLeft = (s) => {
+    setLeftView(s);
   };
   const handleViewRight = (s) => {
     setRightView(s);
   };
 
   const compileLatexWithImage = async () => {
-    const res = await api.post(
-      `/projects/compile/${projectid}`,
-      { content: latex },
-      {
-        responseType: "blob",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    try {
+      setLoading(true); // start loading
 
-    const blob = res.data;
-    console.log(blob);
+      const res = await api.post(
+        `/projects/compile/${projectid}`,
+        { content: latex },
+        {
+          responseType: "blob",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-    setPdfUrl(URL.createObjectURL(blob));
+      const blob = res.data;
+      console.log(blob);
+
+      setPdfUrl(URL.createObjectURL(blob));
+    } catch (err) {
+      console.error("Error compiling LaTeX:", err);
+    } finally {
+      setLoading(false); // stop loading
+    }
   };
 
   //  save file
@@ -79,16 +89,20 @@ export default function EditorIndex() {
 
   return (
     <div className="flex flex-col h-screen">
-      <EditorTool
-        compileLatexWithImage={compileLatexWithImage}
-        handleViewRight={handleViewRight}
-        handleViewToggle={handleViewToggle}
-        viewPdf={viewPdf}
-        com={viewPdf}
-      />
-      <div className="flex h-full">
-        {viewPdf ? (
-          <PdfViewer pdfUrl={pdfUrl} />
+      <div className="shrink-0">
+        <EditorTool
+          compileLatexWithImage={compileLatexWithImage}
+          handleViewRight={handleViewRight}
+          handleViewLeft={handleViewLeft}
+          leftView={leftView}
+          rightView={rightView}
+        />
+      </div>
+      <div className="flex flex-1 overflow-hidden">
+        {leftView == "PDF" ? (
+          <PdfViewer pdfUrl={pdfUrl} loading={loading} />
+        ) : leftView == "versions" ? (
+          <Versions projectid={projectid} />
         ) : (
           <FolderView
             saveFile={saveFile}
@@ -105,13 +119,11 @@ export default function EditorIndex() {
           />
         )}
         <div className="flex-1">
-          {rightView === "commit" ? (
-  <Commit projectid={projectid} />
-) : rightView === "versions" ? (
-  <Versions projectid={projectid} />
-) : (
-  <MonacoEditor latex={latex} setLatex={setLatex} />
-)}
+          {rightView == "commit" ? (
+            <Commit projectid={projectid} handleViewRight={handleViewRight} />
+          ) : (
+            <MonacoEditor latex={latex} setLatex={setLatex} />
+          )}
         </div>
       </div>
     </div>
