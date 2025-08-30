@@ -8,24 +8,24 @@ export default function FolderTools({
 }) {
   
   return (
-    <div className="w-full bg-gray-950 px-8 text-gray-300">
+    <div className="w-full bg-gray-950 px-8 p-2 text-gray-300 text-sm">
       <div className="flex items-center gap-8 text-gray-300 h-full">
         <button
           onClick={() => setCreateNew("folder")}
-          className="hover:border-b-2 hover:text-blue-500 hover:border-blue-500 p-2"
+          className="hover:text-blue-500 transition-all p-2"
         >
           New Folder
         </button>
         <button
           onClick={() => setCreateNew("file")}
-          className="hover:border-b-2 hover:text-blue-500 hover:border-blue-500 p-2"
+          className="hover:text-blue-500 transition-all p-2"
         >
           New File
         </button>
-        <button className="hover:border-b-2 hover:text-blue-500 hover:border-blue-500 p-2">
+        <button className="hover:text-blue-500 transition-all p-2">
           Upload File
         </button>
-        <label className="cursor-pointer">
+        <label className="cursor-pointer hover:text-blue-500 transition-all">
           {/* Lucide icon as the clickable element */}
           Upload Image
           {/* Hidden file input */}
@@ -42,7 +42,7 @@ export default function FolderTools({
         </label>
         <button
           onClick={() => saveFile()}
-          className="hover:border-b-2 hover:text-blue-500 hover:border-blue-500 p-2"
+          className="hover:text-blue-500 transition-all p-2"
         >
           Save File
         </button>

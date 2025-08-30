@@ -1,59 +1,72 @@
+import { useRef } from "react";
 import { Editor } from "@monaco-editor/react";
-export default function MonacoEditor({ latex, setLatex }) {
-  // runs before the editor mounts
-  function handleBeforeMount(monaco) {
-    // Register LaTeX language
-    monaco.languages.register({ id: "latex" });
+import LaTeXToolbar from "./LatexToolbar";
 
-    // Tokenizer (basic LaTeX syntax highlighting)
+// Enhanced Monaco Editor Component with Toolbar
+export default function MonacoEditor({ latex, setLatex }) {
+  const editorRef = useRef(null);
+
+  function handleBeforeMount(monaco) {
+    monaco.languages.register({ id: "latex" });
     monaco.languages.setMonarchTokensProvider("latex", {
       tokenizer: {
         root: [
-          [/%.*/, "comment"], // comments
-          [/\\[a-zA-Z]+/, "keyword"], // commands
-          [/\$[^$]*\$/, "string"], // inline math
-          [/{[^}]*}/, "variable"], // braces
+          [/%.*/, "comment"],
+          [/\\[a-zA-Z]+/, "keyword"],
+          [/\$[^$]*\$/, "string"],
+          [/{[^}]*}/, "identifier"],
         ],
       },
     });
 
-    // Custom theme
-    monaco.editor.defineTheme("latexTheme", {
-      base: "vs-dark",
+    monaco.editor.defineTheme("latexThemeOverleaf", {
+      base: "vs",
       inherit: true,
       rules: [
-        { token: "comment", foreground: "6A9955", fontStyle: "italic" },
-        { token: "keyword", foreground: "569CD6", fontStyle: "bold" },
-        { token: "string", foreground: "CE9178" },
-        { token: "variable", foreground: "9CDCFE" },
+        { token: "comment", foreground: "008000", fontStyle: "italic" },
+        { token: "keyword", foreground: "0000CC", fontStyle: "bold" },
+        { token: "string", foreground: "AA5500" },
+        { token: "identifier", foreground: "000000" },
       ],
       colors: {
-        "editor.background": "#030712", // Tailwind gray-950
-        "editor.foreground": "#FFFFFF", // text color
-        "editorLineNumber.foreground": "#6B7280", // Tailwind gray-500 for line numbers
-        "editorCursor.foreground": "#FBBF24", // Tailwind amber-400 for cursor
-        "editor.selectionBackground": "#1F2937", // Tailwind gray-800 for selection
-        "editor.lineHighlightBackground": "#111827", // Tailwind gray-900 highlight
-        "editorGutter.background": "#030712", // gutter matches background
+        "editor.background": "#FFFFFF",
+        "editor.foreground": "#000000",
+        "editorLineNumber.foreground": "#999999",
+        "editorCursor.foreground": "#000000",
+        "editor.selectionBackground": "#CCE5FF",
+        "editor.lineHighlightBackground": "#F7F7F7",
+        "editorGutter.background": "#FFFFFF",
       },
     });
   }
 
-  // runs after the editor mounts
   function handleEditorMount(editor, monaco) {
-    monaco.editor.setTheme("latexTheme");
+    monaco.editor.setTheme("latexThemeOverleaf");
+    editorRef.current = editor;
   }
+
   return (
-    <Editor
-      height="100%"
-      defaultLanguage="latex"
-      value={latex}
-      onChange={setLatex}
-      beforeMount={handleBeforeMount}
-      onMount={handleEditorMount}
-      options={{
-        minimap: { enabled: false }, // 🚀 disables the mini-map
-      }}
-    />
+    <div className="flex flex-col h-full">
+      <LaTeXToolbar editorRef={editorRef} />
+      <div className="flex-1">
+        <Editor
+          height="100%"
+          defaultLanguage="latex"
+          value={latex}
+          onChange={setLatex}
+          beforeMount={handleBeforeMount}
+          onMount={handleEditorMount}
+          options={{
+            minimap: { enabled: false },
+            stickyScroll: { enabled: false },
+            fontSize: 14,
+            wordWrap: "on",
+            lineNumbers: "on",
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+          }}
+        />
+      </div>
+    </div>
   );
 }

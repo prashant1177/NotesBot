@@ -9,7 +9,7 @@ export default function EditorTool({
   compileLatexWithImage,
 }) {
   return (
-    <div className="flex justify-between p-4 px-8 bg-gray-100">
+    <div className="flex justify-between p-4 px-8 bg-gray-100 text-sm">
       <div className="flex items-center gap-8">
         <div className="border-1 border-gray-300 ">
           <button

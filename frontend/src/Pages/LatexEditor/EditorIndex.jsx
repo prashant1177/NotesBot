@@ -103,7 +103,7 @@ export default function EditorIndex() {
           <PdfViewer pdfUrl={pdfUrl} loading={loading} />
         ) : leftView == "versions" ? (
           <Versions projectid={projectid} />
-        ) : (
+        ) :  (
           <FolderView
             saveFile={saveFile}
             projectid={projectid}
@@ -117,8 +117,8 @@ export default function EditorIndex() {
             files={files}
             setFiles={setFiles}
           />
-        )}
-        <div className="flex-1">
+        )  }
+        <div className="flex-1 border-l-1 border-gray-200">
           {rightView == "commit" ? (
             <Commit projectid={projectid} handleViewRight={handleViewRight} />
           ) : (

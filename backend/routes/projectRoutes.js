@@ -164,6 +164,7 @@ router.get("/getfile/:id", authenticateJWT, async (req, res) => {
     const { fileID } = req.query;
     const file = await File.findById(fileID).populate("blobId");
 
+    console.log(file);
     res.json({ fileContent: file.blobId.content.toString() });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -228,13 +229,24 @@ router.post("/newfile/:id", authenticateJWT, async (req, res) => {
   }
   try {
     let { currFolder, filename } = req.body;
-
+    const hash = crypto.createHash("sha1").update(texTemplate).digest("hex");
+    // Check if the file already exists
+    let blob = await Blob.findOne({ hash });
+    if (!blob) {
+      blob = await Blob.create({
+        hash,
+        content: Buffer.from(texTemplate, "utf-8"),
+        mime: "application/x-tex",
+      });
+    } else {
+      console.log("File already exists in database:", hash);
+    }
     const newFile = new File({
       name: filename,
       parent: currFolder,
       owner: req.user._id,
       project: req.params.id,
-      blobId: "68b04aa931426fa1bed3eaf2",
+      blobId: blob._id,
       isBinary: false,
     });
 
@@ -397,7 +409,7 @@ router.post("/savefile/:id", authenticateJWT, async (req, res) => {
       const oldBlob = await Blob.findById(oldBlobId);
       if (oldBlob) {
         // Ensure filesIDs is an array
-            const updatedOldBlob = await Blob.findByIdAndUpdate(
+        const updatedOldBlob = await Blob.findByIdAndUpdate(
           oldBlobId,
           { $pull: { filesIDs: currfile } },
           { new: true }
@@ -422,4 +434,59 @@ router.post("/savefile/:id", authenticateJWT, async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+// Delete File
+router.post("/deleteFile/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.status(400).json({ message: "Authentication issue" });
+  }
+
+  const { fileID } = req.body;
+
+  try {
+    // 1. Find the file
+    const file = await File.findById(fileID);
+    if (!file) {
+      return res.status(404).json({ message: "File not found" });
+    }
+
+    const blobId = file.blobId;
+    const folderId = file.parent;
+
+
+    console.log(blobId)
+    // 2. Delete the file first
+    await File.findByIdAndDelete(fileID);
+
+    // 3. Remove file reference from blob and return updated blob
+    const updatedBlob = await Blob.findByIdAndUpdate(
+      blobId,
+      { $pull: { filesIDs: fileID } },
+      { new: true } // returns updated doc
+    );
+
+    if (!updatedBlob) {
+      return res.json({ message: "File deleted, but blob not found" });
+    }
+
+    // 4. If blob has no files and no commits, delete it
+    if (
+      (!updatedBlob.filesIDs || updatedBlob.filesIDs.length === 0) &&
+      (!updatedBlob.commitIDs || updatedBlob.commitIDs.length === 0)
+    ) {
+      await Blob.findByIdAndDelete(blobId);
+      console.log("Blob deleted:", blobId);
+    } else {
+      console.log("Blob updated, file removed:", blobId);
+    }
+  const Files = await File.find({
+      parent: folderId,
+    });
+    res.json({ message: "File deleted successfully", Files});
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 module.exports = router; // export the router

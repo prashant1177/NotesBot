@@ -1,4 +1,4 @@
-import { CirclePlus, FileType2, Folder, X } from "lucide-react";
+import { CirclePlus, Delete, DeleteIcon, FileType2, Folder, Trash, X } from "lucide-react";
 import FolderTools from "./FolderTools";
 import { useEffect, useState } from "react";
 import api from "../../api";
@@ -77,6 +77,15 @@ export default function FolderView({
     console.log(data);
   };
 
+   const deleteFile = async (fileID) => {
+    const res = await api.post(`/projects/deleteFile/${projectid}`, {
+      fileID,
+    });
+    setFiles(res.data.Files);
+    console.log(
+      "File Deleted Successfully +   setLatex(res.data.fileContent);"
+    );
+  };
   return (
     <div className="flex-1">
       <FolderTools
@@ -122,14 +131,17 @@ export default function FolderView({
           </button>
         ))}
         {files?.map((filesInside, i) => (
+          <div className="flex justify-between border-b-2 border-gray-200  px-8" key={i}>
           <button
-            onClick={() => openFile(filesInside)}
-            className={`border-b-2 border-gray-200 p-2 flex gap-2 items-center ${currFile == filesInside._id &&"text-blue-800" }  px-8`}
-            key={i}
+            onClick={() => openFile(filesInside._id)}
+            className={` p-2 flex gap-2 items-center ${currFile == filesInside._id &&"text-blue-800" }`}
+            
           >
             <FileType2 size={16} className={``} />
             {filesInside.name}
           </button>
+          <button className=" hover:text-red-500 transition-colors" onClick={() => deleteFile(filesInside._id)}><Trash strokeWidth={1}/> </button>
+          </div>
         ))}
       </div>
     </div>

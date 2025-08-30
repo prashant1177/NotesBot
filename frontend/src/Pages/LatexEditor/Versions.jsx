@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../api";
 import Button from "../../ui/Button/Button";
+import { GitGraph } from "lucide-react";
 
 export default function Versions({ projectid }) {
   const [versions, setVersions] = useState([]);
@@ -17,10 +18,21 @@ export default function Versions({ projectid }) {
     fetchData();
   }, [projectid]);
 
+  
+
+    const  Retrieve = async (commitId) => {
+      try {
+        const res = await api.get(`/versions/retrieve/${projectid}`);
+        setVersions(res.data.commits);
+      } catch (err) {
+        console.error("Error fetching project:", err);
+      }
+    };
+ 
   return (
     <div className=" flex-1">
-      <h2 className="text-xl font-semibold  border-b py-2 px-8 bg-gray-950 text-gray-100">
-        Commit History
+      <h2 className="flex items-center  gap-2 text-lg  border-b py-2 px-8 bg-gray-950 text-gray-100">
+     <GitGraph size={20}/>  Saved Commit History
       </h2>
 
       {versions?.map((version, i) => {
@@ -34,7 +46,7 @@ export default function Versions({ projectid }) {
             <h1 className="text-sm text-gray-400">Saved At: {date}</h1></div>
               <Button
                 varient="outline"
-                onClick={() => onRetrieve(commit._id)}
+                onClick={() => Retrieve(version._id)}
               >
                 Restore
               </Button>
