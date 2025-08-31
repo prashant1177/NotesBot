@@ -31,8 +31,8 @@ export default function Versions({ projectid }) {
  
   return (
     <div className=" flex-1">
-      <h2 className="flex items-center  gap-2 text-lg  border-b py-2 px-8 bg-gray-950 text-gray-100">
-     <GitGraph size={20}/>  Saved Commit History
+      <h2 className="flex items-center  gap-2 text-sm  border-b py-4 px-8 bg-gray-950 text-gray-100">
+     <GitGraph size={18}/>  Saved Commit History
       </h2>
 
       {versions?.map((version, i) => {

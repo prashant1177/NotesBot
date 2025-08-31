@@ -164,7 +164,6 @@ router.get("/getfile/:id", authenticateJWT, async (req, res) => {
     const { fileID } = req.query;
     const file = await File.findById(fileID).populate("blobId");
 
-    console.log(file);
     res.json({ fileContent: file.blobId.content.toString() });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -197,6 +196,7 @@ router.post(
           hash,
           content: file.buffer,
           mime: file.mimetype,
+        isBinary: true,
         });
       }
 
@@ -209,7 +209,9 @@ router.post(
         blobId: blob._id,
         isBinary: true,
       });
-
+      await Blob.findByIdAndUpdate(blob._id, {
+        $addToSet: { filesIDs: newFile._id }, // 🔹 add only if not already present
+      });
       await newFile.save();
 
       // Return updated file list
@@ -251,7 +253,9 @@ router.post("/newfile/:id", authenticateJWT, async (req, res) => {
     });
 
     await newFile.save();
-
+    await Blob.findByIdAndUpdate(blob._id, {
+      $addToSet: { filesIDs: newFile._id },
+    });
     const Files = await File.find({
       parent: currFolder,
     });
@@ -348,7 +352,9 @@ router.post("/create", authenticateJWT, async (req, res) => {
     blobId: blob._id,
     isBinary: false,
   });
-
+  await Blob.findByIdAndUpdate(blob._id, {
+    $addToSet: { filesIDs: mainFile._id },
+  });
   await mainFile.save();
 
   await newFolder.save();
@@ -453,8 +459,7 @@ router.post("/deleteFile/:id", authenticateJWT, async (req, res) => {
     const blobId = file.blobId;
     const folderId = file.parent;
 
-
-    console.log(blobId)
+    console.log(blobId);
     // 2. Delete the file first
     await File.findByIdAndDelete(fileID);
 
@@ -479,10 +484,10 @@ router.post("/deleteFile/:id", authenticateJWT, async (req, res) => {
     } else {
       console.log("Blob updated, file removed:", blobId);
     }
-  const Files = await File.find({
+    const Files = await File.find({
       parent: folderId,
     });
-    res.json({ message: "File deleted successfully", Files});
+    res.json({ message: "File deleted successfully", Files });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
