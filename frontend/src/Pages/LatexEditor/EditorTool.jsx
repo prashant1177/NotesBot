@@ -1,3 +1,4 @@
+import { ArrowDownToLine } from "lucide-react";
 import api from "../../api";
 import Button from "../../ui/Button/Button";
 
@@ -43,10 +44,11 @@ export default function EditorTool({
         </div>
       </div>
       <div className="flex gap-4">
-        <Button onClick={() => compileLatexWithImage()}> Compile PDF</Button>
         <Button onClick={() => handleViewRight("commit")}>
           Commit Changes
         </Button>
+        <Button onClick={() => compileLatexWithImage()}> Compile PDF</Button>
+
       {/*  <div className="border-1 border-gray-300 ">
           <button
             className={`${

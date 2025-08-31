@@ -56,7 +56,6 @@ async function database() {
 app.use("/projects", projectRoutes); // all routes start with /api/projects
 app.use("/versions", versionsRoutes); // all routes start with /api/projects
 
-
 // API to compile LaTeX using Tectonic
 app.post("/compile", (req, res) => {
   const { content } = req.body;
@@ -205,7 +204,7 @@ app.get("/profile/:username", authenticateJWT, async (req, res) => {
     username: req.params.username.toLowerCase(),
   });
   if (!author) {
-  return res.status(404).json({ error: "Username does not exist" });
+    return res.status(404).json({ error: "Username does not exist" });
   }
   const projects = await Project.find({ owner: author._id });
   res.json({ author, projects });
@@ -216,7 +215,7 @@ app.get("/openeditor/:id", authenticateJWT, async (req, res) => {
   if (projects.owner.toString() == req.user.id) {
     return res.json({ message: "Success" });
   } else {
-  return res.status(404).json({ error: "You are not the owner" });
+    return res.status(404).json({ error: "You are not the owner" });
   }
 });
 
@@ -283,6 +282,7 @@ app.put("/follow/:id", authenticateJWT, async (req, res) => {
 
   res.json({ message: "Following success" });
 });
+
 app.listen(8080, () => {
   console.log("server is listening to port 8080");
 });

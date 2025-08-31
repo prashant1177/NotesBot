@@ -52,7 +52,6 @@ export default function EditorIndex() {
   const compileLatexWithImage = async () => {
     try {
       setLoading(true); // start loading
-
       const res = await api.post(
         `/projects/compile/${projectid}`,
         { content: latex },

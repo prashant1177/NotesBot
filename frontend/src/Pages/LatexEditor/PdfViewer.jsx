@@ -12,7 +12,11 @@ export default function PdfViewer({ pdfUrl, loading }) {
   return (
     <div className="flex flex-col flex-1 relative ">
       <div className="shrink-0">
-        <PdfTools isChecked={isChecked}  setIsChecked={setIsChecked} />
+        <PdfTools
+          isChecked={isChecked}
+          setIsChecked={setIsChecked}
+          pdfUrl={pdfUrl}
+        />
       </div>
 
       {/* PDF content fills remaining space */}

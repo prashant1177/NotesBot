@@ -7,7 +7,6 @@ export default function FolderTools({
   setCreateNew,
   uploadImage,
 }) {
-  
   return (
     <div className="w-full bg-gray-950 px-8 py-4 text-gray-300 text-sm">
        <div className="flex items-center justify-between gap-6 text-gray-300 h-full">
