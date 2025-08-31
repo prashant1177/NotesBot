@@ -26,7 +26,7 @@ const Project = require("./models/Project.js");
 app.use(express.json({ limit: "2mb" }));
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN?.split(",") || ["http://localhost:5173"],
+    origin: process.env.CORS_ORIGIN?.split(",") || ["http://3.110.212.91"],
     credentials: true,
   })
 );
