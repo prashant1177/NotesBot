@@ -12,7 +12,6 @@ import Versions from "./Versions";
 export default function EditorIndex() {
   const { projectid } = useParams(); // 👈 here you get "id" from the URL
   const [loading, setLoading] = useState(false);
-
   const [currFolder, setCurrFolder] = useState("");
   const [currfile, setCurrFile] = useState({}); // content state
   const [folders, setFolders] = useState([]); // content state

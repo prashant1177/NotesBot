@@ -19,34 +19,100 @@ const { exec } = require("child_process");
 const util = require("util");
 const execPromise = util.promisify(exec);
 
-// Helper function to recursively write files and folders
 async function writeProjectToTemp(dirPath, folders, files, parentId) {
-  // Create all folders under parentId
-  const childFolders = folders.filter(
-    (f) => f.parent?.toString() === parentId?.toString()
-  );
-  for (const folder of childFolders) {
-    const folderPath = path.join(dirPath, folder.name);
-    fs.mkdirSync(folderPath, { recursive: true });
-    await writeProjectToTemp(folderPath, folders, files, folder._id);
-    console.log("1");
-  }
+  try {
+    // Create all folders under parentId
+    const childFolders = folders.filter(
+      (f) => f.parent?.toString() === parentId?.toString()
+    );
 
-  // Write files under parentId
-  const childFiles = files.filter(
-    (f) => f.parent?.toString() === parentId?.toString()
-  );
-  for (const file of childFiles) {
-    const filePath = path.join(dirPath, file.name);
-    if (/\.(png|jpg|jpeg|pdf|svg)$/.test(file.name.toLowerCase())) {
-      fs.writeFileSync(filePath, file.blobId.content); // write as binary
-    } else {
-      fs.writeFileSync(filePath, file.blobId.content.toString()); // write as text
+    for (const folder of childFolders) {
+      const folderPath = path.join(dirPath, folder.name);
+      fs.mkdirSync(folderPath, { recursive: true });
+      await writeProjectToTemp(folderPath, folders, files, folder._id);
     }
 
-    console.log("2");
+    // Write files under parentId
+    const childFiles = files.filter(
+      (f) => f.parent?.toString() === parentId?.toString()
+    );
+
+    for (const file of childFiles) {
+      const filePath = path.join(dirPath, file.name);
+      try {
+        if (/\.(png|jpg|jpeg|pdf|svg)$/.test(file.name.toLowerCase())) {
+          fs.writeFileSync(filePath, file.blobId.content); // binary
+        } else {
+          fs.writeFileSync(filePath, file.blobId.content.toString()); // text
+        }
+      } catch (fileErr) {
+        console.error(`❌ Failed writing file ${file.name}:`, fileErr);
+        throw fileErr; // rethrow so main route catches
+      }
+    }
+  } catch (err) {
+    console.error("❌ Error in writeProjectToTemp:", err);
+    throw err; // propagate up to route handler
   }
 }
+
+
+// Compile LaTeX project route
+router.post("/compile/:id", authenticateJWT, async (req, res) => {
+  let tmpDir;
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) return res.status(404).json({ error: "Project not found" });
+
+    const folders = await Folder.find({ project: project._id });
+    const files = await File.find({ project: project._id }).populate("blobId");
+
+    tmpDir = await tmp.dir({ unsafeCleanup: true });
+    const tempPath = tmpDir.path;
+
+    await writeProjectToTemp(tempPath, folders, files, project.rootFolder);
+
+    const mainFile = files.find(
+      (f) => f._id.toString() === project.rootFile.toString()
+    );
+    if (!mainFile) return res.status(404).json({ error: "Main file not found" });
+
+    const mainFilePath = path.join(tempPath, mainFile.name);
+
+    try {
+      await execPromise(`tectonic "${mainFilePath}" --outdir="${tempPath}"`);
+    } catch (compileErr) {
+      console.error("❌ Compilation failed:", compileErr);
+      return res.status(500).json({
+        error: compileErr.stderr?.toString() || compileErr.message || "Compilation failed",
+      });
+    }
+
+    const pdfPath = path.join(tempPath, mainFile.name.replace(".tex", ".pdf"));
+
+    if (!fs.existsSync(pdfPath)) {
+      return res.status(500).json({ error: "PDF not generated" });
+    }
+
+    const pdfBuffer = fs.readFileSync(pdfPath);
+    res.setHeader("Content-Type", "application/pdf");
+    res.send(pdfBuffer);
+
+  } catch (err) {
+    console.error("❌ Unexpected error in compile route:", err);
+    res.status(500).json({
+      error: err.message || "Server error",
+    });
+  } finally {
+    if (tmpDir) {
+      try {
+        tmpDir.cleanup();
+      } catch (cleanupErr) {
+        console.error("⚠️ Cleanup failed:", cleanupErr);
+      }
+    }
+  }
+});
 
 // Compile LaTeX project route
 router.post("/compile/:id", authenticateJWT, async (req, res) => {
@@ -152,7 +218,8 @@ router.get("/getfolder/:id", authenticateJWT, async (req, res) => {
     const Files = await File.find({
       parent: folderID,
     });
-    res.json({ Folders, Files });
+    const parentFolder = await Folder.findById(folderID);
+    res.json({ Folders, Files, parentId: parentFolder.parent });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -196,7 +263,7 @@ router.post(
           hash,
           content: file.buffer,
           mime: file.mimetype,
-        isBinary: true,
+          isBinary: true,
         });
       }
 

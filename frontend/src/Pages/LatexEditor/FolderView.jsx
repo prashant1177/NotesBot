@@ -1,4 +1,13 @@
-import { CirclePlus, Delete, DeleteIcon, FileType2, Folder, Trash, X } from "lucide-react";
+import {
+  CirclePlus,
+  Delete,
+  DeleteIcon,
+  FileType2,
+  Folder,
+  MoveLeft,
+  Trash,
+  X,
+} from "lucide-react";
 import FolderTools from "./FolderTools";
 import { useEffect, useState } from "react";
 import api from "../../api";
@@ -19,6 +28,7 @@ export default function FolderView({
 }) {
   const [createNew, setCreateNew] = useState(null); // content state
   const [newName, setNewName] = useState(""); // content state
+  const [backFolder, setBackFolder] = useState(null);
 
   const openFile = async (fileID) => {
     const res = await api.get(`/projects/getfile/${projectid}`, {
@@ -33,6 +43,7 @@ export default function FolderView({
       params: { folderID: folderID },
     });
     setFolders(res.data.Folders);
+    setBackFolder(res.data.parentId);
     setFiles(res.data.Files);
     setCurrFolder(folderID);
   };
@@ -77,7 +88,7 @@ export default function FolderView({
     console.log(data);
   };
 
-   const deleteFile = async (fileID) => {
+  const deleteFile = async (fileID) => {
     const res = await api.post(`/projects/deleteFile/${projectid}`, {
       fileID,
     });
@@ -120,6 +131,8 @@ export default function FolderView({
             />
           </div>
         )}
+
+       
         {folders?.map((folderInside, i) => (
           <button
             onClick={() => openFolder(folderInside._id)}
@@ -131,18 +144,37 @@ export default function FolderView({
           </button>
         ))}
         {files?.map((filesInside, i) => (
-          <div className="flex justify-between border-b-2 border-gray-200  px-8" key={i}>
-          <button
-            onClick={() => openFile(filesInside._id)}
-            className={` p-2 flex gap-2 items-center ${currFile == filesInside._id &&"text-blue-800" }`}
-            
+          <div
+            className="flex justify-between border-b-2 border-gray-200  px-8"
+            key={i}
           >
-            <FileType2 size={16} className={``} />
-            {filesInside.name}
-          </button>
-          <button className=" hover:text-red-500 transition-colors" onClick={() => deleteFile(filesInside._id)}><Trash strokeWidth={1}/> </button>
+            <button
+              onClick={() => openFile(filesInside._id)}
+              className={` p-2 flex gap-2 items-center ${
+                currFile == filesInside._id && "text-blue-800"
+              }`}
+            >
+              <FileType2 size={16} className={``} />
+              {filesInside.name}
+            </button>
+            <button
+              className=" hover:text-red-500 transition-colors"
+              onClick={() => deleteFile(filesInside._id)}
+            >
+              <Trash strokeWidth={1} />{" "}
+            </button>
           </div>
         ))}
+         {backFolder && (
+          <button
+            onClick={() => openFolder(backFolder)}
+            className="border-y-1 border-gray-200 bg-gray-100 p-2 flex gap-2 items-center  px-8"
+          >
+            <MoveLeft size={16}/>
+            Go Back
+          </button>
+        )}
+        
       </div>
     </div>
   );
