@@ -9,11 +9,12 @@ services:
       - ./backend/.env
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: "http://3.110.212.91:8080"
     ports:
-      - "80:80"               # map to host port 80
-    env_file:
-      - ./frontend/.env
+      - "80:80"
     depends_on:
       - backend
     environment:
