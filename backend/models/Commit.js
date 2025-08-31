@@ -8,10 +8,16 @@ const commitSchema = new mongoose.Schema({
 
   filesDiff: [
     {
+      fileName: String,
+      fileParent: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Folder",
+          required: true,
+        },
       file: { type: mongoose.Schema.Types.ObjectId, ref: "File", required: true },
       blob: { type: mongoose.Schema.Types.ObjectId, ref: "Blob", required: true },
     }
-  ]
+  ],
 });
 
 

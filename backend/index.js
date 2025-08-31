@@ -200,11 +200,11 @@ app.get("/userdetails", authenticateJWT, async (req, res) => {
 
 //Get author details
 app.get("/profile/:username", authenticateJWT, async (req, res) => {
-  const author = await User.findOne({
+  let author = await User.findOne({
     username: req.params.username.toLowerCase(),
   });
   if (!author) {
-    return res.status(404).json({ error: "Username does not exist" });
+     author = await User.findById(req.user.id);
   }
   const projects = await Project.find({ owner: author._id });
   res.json({ author, projects });

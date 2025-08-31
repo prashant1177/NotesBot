@@ -24,10 +24,6 @@ return (
                 {project.about}
               </NoteCardAbout>
             </NoteCardHeader>
-          <NoteCardStats className="flex flex-col items-end justify-baseline p-6 space-y-2 w-full flex-3/12">
-          <span className="text-gray-500 flex items-center gap-2"> <Eye size={16} strokeWidth={2} /> {project.views}</span>
-          <span className="text-gray-500 flex items-center gap-2"> <Heart size={16} strokeWidth={2} /> {project.like?.length}</span>
-          </NoteCardStats>
           </NoteCard>
         ))}
       </div>

@@ -17,44 +17,6 @@ export default function MyProfile({
           </h1>
           <h1 className="text-gray-600">{author?.userabout}</h1>
         </div>
-
-        <div className="flex items-center gap-2 pb-4">
-          <UsersRound size={16} /> <h1>{followersCount} Followers</h1>
-          <Dot />
-          <h1> {followingCount} Following</h1>
-        </div>
-        {follow && (
-          <div className="flex gap-2 border-b-1 border-gray-400 pb-4">
-            <Button
-              onClick={follow}
-              varient="muted"
-              className="flex-1 border-1 border-gray-300"
-            >
-              {following ? "Unfollow" : "Follow"}
-            </Button>{" "}
-            <Button
-              varient="muted"
-              className="flex justify-center items-center gap-1 flex-1 border-1 border-gray-300"
-            >
-              Sponser
-            </Button>{" "}
-          </div>
-        )}
-        <div>
-          <h1 className="text-lg mb-4">Interested Topics</h1>
-          <div className="flex flex-wrap gap-2">
-            <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
-              Engineering
-            </h1>
-            <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
-              Examples
-            </h1>
-
-            <h1 className="px-2 text-blue-800 rounded-md border-1 border-blue-200  bg-blue-100 w-fit h-fit">
-              Tobe Added
-            </h1>
-          </div>
-        </div>
       </div>
     </div>
   );
