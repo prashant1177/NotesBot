@@ -11,6 +11,12 @@ const UserSchema = new mongoose.Schema({
     default: [],
   },
   password: { type: String, required: true },
+
+  
+  // Premium subscription fields for single plan
+  isPremium: { type: Boolean, default: false }, // whether user has premium access
+  subscriptionId: { type: String, default: null }, // Razorpay subscription IDs
+  premiumExpiry: { type: Date, default: null }, // when premium expires
 });
 
 // Hash password before save

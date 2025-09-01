@@ -31,6 +31,7 @@ export default function EditorTool({
           >
             View PDF
           </button>
+          
           <button
             className={`${
               leftView === "versions"
@@ -40,6 +41,15 @@ export default function EditorTool({
             onClick={() => handleViewLeft("versions")}
           >
             Older Versions
+          </button><button
+            onClick={() => handleViewLeft("math")}
+            className={`${
+              leftView == "math"
+                ? "bg-gray-300 text-gray-950"
+                : "text-gray-950"
+            } px-4 py-2`}
+          >
+            Math Symbols
           </button>
         </div>
       </div>

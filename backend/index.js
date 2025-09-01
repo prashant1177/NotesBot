@@ -10,7 +10,7 @@ const User = require("./models/User.js");
 const Note = require("./models/note.js");
 const projectRoutes = require("./routes/projectRoutes");
 const versionsRoutes = require("./routes/versionsRoutes");
-
+const premiumRoutes = require("./routes/premiumRoutes");
 const session = require("express-session");
 const configurePassport = require("./config/passport.js");
 const { authenticateJWT, viewCount } = require("./middleware/middleware.js");
@@ -55,6 +55,7 @@ async function database() {
 
 app.use("/projects", projectRoutes); // all routes start with /api/projects
 app.use("/versions", versionsRoutes); // all routes start with /api/projects
+app.use("/api", premiumRoutes); // all routes start with /api/projects
 
 // API to compile LaTeX using Tectonic
 app.post("/compile", (req, res) => {

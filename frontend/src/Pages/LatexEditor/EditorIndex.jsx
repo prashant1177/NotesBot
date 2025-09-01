@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EditorTool from "./EditorTool";
 import PdfViewer from "./PdfViewer";
 import FolderView from "./FolderView";
@@ -9,6 +9,8 @@ import MonacoEditor from "./MonacoEditor";
 import { debounce } from "lodash";
 import Commit from "./Commit";
 import Versions from "./Versions";
+import PremiumIndex from "../Premium/PremiumIndex";
+import MathSymbolsEditor from "./MathSymbolsEditor";
 export default function EditorIndex() {
   const { projectid } = useParams(); // 👈 here you get "id" from the URL
   const [loading, setLoading] = useState(false);
@@ -24,6 +26,7 @@ export default function EditorIndex() {
   const [latex, setLatex] = useState(
     "\\documentclass{article}\n\\begin{document}\nHello Tectonic!\n\\end{document}"
   );
+  const editorRef = useRef(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,7 +44,23 @@ export default function EditorIndex() {
     compileLatexWithImage();
   }, [projectid]);
 
-  const handleViewLeft = (s) => {
+  const handleViewLeft = async (s) => {
+     if (s === "math") {
+    try {
+      const res = await api.get("/api/checkpremium");
+      
+      if (!res.data.isPremium) {
+        // if backend says not premium, show premium upgrade page
+        setLeftView("premium");
+        return; // ⬅️ stop here, don't overwrite
+      }
+    } catch (err) {
+      console.error("Error checking premium:", err);
+      // fallback in case of error
+      setLeftView("premium");
+      return;
+    }
+  }
     setLeftView(s);
   };
   const handleViewRight = (s) => {
@@ -84,7 +103,10 @@ export default function EditorIndex() {
     debouncedCompile();
     return debouncedCompile.cancel;
   }, [latex]);
-
+  function handleEditorMount(editor, monaco) {
+    monaco.editor.setTheme("latexThemeOverleaf");
+    editorRef.current = editor;
+  }
   return (
     <div className="flex flex-col h-screen">
       <div className="shrink-0">
@@ -101,7 +123,9 @@ export default function EditorIndex() {
           <PdfViewer pdfUrl={pdfUrl} loading={loading} />
         ) : leftView == "versions" ? (
           <Versions projectid={projectid} />
-        ) :  (
+        ) : leftView == "math" ? (
+          <MathSymbolsEditor editorRef={editorRef} />
+        ) : leftView == "premium" ? <PremiumIndex />: (
           <FolderView
             saveFile={saveFile}
             projectid={projectid}
@@ -115,12 +139,23 @@ export default function EditorIndex() {
             files={files}
             setFiles={setFiles}
           />
-        )  }
+        )}
         <div className="flex-1 border-l-1 border-gray-200">
           {rightView == "commit" ? (
-            <Commit projectid={projectid} handleViewRight={handleViewRight} />
+            <>
+              {" "}
+              <Commit projectid={projectid} handleViewRight={handleViewRight} />
+              {/* 
+                        
+ */}
+            </>
           ) : (
-            <MonacoEditor latex={latex} setLatex={setLatex} />
+            <MonacoEditor
+              latex={latex}
+              setLatex={setLatex}
+              handleEditorMount={handleEditorMount}
+              editorRef={editorRef}
+            />
           )}
         </div>
       </div>

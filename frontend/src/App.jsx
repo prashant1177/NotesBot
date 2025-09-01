@@ -14,6 +14,7 @@ import CreateProject from "./Pages/Projects/CreateProject";
 import EditorIndex from "./Pages/LatexEditor/EditorIndex";
 import MyProject from "./Pages/Projects/MyProjectsList/UserProfileIndex";
 import TemplatesIndex from "./Pages/Templates/TemplatesIndex";
+import PremiumIndex from "./Pages/Premium/PremiumIndex";
 function App() {
   const [isActive, setIsActive] = useState(false);
   const [sidebarHide, setSidebarHide] = useState("w-16");
@@ -56,7 +57,7 @@ function App() {
             <Route path="/latexeditor/:projectid" element={<EditorIndex />} />
             <Route path="/user" element={<UserEdit />} />
             <Route path="/project/:projectid" element={<ProjectView />} />
-            <Route path="/templates" element={<TemplatesIndex />} />
+            <Route path="/templates" element={<PremiumIndex />} />
             <Route path="/create/project" element={<CreateProject />} />   
           </Routes>
         </div>

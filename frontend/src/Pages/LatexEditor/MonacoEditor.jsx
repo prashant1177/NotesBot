@@ -3,8 +3,7 @@ import { Editor } from "@monaco-editor/react";
 import LaTeXToolbar from "./LatexToolbar";
 
 // Enhanced Monaco Editor Component with Toolbar
-export default function MonacoEditor({ latex, setLatex }) {
-  const editorRef = useRef(null);
+export default function MonacoEditor({ latex, setLatex,handleEditorMount,editorRef }) {
 
   function handleBeforeMount(monaco) {
     monaco.languages.register({ id: "latex" });
@@ -40,10 +39,7 @@ export default function MonacoEditor({ latex, setLatex }) {
     });
   }
 
-  function handleEditorMount(editor, monaco) {
-    monaco.editor.setTheme("latexThemeOverleaf");
-    editorRef.current = editor;
-  }
+  
 
   return (
     <div className="flex flex-col h-full">
