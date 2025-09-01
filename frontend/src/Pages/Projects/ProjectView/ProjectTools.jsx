@@ -8,7 +8,7 @@ export default function ProjectTools({ projectid,setViewPdf,viewPdf }) {
 
   const fork = async () => {
     const res = await api.post(`/projects/fork/${projectid}`);
-    navigate(`/latexeditor/${res.data.newProjectId}`);
+    navigate(`/latexeditor/${res.data.ForkprojectId}`);
   };
   const viewContent = async () => {
     setViewPdf((prev) => !prev);
@@ -22,6 +22,8 @@ export default function ProjectTools({ projectid,setViewPdf,viewPdf }) {
       alert(err.response.data.error);
     }
   };
+
+  
   return (
     <div className="flex justify-between p-4 px-8 bg-gray-100">
       <div className="flex items-center gap-8">

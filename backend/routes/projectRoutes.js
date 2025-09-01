@@ -56,7 +56,6 @@ async function writeProjectToTemp(dirPath, folders, files, parentId) {
   }
 }
 
-
 // Compile LaTeX project route
 router.post("/compile/:id", authenticateJWT, async (req, res) => {
   let tmpDir;
@@ -75,7 +74,8 @@ router.post("/compile/:id", authenticateJWT, async (req, res) => {
     const mainFile = files.find(
       (f) => f._id.toString() === project.rootFile.toString()
     );
-    if (!mainFile) return res.status(404).json({ error: "Main file not found" });
+    if (!mainFile)
+      return res.status(404).json({ error: "Main file not found" });
 
     const mainFilePath = path.join(tempPath, mainFile.name);
 
@@ -84,7 +84,10 @@ router.post("/compile/:id", authenticateJWT, async (req, res) => {
     } catch (compileErr) {
       console.error("❌ Compilation failed:", compileErr);
       return res.status(500).json({
-        error: compileErr.stderr?.toString() || compileErr.message || "Compilation failed",
+        error:
+          compileErr.stderr?.toString() ||
+          compileErr.message ||
+          "Compilation failed",
       });
     }
 
@@ -97,7 +100,6 @@ router.post("/compile/:id", authenticateJWT, async (req, res) => {
     const pdfBuffer = fs.readFileSync(pdfPath);
     res.setHeader("Content-Type", "application/pdf");
     res.send(pdfBuffer);
-
   } catch (err) {
     console.error("❌ Unexpected error in compile route:", err);
     res.status(500).json({
@@ -358,9 +360,8 @@ router.post("/newfolder/:id", authenticateJWT, async (req, res) => {
 // Example: Get all projects from ProjectView
 router.get("/view/:id", authenticateJWT, async (req, res) => {
   try {
-    if(!req.user){
-    res.status(500).json({ message: "Login to view" });
-
+    if (!req.user) {
+      res.status(500).json({ message: "Login to view" });
     }
     const projects = await Project.findById(req.params.id);
 
@@ -576,6 +577,103 @@ router.post("/deleteFile/:id", authenticateJWT, async (req, res) => {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
   }
+});
+
+router.post("/fork/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.status(500).json({ message: "Login To Continue" });
+  }
+
+  const project = await Project.findById(req.params.id)
+  .populate("rootFolder")
+  .populate("rootFile");
+
+  const Forkproject = new Project({
+    title: project.title,
+    about: project.about,
+    topics: project.topics,
+    owner: req.user._id,
+    private: project.private,
+  });
+
+  const rootFolder = new Folder({
+    name: project.rootFolder.name,
+    parent: null,
+    owner: req.user._id,
+    project: Forkproject._id,
+  });
+
+  const mainFile = new File({
+    name: "main.tex",
+    parent: rootFolder._id,
+    owner: req.user._id,
+    project: Forkproject._id,
+    blobId: project.rootFile.blobId,
+    isBinary: false,
+  });
+console.log(mainFile)
+  await Blob.findByIdAndUpdate(project.rootFile.blobId, {
+    $addToSet: { filesIDs: mainFile._id },
+  });
+  await mainFile.save();
+  await rootFolder.save();
+
+  // link root folder + file to new project
+  Forkproject.rootFile = mainFile._id;
+  Forkproject.rootFolder = rootFolder._id;
+  await Forkproject.save();
+
+  // 4️⃣ Copy folders & files
+  const oldFolders = await Folder.find({ project: req.params.id }).lean();
+  const oldFiles = await File.find({ project: req.params.id }).lean();
+
+  // Mapping old → new folder ids
+  const folderIdMap = new Map();
+  folderIdMap.set(project.rootFolder._id.toString(), rootFolder._id.toString());
+
+  // Create new folders (with parent = null for now)
+  for (const folder of oldFolders) {
+    // skip root (already created)
+    if (folder._id.toString() === project.rootFolder._id.toString()) continue;
+
+    const newFolder = await Folder.create({
+      name: folder.name,
+      parent: null, // fix later
+      owner: req.user._id,
+      project: Forkproject._id,
+    });
+
+    folderIdMap.set(folder._id.toString(), newFolder._id.toString());
+  }
+
+  // Fix parents using the map
+  for (const folder of oldFolders) {
+    if (!folder.parent) continue;
+    const newFolderId = folderIdMap.get(folder._id.toString());
+    const newParentId = folderIdMap.get(folder.parent.toString());
+
+    await Folder.findByIdAndUpdate(newFolderId, { parent: newParentId });
+  }
+
+  // Copy files (excluding main.tex which we already created)
+  for (const file of oldFiles) {
+    if (file._id.toString() === project.rootFile._id.toString()) continue;
+
+    const newFile = await File.create({
+      name: file.name,
+      parent: file.parent ? folderIdMap.get(file.parent.toString()) : null,
+      owner: req.user._id,
+      project: Forkproject._id,
+      blobId: file.blobId,
+      isBinary: file.isBinary,
+    });
+
+    await Blob.findByIdAndUpdate(file.blobId, {
+      $addToSet: { filesIDs: newFile._id },
+    });
+  }
+
+  return res.json({ForkprojectId: Forkproject._id });
 });
 
 module.exports = router; // export the router

@@ -98,13 +98,12 @@ app.post("/register", async (req, res) => {
       email,
       username,
       userabout: "",
-      followers: [],
-      following: [],
       password,
     });
     await user.save();
     res.json({ msg: "User registered successfully" });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ msg: "Server error" });
   }
 });
@@ -204,9 +203,11 @@ app.get("/profile/:username", authenticateJWT, async (req, res) => {
     username: req.params.username.toLowerCase(),
   });
   if (!author) {
-     author = await User.findById(req.user.id);
+    author = await User.findById(req.user.id);
   }
-  const projects = await Project.find({ owner: author._id }).sort({ createdAt: -1 });
+  const projects = await Project.find({ owner: author._id }).sort({
+    createdAt: -1,
+  });
   res.json({ author, projects });
 });
 

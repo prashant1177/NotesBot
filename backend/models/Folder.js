@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const folderSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String },
   parent: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Folder",
