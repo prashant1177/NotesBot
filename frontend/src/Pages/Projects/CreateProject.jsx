@@ -22,9 +22,7 @@ export default function CreateProject() {
       };
       const res = await api.post("/projects/create", Project);
       const ProjectID = res.data.id; // MongoDB ID
-      const foldername = res.data.foldername; // MongoDB ID
-      console.log("Saved Note ID:", ProjectID);
-      navigate(`/latex/${ProjectID}/${foldername}/main.tex`);
+      navigate(`/latexeditor/${ProjectID}`);
     } catch (err) {
       console.error("Failed to save note:", err);
     }

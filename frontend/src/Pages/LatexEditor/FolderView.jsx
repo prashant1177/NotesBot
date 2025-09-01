@@ -77,6 +77,7 @@ export default function FolderView({
       "File Created Successfully +   setLatex(res.data.fileContent);"
     );
   };
+  
   const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append("image", file);

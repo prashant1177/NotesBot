@@ -25,7 +25,7 @@ const CardDescription = ({ children, className = "" }) => (
 // components/NoteCard.jsx
 
 const NoteCard = ({ children, className = "", ...props }) => (
-  <div className={`flex justify-between rounded-sm border-1 border-gray-200  text-gray-900 ${className}`} {...props}>
+  <div className={`rounded-2xl shadow-md hover:shadow-xl transition transform hover:scale-105 bg-white border-1  border-gray-100${className}`} {...props}>
     {children}
   </div>
 );
@@ -39,11 +39,11 @@ const NoteCardContent = ({ children, className = "" }) => (
 );
 
 const NoteCardTitle = ({ children, className = "" }) => (
-  <h3 className={`text-xl font-medium text-gray-900 leading-none tracking-tight hover:underline ${className}`}>{children}</h3>
+  <h3 className={`text-lg font-semibold text-gray-900 leading-none tracking-tight hover:text-blue-400 mb-2  ${className}`}>{children}</h3>
 );
 
 const NoteCardAbout = ({ children, className = "" }) => (
-  <p className={`text-sm text-gray-500 ${className}`}>{children}</p>
+  <p className={`text-sm text-gray-500 leading-snug ${className}`}>{children}</p>
 );
 
 const NoteCardStats = ({ children, className = "" }) => (

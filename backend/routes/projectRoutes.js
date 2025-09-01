@@ -115,7 +115,7 @@ router.post("/compile/:id", authenticateJWT, async (req, res) => {
 });
 
 // Compile LaTeX project route
-router.post("/compile/:id", authenticateJWT, async (req, res) => {
+/* router.post("/compile/:id", authenticateJWT, async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) return res.status(404).json({ error: "Project not found" });
@@ -160,7 +160,7 @@ router.post("/compile/:id", authenticateJWT, async (req, res) => {
     console.error(err);
     res.status(500).json({ error: err.stderr || "Compilation failed" });
   }
-});
+}); */
 
 const texTemplate = `
 \\documentclass{article}
@@ -358,12 +358,29 @@ router.post("/newfolder/:id", authenticateJWT, async (req, res) => {
 // Example: Get all projects from ProjectView
 router.get("/view/:id", authenticateJWT, async (req, res) => {
   try {
+    if(!req.user){
+    res.status(500).json({ message: "Login to view" });
+
+    }
     const projects = await Project.findById(req.params.id);
-    const currFolder = await Folder.findById(projects.rootFolder).populate([
-      "foldersInside",
-      "filesInside",
-    ]);
-    res.json({ projects, currFolder });
+
+    const Folders = await Folder.find({
+      parent: projects.rootFolder.toString(),
+    });
+    const Files = await File.find({
+      parent: projects.rootFolder.toString(),
+    });
+    const rootFile = await File.findById(projects.rootFile.toString()).populate(
+      "blobId"
+    );
+    res.json({
+      projects,
+      Folders,
+      Files,
+      rootFile,
+      rootFolder: projects.rootFolder.toString(),
+      fileContent: rootFile.blobId.content.toString(),
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

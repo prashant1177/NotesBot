@@ -206,7 +206,7 @@ app.get("/profile/:username", authenticateJWT, async (req, res) => {
   if (!author) {
      author = await User.findById(req.user.id);
   }
-  const projects = await Project.find({ owner: author._id });
+  const projects = await Project.find({ owner: author._id }).sort({ createdAt: -1 });
   res.json({ author, projects });
 });
 
