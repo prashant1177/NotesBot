@@ -1,16 +1,6 @@
 version: "3.8"
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-      args:
-        VITE_API_URL: https://api.latexwriter.com
-    container_name: frontend
-    restart: unless-stopped
-    networks:
-      - app-network
-
   backend:
     build:
       context: ./backend
@@ -25,13 +15,14 @@ services:
   nginx:
     build:
       context: ./nginx
+      args:
+        VITE_API_URL: https://api.latexwriter.com
     container_name: nginx-proxy
     ports:
       - "80:80"
       - "443:443"
     restart: unless-stopped
     depends_on:
-      - frontend
       - backend
     networks:
       - app-network

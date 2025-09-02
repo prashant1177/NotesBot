@@ -31,10 +31,7 @@ app.use(express.json({ limit: "2mb" }));
 const allowedOrigins = [
   "https://latexwriter.com",
   "https://www.latexwriter.com",
-  "https://latexwriter.com/", 
-  "http://latexwriter.com/", 
 ];
-
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -42,16 +39,30 @@ app.use(
       if (!origin) {
         return callback(new Error("CORS not allowed: missing Origin"), false);
       }
+      const normalizedOrigin = origin.replace(/\/$/, '');
+      const normalizedAllowedOrigins = allowedOrigins.map(o => o.replace(/\/$/, ''));
 
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true); // allow this origin
+      if (normalizedAllowedOrigins.includes(normalizedOrigin)) {
+        callback(null, true);
       } else {
-        callback(new Error("CORS not allowed by server"), false);
+        console.log('CORS rejected origin:', origin); // Debug log
+        console.log('Allowed origins:', allowedOrigins); // Debug log
+        callback(new Error(`CORS not allowed for origin: ${origin}`), false);
       }
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: [
+      'Content-Type', 
+      'Authorization', 
+      'X-Requested-With',
+      'Accept',
+      'Origin'
+    ],
+    optionsSuccessStatus: 200 // no trailing comma needed
   })
 );
+
 app.use(
   session({
     secret: "yoursecretkey",
