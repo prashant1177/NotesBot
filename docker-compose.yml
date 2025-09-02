@@ -12,7 +12,7 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_URL: "https://3.110.212.91:8080"
+        VITE_API_URL: "https://api.latexwriter.com"
     ports:
       - "80:80"
     depends_on:
