@@ -4,27 +4,38 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        VITE_API_URL: https://api.latexwriter.com
     container_name: frontend
     restart: unless-stopped
-    expose:
-      - "80"   # expose to other containers
+    networks:
+      - app-network
 
   backend:
     build:
       context: ./backend
     container_name: backend
     restart: unless-stopped
-    expose:
-      - "8080" # expose to other containers
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+    networks:
+      - app-network
 
   nginx:
     build:
       context: ./nginx
-    container_name: nginx
+    container_name: nginx-proxy
     ports:
-      - "80:80"     # HTTP
-      - "443:443"   # HTTPS (optional if SSL is configured)
+      - "80:80"
+      - "443:443"
     restart: unless-stopped
     depends_on:
       - frontend
       - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
