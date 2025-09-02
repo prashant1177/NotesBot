@@ -29,12 +29,12 @@ export default function Navbar() {
               </li>
 
               <li>
-                <Link
-                  to="/PublicNotes"
+                <a
+                  href="/#how-it-works"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Published
-                </Link>
+                 Workflow
+                </a>
               </li>
 
               {/* Login/Logout Button */}

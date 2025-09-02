@@ -61,11 +61,11 @@ export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
         </Link>
 
         <Link
-          to={`/About`}
+          to={`/documentation`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
         >
           <BadgeInfo />
-          {isActive ? <span>About</span> : null}
+          {isActive ? <span>Documentation</span> : null}
         </Link>
 
         <button

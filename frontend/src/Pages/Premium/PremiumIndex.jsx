@@ -92,6 +92,9 @@ export default function PremiumIndex() {
               Version
             </li>
             <li className="flex items-center gap-2">
+              <span className="text-purple-600">✔</span> Create Multiple Projects
+            </li>
+            <li className="flex items-center gap-2">
               <span className="text-purple-600">✔</span> Simplifies Math
               Keyboard
             </li>

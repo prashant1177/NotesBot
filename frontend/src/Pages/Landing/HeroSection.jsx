@@ -9,28 +9,29 @@ export function HeroSection() {
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-muted/30 border border-border/20 mb-8">
             <Sparkles className="w-4 h-4 text-chart-1 mr-2" />
             <span className="text-sm text-muted-foreground">
-              A new way of writing
+              Smarter LaTeX editing
             </span>
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium mb-6">
             The better way to
             <br />
-            Write Together
+            Write Latex Docs
           </h1>
 
           <p className="text-xl  text-gray-700 mb-8 max-w-2xl mx-auto">
-            Transform your thoughts into organized, intelligent notes with the
-            power of AI. Never lose an idea again.
+            Create professional research papers, reports, and assignments
+            effortlessly. with seamless LaTeX writing and  version control.
           </p>
 
           <div className="w-100 flex flex-col gap-4 justify-center items-center mb-16">
-            <Link to="/login">
+            <Link to="/register">
               {" "}
-              <Button className="w-100">Start Writing notes </Button>
+              <Button className="w-100">Start Now </Button>
             </Link>
             <Button varient="muted" className="w-100">
-              See how it works
+                           Explore Features
+
             </Button>
           </div>
         </div>

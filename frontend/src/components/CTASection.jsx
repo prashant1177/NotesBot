@@ -32,7 +32,7 @@ const Button = ({
 
 export function CTASection() {
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section  id="about" className="py-24 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-chart-1/5 to-chart-2/5"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(120,119,198,0.1),transparent_50%)]"></div>

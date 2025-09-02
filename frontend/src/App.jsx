@@ -16,6 +16,8 @@ import UserProfileIndex from "./Pages/Projects/MyProjectsList/UserProfileIndex";
 import TemplatesIndex from "./Pages/Templates/TemplatesIndex";
 import PremiumIndex from "./Pages/Premium/PremiumIndex";
 import OtpForm from "./Pages/UserAuth/OtpForm";
+import PremiumPage from "./Pages/Premium/PremiumPage";
+import DocumentationIndex from "./Pages/documentation/DocumentationIndex";
 function App() {
   const [isActive, setIsActive] = useState(false);
   const [sidebarHide, setSidebarHide] = useState("w-16");
@@ -37,32 +39,36 @@ function App() {
   return (
     <Router>
       <div>
-        {token ? <Sidebar
-          toggleSidebar={toggleSidebar}
-          sidebarHide={sidebarHide}
-          isActive={isActive}
-        /> : <Navbar/>} 
-        
+        {token ? (
+          <Sidebar
+            toggleSidebar={toggleSidebar}
+            sidebarHide={sidebarHide}
+            isActive={isActive}
+          />
+        ) : (
+          <Navbar />
+        )}
 
         <div
           className={`main-content transition-all duration-300 ${
-            token ? `${
-            isActive ? "ml-64" : "ml-16"
-          }` : ""
+            token ? `${isActive ? "ml-64" : "ml-16"}` : ""
           }`}
         >
           <Routes>
-            <Route path="/" element={token ?<UserProfileIndex />: <Landing />} /> 
+            <Route
+              path="/"
+              element={token ? <UserProfileIndex /> : <Landing />}
+            />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/latexeditor/:projectid" element={<EditorIndex />} />
             <Route path="/user" element={<UserEdit />} />
             <Route path="/project/:projectid" element={<ProjectView />} />
-                    
-
-        {/*    <Route path="/templates" element={<OtpForm />} /> */}
-            <Route path="/pricing" element={<PremiumIndex />} />
-            <Route path="/create/project" element={<CreateProject />} />   
+            <Route path="/profile/:username" element={<UserProfileIndex />} />
+            {/*    <Route path="/templates" element={<OtpForm />} /> */}
+            <Route path="/pricing" element={<PremiumPage />} />
+            <Route path="/create/project" element={<CreateProject />} />
+            <Route path="/documentation" element={<DocumentationIndex />} />
           </Routes>
         </div>
       </div>
