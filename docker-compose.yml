@@ -4,7 +4,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - "8080:8080"
+      - "80:8080"   # Map container's 8080 to host's 80 for Cloudflare
     env_file:
       - ./backend/.env
 
@@ -12,7 +12,7 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_URL: "http://3.110.212.91:8080"
+        VITE_API_URL: "https://api.latexwriter.com"  # Backend subdomain
     ports:
       - "80:80"
     depends_on:
