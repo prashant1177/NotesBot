@@ -1,5 +1,4 @@
-# Use official Node.js image
-FROM node:18-slim
+FROM node:20.19.0-slim
 
 # Install system dependencies
 # Install system dependencies and Tectonic dependencies in one layer
