@@ -1,72 +1,37 @@
-events {
-    worker_connections 1024;
-}
+FROM node:20.19.0-slim
 
-http {
-    include       /etc/nginx/mime.types;
-    default_type  application/octet-stream;
-    
-    # Logging
-    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
-                    '$status $body_bytes_sent "$http_referer" '
-                    '"$http_user_agent" "$http_x_forwarded_for"';
-    
-    access_log /var/log/nginx/access.log main;
-    error_log /var/log/nginx/error.log warn;
-    
-    # Basic settings
-    sendfile on;
-    tcp_nopush on;
-    tcp_nodelay on;
-    keepalive_timeout 65;
-    types_hash_max_size 2048;
-    
-    # Gzip compression
-    gzip on;
-    gzip_vary on;
-    gzip_min_length 1024;
-    gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json;
+# Install system dependencies
+# Install system dependencies and Tectonic dependencies in one layer
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    unzip \
+    ca-certificates \
+    libgraphite2-3 \
+    libharfbuzz0b \
+    && rm -rf /var/lib/apt/lists/*
 
-    # Frontend - Main domain (proxy to Vite-built React app)
-    server {
-        listen 80;
-        server_name latexwriter.com www.latexwriter.com;
-        
-        location / {
-            proxy_pass http://frontend:80;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            
-            # Proxy timeout settings
-            proxy_connect_timeout 60s;
-            proxy_send_timeout 60s;
-            proxy_read_timeout 60s;
-        }
-    }
+# Install tectonic (prebuilt binary)
+RUN wget https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-x86_64-unknown-linux-gnu.tar.gz \
+    && tar -xvzf tectonic-0.15.0-x86_64-unknown-linux-gnu.tar.gz \
+    && mv tectonic /usr/local/bin/tectonic \
+    && rm -rf tectonic*
 
-    # Backend API - Subdomain
-    server {
-        listen 80;
-        server_name api.latexwriter.com;
-        
-        location / {
-            proxy_pass http://backend:8080;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            
-            # Let the backend handle CORS - don't add CORS headers here
-            # This prevents header conflicts
-        }
-    }
+# Set workdir
+WORKDIR /usr/src/app
 
-    # Redirect www to non-www (optional)
-    server {
-        listen 80;
-        server_name www.latexwriter.com;
-        return 301 https://latexwriter.com$request_uri;
-    }
-}
+# Copy package.json + lock file
+COPY package*.json ./
+
+# Install dependencies (include dev if needed)
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Expose backend port
+ENV PORT 8080
+EXPOSE 8080
+
+# Default command (use package.json start script if it exists)
+CMD ["npm", "start"]
