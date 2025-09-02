@@ -14,7 +14,7 @@ import EditorIndex from "./Pages/LatexEditor/EditorIndex";
 import UserProfileIndex from "./Pages/Projects/MyProjectsList/UserProfileIndex";
 import TemplatesIndex from "./Pages/Templates/TemplatesIndex";
 import PremiumPage from "./Pages/Premium/PremiumPage";
-import DocumentationIndex from "./Pages/documentation/DocumentationIndex";
+import DocumentationIndex from "./Pages/Documentation/DocumentationIndex";
 function App() {
   const [isActive, setIsActive] = useState(false);
   const [sidebarHide, setSidebarHide] = useState("w-16");
