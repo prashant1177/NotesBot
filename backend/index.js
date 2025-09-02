@@ -27,9 +27,28 @@ const fs = require("fs");
 const Project = require("./models/Project.js");
 
 app.use(express.json({ limit: "2mb" }));
+
+const allowedOrigins = [
+  "https://latexwriter.com",
+  "https://www.latexwriter.com",
+  "https://latexwriter.com/", 
+  "http://latexwriter.com/", 
+];
+
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN?.split(",") || ["https://latexwriter.com"],
+    origin: function (origin, callback) {
+      // Reject requests with no Origin header (like Postman)
+      if (!origin) {
+        return callback(new Error("CORS not allowed: missing Origin"), false);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true); // allow this origin
+      } else {
+        callback(new Error("CORS not allowed by server"), false);
+      }
+    },
     credentials: true,
   })
 );
@@ -108,7 +127,7 @@ app.post("/register", async (req, res) => {
 
       await user.save();
     }
-    
+
     const { otp, token } = generateOtpToken(email);
     await sendOtpEmail(email, otp);
 
