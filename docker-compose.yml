@@ -3,19 +3,32 @@ version: "3.8"
 services:
   backend:
     build: ./backend
+    container_name: backend
     ports:
       - "8080:8080"
     env_file:
       - ./backend/.env
+    restart: unless-stopped
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "80:80"  # Cloudflare proxies HTTPS here
+    depends_on:
+      - backend
+    restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
       args:
         VITE_API_URL: "https://api.latexwriter.com"
+    container_name: frontend
     ports:
-      - "80:80"
+      - "3000:80"  # frontend separate port
     depends_on:
       - backend
     environment:
       - NODE_ENV=production
+    restart: unless-stopped
