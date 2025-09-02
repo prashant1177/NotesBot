@@ -6,17 +6,6 @@ services:
     container_name: backend
     ports:
       - "8080:8080"
-    env_file:
-      - ./backend/.env
-    restart: unless-stopped
-
-  nginx:
-    build: ./nginx
-    container_name: nginx
-    ports:
-      - "80:80"  # Cloudflare proxies HTTPS here
-    depends_on:
-      - backend
     restart: unless-stopped
 
   frontend:
@@ -25,10 +14,26 @@ services:
       args:
         VITE_API_URL: "https://api.latexwriter.com"
     container_name: frontend
+    restart: unless-stopped
+
+  nginx-frontend:
+    build: ./nginx-frontend
+    container_name: nginx-frontend
     ports:
-      - "3000:80"  # frontend separate port
+      - "3000:80"  # Internal port, Cloudflare will handle HTTPS
+    depends_on:
+      - frontend
+    restart: unless-stopped
+
+  nginx-backend:
+    build: ./nginx-backend
+    container_name: nginx-backend
+    ports:
+      - "80:80"  # Cloudflare proxies HTTPS here
     depends_on:
       - backend
-    environment:
-      - NODE_ENV=production
     restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge
