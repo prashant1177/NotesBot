@@ -15,8 +15,13 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-
+# Stage 2: Serve with Nginx
 FROM nginx:alpine
+
+# Remove default Nginx static content
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy Vite build output
 COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80
