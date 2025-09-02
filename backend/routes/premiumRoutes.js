@@ -11,7 +11,7 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_SECRET,
 });
 
-// rzp_test_RCTBfvEKpFxGP3
+// 
 //
 // Run every day at midnight
 cron.schedule("0 0 * * *", async () => {
@@ -41,7 +41,7 @@ cron.schedule("0 0 * * *", async () => {
 router.post("/payment/create-subscription", async (req, res) => {
   try {
     const subscription = await razorpay.subscriptions.create({
-      plan_id: "plan_RCT8xTrE8f7LUJ", // This must be created in Razorpay dashboard
+      plan_id: "plan_RCSt131Ud0DwIi", // This must be created in Razorpay dashboard
       customer_notify: 1,
       total_count: 12, // 12 months max
     });
@@ -63,8 +63,7 @@ router.post("/payment/verify", authenticateJWT, async (req, res) => {
       .createHmac("sha256", process.env.RAZORPAY_SECRET)
       .update(`${razorpay_payment_id}|${razorpay_subscription_id}`)
       .digest("hex");
-    console.log(expectedSign);
-
+      
   if (expectedSign === razorpay_signature) {
     await User.findByIdAndUpdate(req.user.id ,
       {
@@ -77,7 +76,6 @@ router.post("/payment/verify", authenticateJWT, async (req, res) => {
     );
     res.json({ success: true });
   } else {
-    console.log("Invalid signature")
     res.status(400).json({ error: "Invalid signature" });
   }
 });
@@ -86,7 +84,6 @@ router.get("/checkpremium", authenticateJWT, async (req, res) => {
   try {
     // assuming you store it in DB under user.isPremium
     const user = await User.findById(req.user.id);
-    console.log(user)
     res.json({ isPremium: user?.isPremium || false });
   } catch (err) {
     res.status(500).json({ error: "Server error" });

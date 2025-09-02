@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./Pages/UserAuth/Login";
 import Register from "./Pages/UserAuth/Register";
-import Maintenance from "./Pages/Maintenance";
 import Sidebar from "./components/Sidebar";
 import { setAuthToken } from "./api";
 import UserEdit from "./Pages/UserView/UserEdit";
@@ -14,8 +13,6 @@ import CreateProject from "./Pages/Projects/CreateProject";
 import EditorIndex from "./Pages/LatexEditor/EditorIndex";
 import UserProfileIndex from "./Pages/Projects/MyProjectsList/UserProfileIndex";
 import TemplatesIndex from "./Pages/Templates/TemplatesIndex";
-import PremiumIndex from "./Pages/Premium/PremiumIndex";
-import OtpForm from "./Pages/UserAuth/OtpForm";
 import PremiumPage from "./Pages/Premium/PremiumPage";
 import DocumentationIndex from "./Pages/documentation/DocumentationIndex";
 function App() {
@@ -65,6 +62,8 @@ function App() {
             <Route path="/user" element={<UserEdit />} />
             <Route path="/project/:projectid" element={<ProjectView />} />
             <Route path="/profile/:username" element={<UserProfileIndex />} />
+            <Route path="/templates" element={<TemplatesIndex />} />
+            
             {/*    <Route path="/templates" element={<OtpForm />} /> */}
             <Route path="/pricing" element={<PremiumPage />} />
             <Route path="/create/project" element={<CreateProject />} />
