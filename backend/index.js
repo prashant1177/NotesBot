@@ -14,7 +14,10 @@ const premiumRoutes = require("./routes/premiumRoutes");
 const session = require("express-session");
 const configurePassport = require("./config/passport.js");
 const { authenticateJWT, viewCount } = require("./middleware/middleware.js");
-const JWT_SECRET = "yoursecretkey"; // ⚠️ store in .env in production
+const JWT_SECRET = process.env.JWT_SECRET; // ⚠️ store in .env in production
+
+const sendOtpEmail = require("./utils/sendEmail");
+const { generateOtpToken, verifyOtpToken } = require("./utils/generateOtp");
 
 //Latex
 
@@ -91,22 +94,44 @@ app.post("/register", async (req, res) => {
   try {
     let user = await User.findOne({ username });
     let emailcheck = await User.findOne({ email });
-    if (user || emailcheck)
+    if ((user || emailcheck) && (user.isVerified || emailcheck.isVerified))
       return res.status(400).json({ msg: "User already exists" });
 
-    user = new User({
-      fullname,
-      email,
-      username,
-      userabout: "",
-      password,
-    });
-    await user.save();
-    res.json({ msg: "User registered successfully" });
+    if (!user && !emailcheck) {
+      user = new User({
+        fullname,
+        email,
+        username,
+        userabout: "",
+        password,
+      });
+
+      await user.save();
+    }
+    
+    const { otp, token } = generateOtpToken(email);
+    await sendOtpEmail(email, otp);
+
+    res.json({ msg: "OTP sent to email", token });
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "Server error" });
   }
+});
+app.post("/verify-otp", async (req, res) => {
+  const { token, otp } = req.body;
+
+  const isValid = verifyOtpToken(token, otp);
+  if (!isValid) return res.status(400).send("Invalid or expired OTP");
+
+  const payload = jwt.decode(token);
+  const user = await User.findOne({ email: payload.email });
+  if (!user) return res.status(404).send("User not found");
+
+  user.isVerified = true;
+  await user.save();
+
+  res.send("Email verified successfully!");
 });
 
 app.post("/login", (req, res, next) => {
@@ -209,6 +234,7 @@ app.get("/profile/:username", authenticateJWT, async (req, res) => {
   const projects = await Project.find({ owner: author._id }).sort({
     createdAt: -1,
   });
+
   res.json({ author, projects });
 });
 

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema({
-  fullname: { type: String, required: true},
+  fullname: { type: String, required: true },
   email: { type: String, required: true, unique: true, lowercase: true },
   username: { type: String, required: true, unique: true, lowercase: true },
   userabout: { type: String },
@@ -12,7 +12,8 @@ const UserSchema = new mongoose.Schema({
   },
   password: { type: String, required: true },
 
-  
+  isVerified: { type: Boolean, default: false },
+
   // Premium subscription fields for single plan
   isPremium: { type: Boolean, default: false }, // whether user has premium access
   subscriptionId: { type: String, default: null }, // Razorpay subscription IDs

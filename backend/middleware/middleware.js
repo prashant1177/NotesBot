@@ -1,7 +1,10 @@
+require("dotenv").config(); // Load .env file variables
+
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "yoursecretkey"; // ⚠️ store in .env in production
+const JWT_SECRET = process.env.JWT_SECRET; // ⚠️ store in .env in production
 const Note = require("../models/note.js");
 const User = require("../models/User.js");
+
 function authenticateJWT(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader) {

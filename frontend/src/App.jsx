@@ -12,9 +12,10 @@ import UserEdit from "./Pages/UserView/UserEdit";
 import ProjectView from "./Pages/Projects/ProjectView/ProjectView";
 import CreateProject from "./Pages/Projects/CreateProject";
 import EditorIndex from "./Pages/LatexEditor/EditorIndex";
-import MyProject from "./Pages/Projects/MyProjectsList/UserProfileIndex";
+import UserProfileIndex from "./Pages/Projects/MyProjectsList/UserProfileIndex";
 import TemplatesIndex from "./Pages/Templates/TemplatesIndex";
 import PremiumIndex from "./Pages/Premium/PremiumIndex";
+import OtpForm from "./Pages/UserAuth/OtpForm";
 function App() {
   const [isActive, setIsActive] = useState(false);
   const [sidebarHide, setSidebarHide] = useState("w-16");
@@ -51,13 +52,16 @@ function App() {
           }`}
         >
           <Routes>
-            <Route path="/" element={token ?<MyProject />: <Landing />} /> 
+            <Route path="/" element={token ?<UserProfileIndex />: <Landing />} /> 
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/latexeditor/:projectid" element={<EditorIndex />} />
             <Route path="/user" element={<UserEdit />} />
             <Route path="/project/:projectid" element={<ProjectView />} />
-            <Route path="/templates" element={<PremiumIndex />} />
+                    
+
+        {/*    <Route path="/templates" element={<OtpForm />} /> */}
+            <Route path="/pricing" element={<PremiumIndex />} />
             <Route path="/create/project" element={<CreateProject />} />   
           </Routes>
         </div>

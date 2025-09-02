@@ -8,7 +8,7 @@ export default function UserProfileIndex() {
   const { username } = useParams(); // 👈 here you get "id" from the URL
   const [projects, setprojects] = useState([]); // title state
   const [author, setAuthor] = useState([]); // title state
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -17,16 +17,16 @@ export default function UserProfileIndex() {
         setprojects(res.data.projects);
         setAuthor(res.data.author);
       } catch (err) {
-        alert(err.response.data.error);
+        console.log(err);
       }
     }
     fetchData();
-  }, []);
+  }, [username]);
 
   return (
     <div className="px-16 ">
       <div className="flex mt-4">
-          <ProjectList projects={projects} author={author} />
+        <ProjectList projects={projects} author={author} />
       </div>
     </div>
   );
