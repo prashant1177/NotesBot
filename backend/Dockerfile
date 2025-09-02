@@ -31,8 +31,8 @@ RUN npm install
 COPY . .
 
 # Expose backend port
-ENV PORT $PORT
-EXPOSE $PORT
+ENV PORT 8080
+EXPOSE 8080
 
 # Default command (use package.json start script if it exists)
 CMD ["npm", "start"]

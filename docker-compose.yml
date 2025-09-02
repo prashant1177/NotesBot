@@ -3,8 +3,8 @@ version: "3.8"
 services:
   backend:
     build: ./backend
-    ports:
-      - "80:8080"   # Map container's 8080 to host's 80 for Cloudflare
+    expose:
+      - "8080"   # Map container's 8080 to host's 80 for Cloudflare
     env_file:
       - ./backend/.env
 
@@ -13,9 +13,20 @@ services:
       context: ./frontend
       args:
         VITE_API_URL: "https://api.latexwriter.com"  # Backend subdomain
-    ports:
-      - "80:80"
     depends_on:
       - backend
     environment:
       - NODE_ENV=production
+
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+     - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
