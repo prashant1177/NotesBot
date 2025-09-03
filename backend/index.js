@@ -31,6 +31,7 @@ app.use(express.json({ limit: "2mb" }));
 const allowedOrigins = [
   "https://latexwriter.com",
   "https://www.latexwriter.com",
+  "http://localhost:5173",
 ];
 app.use(
   cors({
@@ -45,8 +46,6 @@ app.use(
       if (normalizedAllowedOrigins.includes(normalizedOrigin)) {
         callback(null, true);
       } else {
-        console.log('CORS rejected origin:', origin); // Debug log
-        console.log('Allowed origins:', allowedOrigins); // Debug log
         callback(new Error(`CORS not allowed for origin: ${origin}`), false);
       }
     },
@@ -90,34 +89,6 @@ app.use("/projects", projectRoutes); // all routes start with /api/projects
 app.use("/versions", versionsRoutes); // all routes start with /api/projects
 app.use("/api", premiumRoutes); // all routes start with /api/projects
 
-// API to compile LaTeX using Tectonic
-app.post("/compile", (req, res) => {
-  const { content } = req.body;
-
-  // create temporary directory
-  tmp.dir({ unsafeCleanup: true }, (err, dirPath, cleanup) => {
-    if (err) return res.status(500).send("Temp dir error");
-
-    const texPath = `${dirPath}/document.tex`;
-    const pdfPath = `${dirPath}/document.pdf`;
-
-    fs.writeFileSync(texPath, content);
-
-    // compile with Tectonic
-    exec(
-      `tectonic "${texPath}" --outdir="${dirPath}"`,
-      (err, stdout, stderr) => {
-        if (err) return res.status(500).send(stderr);
-
-        const pdfBuffer = fs.readFileSync(pdfPath);
-        res.setHeader("Content-Type", "application/pdf");
-        res.send(pdfBuffer);
-
-        cleanup(); // delete temp files
-      }
-    );
-  });
-});
 
 app.post("/register", async (req, res) => {
   const { fullname, email, username, password } = req.body;
@@ -144,7 +115,6 @@ app.post("/register", async (req, res) => {
 
     res.json({ msg: "OTP sent to email", token });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ msg: "Server error" });
   }
 });
@@ -277,69 +247,6 @@ app.get("/openeditor/:id", authenticateJWT, async (req, res) => {
   }
 });
 
-app.put("/like/:id", authenticateJWT, async (req, res) => {
-  if (!req.user) {
-    return res.status(403).json({ error: "Login error: Login to like this" });
-  }
-  const note = await Note.findById(req.params.id);
-
-  if (note.like.includes(req.user.username)) {
-    // Unlike
-    await Note.findByIdAndUpdate(
-      req.params.id,
-      { $pull: { like: req.user.username } },
-      { new: true }
-    );
-    res.json({ like: note.like.length - 1, likesSate: false });
-  } else {
-    // Like
-    await Note.findByIdAndUpdate(
-      req.params.id,
-      { $addToSet: { like: req.user.username } },
-      { new: true }
-    );
-    res.json({ like: note.like.length + 1, likesSate: true });
-  }
-});
-
-// Follow
-app.put("/follow/:id", authenticateJWT, async (req, res) => {
-  if (!req.user) {
-    return res
-      .status(403)
-      .json({ error: "Login error: You need to login to follow" });
-  }
-
-  if (req.user.following?.includes(req.params.id.toString())) {
-    await User.findByIdAndUpdate(
-      req.params.id,
-      { $pull: { followers: req.user._id } },
-      { new: true }
-    );
-
-    await User.findByIdAndUpdate(
-      req.user._id,
-      { $pull: { following: req.params.id } },
-      { new: true }
-    );
-
-    res.json({ message: "Unfollow success" });
-    return;
-  }
-  await User.findByIdAndUpdate(
-    req.params.id,
-    { $addToSet: { followers: req.user._id } },
-    { new: true }
-  );
-
-  await User.findByIdAndUpdate(
-    req.user._id,
-    { $addToSet: { following: req.params.id } },
-    { new: true }
-  );
-
-  res.json({ message: "Following success" });
-});
 app.listen(process.env.PORT || 8080, "0.0.0.0", () => {
   console.log("Server running on port 8080");
 });

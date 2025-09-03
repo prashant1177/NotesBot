@@ -16,7 +16,6 @@ router.get("/commit/:projectId", authenticateJWT, async (req, res) => {
     });
     res.json({ message: "Loaded", commits });
   } catch (error) {
-    console.error(err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -26,7 +25,12 @@ router.post("/commit/:projectId", authenticateJWT, async (req, res) => {
   const { projectId } = req.params;
   const { message } = req.body;
 
-  const project = await Project.findById(projectId);
+  const project = await Project.findById(projectId).populate("owner");
+  const user = project.owner;
+  let limit = 50;
+  if (!user.isPremium) {
+    limit = 5;
+  }
   if (!project) return res.status(404).json({ message: "Project not found" });
 
   // Get all files of the project
@@ -72,15 +76,12 @@ router.post("/commit/:projectId", authenticateJWT, async (req, res) => {
     filesDiff: changedFiles,
     createdAt: new Date(),
   });
-
-  console.log("New commit created:", newCommit._id);
-
   // Maintain only last 5 commits
   const commits = await Commit.find({ project: projectId }).sort({
     createdAt: 1,
   }); // oldest first
 
-  if (commits.length > 5) {
+  if (commits.length > limit) {
     const commitToDelete = commits[0];
 
     // Remove commit references from blobs
@@ -98,13 +99,11 @@ router.post("/commit/:projectId", authenticateJWT, async (req, res) => {
           (!updatedBlob.commitIDs || updatedBlob.commitIDs.length === 0)
         ) {
           await Blob.findByIdAndDelete(blob._id);
-          console.log("Deleted blob:", blob._id);
         }
       }
     }
 
     await Commit.findByIdAndDelete(commitToDelete._id);
-    console.log("Deleted oldest commit:", commitToDelete._id);
   }
 
   res.json({
@@ -122,7 +121,6 @@ router.post("/retrieve/:projectId", authenticateJWT, async (req, res) => {
   if (!project) return res.status(404).json({ message: "Project not found" });
 
   const commit = await Commit.findById(commitId);
-  console.log("Loaded commit:", commitId);
 
   for (const file of commit.filesDiff) {
     const exists = await File.findById(file.file._id);
@@ -130,7 +128,6 @@ router.post("/retrieve/:projectId", authenticateJWT, async (req, res) => {
       await File.findByIdAndUpdate(file.file._id, {
         blobId: file.blob._id,
       });
-      console.log("File retrieved successfully", file.blob._id);
     } else {
       await File.create({
         name: file.fileName,
@@ -141,10 +138,11 @@ router.post("/retrieve/:projectId", authenticateJWT, async (req, res) => {
       });
     }
   }
-    const files = await File.find({ project: projectId });
+  const files = await File.find({ project: projectId });
 
   res.json({
-    message: "Commit retrieved successfully",files
+    message: "Commit retrieved successfully",
+    files,
   });
 });
 

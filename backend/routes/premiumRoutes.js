@@ -56,9 +56,6 @@ router.post("/payment/verify", authenticateJWT, async (req, res) => {
     req.body;
 
   const sign = razorpay_subscription_id + "|" + razorpay_payment_id;
-    console.log(razorpay_subscription_id);
-    console.log(razorpay_payment_id);
-    console.log(razorpay_signature);
   const expectedSign = crypto
       .createHmac("sha256", process.env.RAZORPAY_SECRET)
       .update(`${razorpay_payment_id}|${razorpay_subscription_id}`)

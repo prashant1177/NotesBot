@@ -46,12 +46,10 @@ async function writeProjectToTemp(dirPath, folders, files, parentId) {
           fs.writeFileSync(filePath, file.blobId.content.toString()); // text
         }
       } catch (fileErr) {
-        console.error(`❌ Failed writing file ${file.name}:`, fileErr);
         throw fileErr; // rethrow so main route catches
       }
     }
   } catch (err) {
-    console.error("❌ Error in writeProjectToTemp:", err);
     throw err; // propagate up to route handler
   }
 }
@@ -82,7 +80,6 @@ router.post("/compile/:id", authenticateJWT, async (req, res) => {
     try {
       await execPromise(`tectonic "${mainFilePath}" --outdir="${tempPath}"`);
     } catch (compileErr) {
-      console.error("❌ Compilation failed:", compileErr);
       return res.status(500).json({
         error:
           compileErr.stderr?.toString() ||
@@ -101,7 +98,6 @@ router.post("/compile/:id", authenticateJWT, async (req, res) => {
     res.setHeader("Content-Type", "application/pdf");
     res.send(pdfBuffer);
   } catch (err) {
-    console.error("❌ Unexpected error in compile route:", err);
     res.status(500).json({
       error: err.message || "Server error",
     });
@@ -246,7 +242,6 @@ router.post(
   upload.single("image"),
   async (req, res) => {
     try {
-      console.log(req.user);
       if (!req.user)
         return res.status(400).json({ message: "Authentication issue" });
 
@@ -287,7 +282,6 @@ router.post(
       const Files = await File.find({ parent: currFolder });
       res.json({ message: "Image uploaded successfully", Files });
     } catch (err) {
-      console.error(err);
       res.status(500).json({ message: "Upload failed" });
     }
   }
@@ -482,7 +476,6 @@ router.post("/savefile/:id", authenticateJWT, async (req, res) => {
         mime: "application/x-tex",
         filesIDs: [currfile],
       });
-      console.log("New blob created id add", currfile);
     } else {
       // Add current file ID if not already present
       await Blob.findByIdAndUpdate(blob._id, {
@@ -511,17 +504,14 @@ router.post("/savefile/:id", authenticateJWT, async (req, res) => {
           (!updatedOldBlob.commitIDs || updatedOldBlob.commitIDs.length === 0)
         ) {
           await Blob.findByIdAndDelete(oldBlobId);
-          console.log("Old blob deleted:", oldBlobId);
         } else {
           await oldBlob.save();
-          console.log("Old blob updated, one file ID removed:", oldBlobId);
         }
       }
     }
 
     res.json({ message: "File saved successfully" });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -544,7 +534,6 @@ router.post("/deleteFile/:id", authenticateJWT, async (req, res) => {
     const blobId = file.blobId;
     const folderId = file.parent;
 
-    console.log(blobId);
     // 2. Delete the file first
     await File.findByIdAndDelete(fileID);
 
@@ -565,7 +554,6 @@ router.post("/deleteFile/:id", authenticateJWT, async (req, res) => {
       (!updatedBlob.commitIDs || updatedBlob.commitIDs.length === 0)
     ) {
       await Blob.findByIdAndDelete(blobId);
-      console.log("Blob deleted:", blobId);
     } else {
       console.log("Blob updated, file removed:", blobId);
     }
@@ -574,7 +562,6 @@ router.post("/deleteFile/:id", authenticateJWT, async (req, res) => {
     });
     res.json({ message: "File deleted successfully", Files });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -611,7 +598,7 @@ router.post("/fork/:id", authenticateJWT, async (req, res) => {
     blobId: project.rootFile.blobId,
     isBinary: false,
   });
-console.log(mainFile)
+
   await Blob.findByIdAndUpdate(project.rootFile.blobId, {
     $addToSet: { filesIDs: mainFile._id },
   });
