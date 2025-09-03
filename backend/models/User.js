@@ -7,7 +7,12 @@ const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true, lowercase: true },
   userabout: { type: String },
   project: {
-    type: [String],
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Project",
+      }
+    ],
     default: [],
   },
   password: { type: String, required: true },
