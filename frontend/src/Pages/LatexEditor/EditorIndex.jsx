@@ -50,13 +50,12 @@ export default function EditorIndex() {
       const res = await api.get("/api/checkpremium");
       
       if (!res.data.isPremium) {
-        // if backend says not premium, show premium upgrade page
         setLeftView("premium");
-        return; // ⬅️ stop here, don't overwrite
+        return; 
       }
     } catch (err) {
       console.error("Error checking premium:", err);
-      // fallback in case of error
+     
       setLeftView("premium");
       return;
     }

@@ -14,6 +14,7 @@ import { useState } from "react";
 import api from "../../../api";
 import ProjectViewSidebar from "./ProjectViewSidebar";
 import PdfViewer from "../../LatexEditor/PdfViewer";
+import PremiumIndex from "../../Premium/PremiumIndex";
 
 export default function ProjectView() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function ProjectView() {
   const [project, setProject] = useState({}); // content state
   const [backFolder, setBackFolder] = useState(null);
   const [latex, setLatex] = useState(null);
-  const [viewPdf, setViewPdf] = useState(true);
+  const [viewPdf, setViewPdf] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState("");
 
@@ -52,6 +53,15 @@ export default function ProjectView() {
 
   const compileLatexWithImage = async () => {
     try {
+      const res = await api.get("/api/checkpremium");
+      if (!res.data.isPremium) {
+        return;
+      }
+    } catch (err) {
+      console.error("Error checking premium:", err);
+      return;
+    }
+    try {
       setLoading(true);
       const res = await api.post(
         `/projects/compile/${projectid}`,
@@ -62,7 +72,6 @@ export default function ProjectView() {
         }
       );
       const blob = res.data;
-      console.log(blob);
       setPdfUrl(URL.createObjectURL(blob));
     } catch (err) {
       console.error("Error compiling LaTeX:", err);
@@ -152,8 +161,10 @@ export default function ProjectView() {
         </div>
 
         <div className="flex-1 h-screen flex">
-          {viewPdf ? (
+          {viewPdf && pdfUrl ? (
             <PdfViewer pdfUrl={pdfUrl} loading={loading} />
+          ) : viewPdf ? (
+            <PremiumIndex />
           ) : (
             latex && (
               <div className="border-l-1 border-gray-200 w-full flex flex-col flex-1 relative ">

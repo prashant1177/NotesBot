@@ -102,6 +102,9 @@ export default function PremiumIndex() {
               <span className="text-purple-600">✔</span> Auto Compile
             </li>
             <li className="flex items-center gap-2">
+              <span className="text-purple-600">✔</span> Compile Templates
+            </li>
+            <li className="flex items-center gap-2">
               <span className="text-purple-600">✔</span> Faster cloud
               compilation
             </li>
