@@ -21,9 +21,15 @@ export default function CreateProject() {
         privatMark: privatMark,
       };
       const res = await api.post("/projects/create", Project);
-      const ProjectID = res.data.id; // MongoDB ID
+      const ProjectID = res.data.id;
       navigate(`/latexeditor/${ProjectID}`);
     } catch (err) {
+      if (err.response && err.response.data.message) {
+        alert(err.response.data.message);
+        if (err.response.data.requiredpremium) {
+          navigate(`/pricing`);
+        }
+      }
       console.error("Failed to save note:", err);
     }
   };

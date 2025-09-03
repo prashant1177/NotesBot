@@ -390,7 +390,7 @@ router.post("/create", authenticateJWT, async (req, res) => {
   if (!req.user.isPremium && req.user.project.length > 0) {
     return res
       .status(400)
-      .json({ message: "premium is required for more projects" });
+      .json({ message: "premium is required for more than one project", requiredpremium: true});
   }
 
   const { title, about, topics, private } = req.body;
