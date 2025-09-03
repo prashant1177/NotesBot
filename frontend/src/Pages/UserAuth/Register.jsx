@@ -25,6 +25,8 @@ function Register() {
   const [showOtpForm, setShowOtpForm] = useState(false);
   const [token, setToken] = useState(null); // JWT token from backend
 
+  const [errors, setErrors] = useState({ username: "", password: "" });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -38,6 +40,21 @@ function Register() {
       setLoading(false);
       alert(err.response?.data?.msg || "Error registering");
     }
+  };
+  const validateUsername = (value) => {
+    const regex = /^[a-zA-Z0-9._]+$/; // Instagram-like (letters, numbers, dot, underscore)
+    if (/\s/.test(value)) return "Username must not contain spaces";
+    if (!regex.test(value))
+      return "Only letters, numbers, underscores and periods are allowed";
+    return "";
+  };
+
+  const validatePassword = (value) => {
+    const strongRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    if (!strongRegex.test(value))
+      return "Password must be at least 8 chars, include upper, lower, number & special char";
+    return "";
   };
 
   return (
@@ -86,10 +103,16 @@ function Register() {
                   type="text"
                   placeholder="Choose a username"
                   required
-                  onChange={(e) =>
-                    setForm({ ...form, username: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setForm({ ...form, username: val });
+                    setErrors({ ...errors, username: validateUsername(val) });
+                  }}
                 />
+{errors.username && (
+  <p className="text-red-500 text-xs mt-1">{errors.username}</p>
+)}
+
               </div>
               <div className="space-y-2">
                 <label className="flex items-center gap-2 font-medium text-sm">
@@ -100,13 +123,19 @@ function Register() {
                   type="password"
                   placeholder="Password"
                   required
-                  onChange={(e) =>
-                    setForm({ ...form, password: e.target.value })
+                  onChange={(e) =>{
+    const val = e.target.value;
+    setForm({ ...form, password: val });
+    setErrors({ ...errors, password: validatePassword(val) });
+  }
                   }
                 />
+{errors.password && (
+  <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+)}
               </div>
               <div className="flex w-full justify-center">
-                <Button type="submit" disabled={loading} className="">
+                <Button type="submit" disabled={loading || errors.username || errors.password} >
                   {loading ? (
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />

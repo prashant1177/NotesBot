@@ -386,14 +386,12 @@ router.post("/create", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
-
-  if (!req.user.isPremium && req.user.project.length > 0) {
-    return res
-      .status(400)
-      .json({
-        message: "premium is required for more than one project",
-        requiredpremium: true,
-      });
+  const user = await User.findById(req.user.id).populate("project");
+  if (!user.isPremium && user.project.length > 0) {
+    return res.status(400).json({
+      message: "premium is required for more than one project",
+      requiredpremium: true,
+    });
   }
 
   const { title, about, topics, private } = req.body;
@@ -455,7 +453,7 @@ router.post("/create", authenticateJWT, async (req, res) => {
 
   await User.findByIdAndUpdate(
     req.user._id,
-    { $addToSet: { project: project._id } } // add project id
+    { $push: { project: project._id } } // add project id
   );
   res.status(201).json({ id: project._id, foldername });
 });
@@ -579,14 +577,13 @@ router.post("/fork/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.status(500).json({ message: "Login To Continue" });
   }
-  
-  if (!req.user.isPremium && req.user.project.length > 0) {
-    return res
-      .status(400)
-      .json({
-        message: "premium is required for more than one project",
-        requiredpremium: true,
-      });
+
+   const user = await User.findById(req.user.id).populate("project");
+  if (!user.isPremium && user.project.length > 0) {
+    return res.status(400).json({
+      message: "premium is required for more than one project",
+      requiredpremium: true,
+    });
   }
   const project = await Project.findById(req.params.id)
     .populate("rootFolder")
