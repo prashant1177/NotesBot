@@ -35,6 +35,13 @@ export default function Navbar() {
                 >
                  Workflow
                 </a>
+              </li><li>
+                <Link
+                  to="/Documentation"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                 Documentation
+                </Link>
               </li>
 
               {/* Login/Logout Button */}
