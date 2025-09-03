@@ -386,11 +386,14 @@ router.post("/create", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
-  
+
   if (!req.user.isPremium && req.user.project.length > 0) {
     return res
       .status(400)
-      .json({ message: "premium is required for more than one project", requiredpremium: true});
+      .json({
+        message: "premium is required for more than one project",
+        requiredpremium: true,
+      });
   }
 
   const { title, about, topics, private } = req.body;
@@ -576,7 +579,15 @@ router.post("/fork/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.status(500).json({ message: "Login To Continue" });
   }
-
+  
+  if (!req.user.isPremium && req.user.project.length > 0) {
+    return res
+      .status(400)
+      .json({
+        message: "premium is required for more than one project",
+        requiredpremium: true,
+      });
+  }
   const project = await Project.findById(req.params.id)
     .populate("rootFolder")
     .populate("rootFile");
