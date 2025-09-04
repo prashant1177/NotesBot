@@ -117,7 +117,7 @@ export default function EditorIndex() {
           rightView={rightView}
         />
       </div>
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-col-reverse  md:flex-row flex-1 md:overflow-hidden">
         {leftView == "PDF" ? (
           <PdfViewer pdfUrl={pdfUrl} loading={loading} />
         ) : leftView == "versions" ? (

@@ -105,14 +105,14 @@ export default function ProjectView() {
         setViewPdf={setViewPdf}
         viewPdf={viewPdf}
       />
-      <div className="flex w-full">
+      <div className="flex flex-col gap-4 md:gap-0 md:flex-row w-full">
         <div className="flex-1 flex flex-col w-full border-r-1 border-gray-200">
           <div className=" text-gray-900 pb-2  border-b-8 border-gray-100">
-            <h1 className="flex text-gray-800 mb-2 items-center gap-2 text-2xl pt-4 px-8">
+            <h1 className="flex text-gray-800 mb-2 items-center gap-2 text-2xl pt-4 px-4 md:px-8">
               <LibraryBig strokeWidth={1} size={20} />
               {project.title}
             </h1>
-            <div className="flex justify-between gap-4 pe-8 px-8">
+            <div className="flex justify-between gap-4 pe-8 px-4 md:px-8">
               <h1>Project files listed below</h1>
               <div className="flex gap-4">
                 <h1>
@@ -125,7 +125,7 @@ export default function ProjectView() {
             {folders?.map((folderInside, i) => (
               <button
                 onClick={() => openFolder(folderInside._id)}
-                className="border-b-2 border-gray-200 p-2 flex gap-2 items-center  px-8"
+                className="border-b-2 border-gray-200 p-2 flex gap-2 items-center  px-4 md:px-8"
                 key={i}
               >
                 <Folder size={16} />
@@ -134,7 +134,7 @@ export default function ProjectView() {
             ))}
             {files?.map((filesInside, i) => (
               <div
-                className="flex justify-between border-b-2 border-gray-200  px-8"
+                className="flex justify-between border-b-2 border-gray-200  px-4 md:px-8"
                 key={i}
               >
                 <button
@@ -151,7 +151,7 @@ export default function ProjectView() {
             {backFolder && (
               <button
                 onClick={() => openFolder(backFolder)}
-                className="border-b-1 border-gray-200 bg-gray-50 p-2 flex gap-2 items-center  px-8"
+                className="border-b-1 border-gray-200 bg-gray-50 p-2 flex gap-2 items-center  px-4 md:px-8"
               >
                 <MoveLeft size={16} />
                 Go Back

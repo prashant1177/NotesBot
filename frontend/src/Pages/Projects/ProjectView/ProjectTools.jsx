@@ -25,12 +25,12 @@ export default function ProjectTools({ projectid,setViewPdf,viewPdf }) {
 
   
   return (
-    <div className="flex justify-between p-4 px-8 bg-gray-100">
-      <div className="flex items-center gap-8">
+    <div className="flex justify-between p-2 md:p-4 md:px-8 bg-gray-100 text-sm">
+      <div className="flex items-center md:gap-8">
         <Button onClick={openeditor}>
           Open in Editor
         </Button></div>
-      <div className="flex gap-8">
+      <div className="flex md:gap-8 gap-2">
         <Button onClick={viewContent}>{viewPdf ?"View File" : "View PDF"} </Button>
         <Button onClick={fork} varient="primary">FORK THIS</Button>
       </div>
