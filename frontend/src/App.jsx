@@ -15,6 +15,11 @@ import UserProfileIndex from "./Pages/Projects/MyProjectsList/UserProfileIndex";
 import TemplatesIndex from "./Pages/Templates/TemplatesIndex";
 import PremiumPage from "./Pages/Premium/PremiumPage";
 import DocumentationIndex from "./Pages/Documentation/DocumentationIndex";
+import BlogIndex from "./Blogs/BlogIndex";
+import { BlogPosts } from "./Blogs/BlogPosts";
+import BlogView from "./Blogs/BlogView";
+import About from "./SitePages/About";
+import PrivacyPolicy from "./SitePages/PrivacyPolicy";
 function App() {
   const [isActive, setIsActive] = useState(false);
   const [sidebarHide, setSidebarHide] = useState("w-16");
@@ -64,10 +69,15 @@ function App() {
             <Route path="/profile/:username" element={<UserProfileIndex />} />
             <Route path="/templates" element={<TemplatesIndex />} />
             
-            {/*    <Route path="/templates" element={<OtpForm />} /> */}
-            <Route path="/pricing" element={<PremiumPage />} />
-            <Route path="/create/project" element={<CreateProject />} />
+            {/*    Sitepage */}
+            <Route path="/About" element={<About />} />
+            <Route path="/Blog" element={<BlogIndex />} />
+            <Route path="/Blog/:blogSlug" element={<BlogView />} />
             <Route path="/documentation" element={<DocumentationIndex />} />
+            <Route path="/pricing" element={<PremiumPage />} />
+            <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+
+            <Route path="/create/project" element={<CreateProject />} />
           </Routes>
         </div>
       </div>

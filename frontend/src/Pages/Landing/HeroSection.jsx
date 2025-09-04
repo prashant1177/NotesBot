@@ -5,13 +5,13 @@ import LatexWriterImage from "../../assets/LatexWriterImage.png";
 
 export function HeroSection() {
   return (
-    <section className="container min-h-screen flex items-center justify-center overflow-hidden ">
-      <div className="flex flex-col md:flex-row w-full items-center h-full z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center md:text-left flex flex-col my-4 md:my-0 items-center md:block">
+    <section className=" min-h-screen w-full flex items-center justify-center overflow-hidden ">
+      <div className="flex flex-col md:flex-row w-full items-center h-full z-10 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex-1 text-center md:text-left flex flex-col my-4 md:my-0 items-center md:block">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-muted/30 border border-border/20 mb-8">
             <Sparkles className="w-4 h-4 text-chart-1 mr-2" />
             <span className="text-sm text-muted-foreground ">
-              Smarter LaTeX editing
+              Write faster. Format smarter. Publish better.
             </span>
           </div>
 
@@ -38,7 +38,7 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div className="md:w-3/6 md:h-96 rounded-4xl rounded-bl-4xl overflow-hidden mt-8 md:mt-0">
+        <div className="flex-1 md:h-96 rounded-4xl rounded-bl-4xl overflow-hidden mt-8 md:mt-0">
           <img
             src={LatexWriterImage}
             alt="LatexWriterImage"

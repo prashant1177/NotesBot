@@ -30,20 +30,20 @@ export default function Navbar() {
                 </Link>
               </li>
               <li>
-                <a
-                  href="/#features"
+                <Link
+                  to="/About"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Features
-                </a>
+                  About
+                </Link>
               </li>
               <li>
-                <a
-                  href="/#how-it-works"
+                <Link
+                  to="/Blog"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Workflow
-                </a>
+                  Blog
+                </Link>
               </li>
               <li>
                 <Link
@@ -115,22 +115,22 @@ export default function Navbar() {
                   </Link>
                 </li>
                 <li>
-                  <a
-                    href="/#features"
+                  <Link
+                    to="/About"
                     className="block text-muted-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Features
-                  </a>
+                    About
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/#how-it-works"
+                  <Link
+                    to="/Blog"
                     className="block text-muted-foreground hover:text-primary transition-colors py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Workflow
-                  </a>
+                    Blog
+                  </Link>
                 </li>
                 <li>
                   <Link
@@ -145,19 +145,21 @@ export default function Navbar() {
 
               {/* Mobile Auth Buttons */}
               <div className="pt-4 border-t border-border/20 space-y-3">
-                <Link 
+                <Link
                   to="/login"
                   className="block"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <Button className="w-full">Sign in</Button>
                 </Link>
-                <Link 
+                <Link
                   to="/register"
                   className="block"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Button varient="transparent" className="w-full">Get Started</Button>
+                  <Button varient="transparent" className="w-full">
+                    Get Started
+                  </Button>
                 </Link>
               </div>
             </div>

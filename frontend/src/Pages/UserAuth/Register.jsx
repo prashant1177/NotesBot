@@ -88,7 +88,7 @@ function Register() {
                   Email
                 </label>
                 <Input
-                  type="text"
+                  type="email"
                   placeholder="Enter your email"
                   required
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
