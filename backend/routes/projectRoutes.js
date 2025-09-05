@@ -18,6 +18,50 @@ const path = require("path");
 const { exec } = require("child_process");
 const util = require("util");
 const execPromise = util.promisify(exec);
+require("dotenv").config(); // Load .env file variables
+const { GoogleGenAI } = require("@google/genai");
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+async function errorHandling(error) {
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: error,
+    config: {
+      systemInstruction:
+        "You are a LaTeX error-solving AI. For any LaTeX error input, respond only with the following details: Error: Copy the exact LaTeX error message. Line: Specify the line number(s) where the error occurs (if available). Cause: Explain why the error occurs. Fix: Give the exact solution, including the corrected LaTeX command or code snippet - If you know the exact solution, and any minimal changes needed in the document to resolve the error. Do not add anything else. Focus entirely on providing a precise, actionable fix.",
+    },
+  });
+  console.log(response.text);
+  return response.text;
+}
+
+router.post("/askGemini", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.status(403).json({ error: "You are not logged in" });
+  }
+  const { input } = req.body;
+
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: input,
+    config: {
+      systemInstruction:
+        "Your are an AI Assitant and your name is Latexwriter.AI",
+    },
+  });
+  console.log(response.text);
+  return res.json({ text: response.text });
+});
+router.post("/debugerror", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.status(403).json({ error: "You are not logged in" });
+  }
+  const { error } = req.body;
+  const debuggedError = await errorHandling(error);
+
+  return res.json({ debuggedError });
+});
 
 async function writeProjectToTemp(dirPath, folders, files, parentId) {
   try {
@@ -80,12 +124,10 @@ router.post("/compile/:id", authenticateJWT, async (req, res) => {
     try {
       await execPromise(`tectonic "${mainFilePath}" --outdir="${tempPath}"`);
     } catch (compileErr) {
-      return res.status(500).json({
-        error:
-          compileErr.stderr?.toString() ||
-          compileErr.message ||
-          "Compilation failed",
-      });
+      const errorMessage =
+        compileErr.stderr || compileErr.stdout || compileErr.message;
+
+      return res.send(errorMessage);
     }
 
     const pdfPath = path.join(tempPath, mainFile.name.replace(".tex", ".pdf"));
@@ -578,7 +620,7 @@ router.post("/fork/:id", authenticateJWT, async (req, res) => {
     return res.status(500).json({ message: "Login To Continue" });
   }
 
-   const user = await User.findById(req.user.id).populate("project");
+  const user = await User.findById(req.user.id).populate("project");
   if (!user.isPremium && user.project.length > 0) {
     return res.status(400).json({
       message: "premium is required for more than one project",

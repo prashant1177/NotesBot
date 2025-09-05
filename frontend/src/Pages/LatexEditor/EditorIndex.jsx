@@ -11,6 +11,8 @@ import Commit from "./Commit";
 import Versions from "./Versions";
 import PremiumIndex from "../Premium/PremiumIndex";
 import MathSymbolsEditor from "./MathSymbolsEditor";
+import AIChat from "./AIChat";
+
 export default function EditorIndex() {
   const { projectid } = useParams(); // 👈 here you get "id" from the URL
   const [loading, setLoading] = useState(false);
@@ -18,6 +20,9 @@ export default function EditorIndex() {
   const [currfile, setCurrFile] = useState({}); // content state
   const [folders, setFolders] = useState([]); // content state
   const [files, setFiles] = useState([]); // content state
+  const [isError, setIsError] = useState(false); // content state
+  const [ErrorFix, setErrorFix] = useState("");
+  const [debug, setDebug] = useState(true);
 
   const [leftView, setLeftView] = useState("files");
   const [rightView, setRightView] = useState("Editor");
@@ -45,21 +50,21 @@ export default function EditorIndex() {
   }, [projectid]);
 
   const handleViewLeft = async (s) => {
-     if (s === "math") {
-    try {
-      const res = await api.get("/api/checkpremium");
-      
-      if (!res.data.isPremium) {
+    if (s === "math") {
+      try {
+        const res = await api.get("/api/checkpremium");
+
+        if (!res.data.isPremium) {
+          setLeftView("premium");
+          return;
+        }
+      } catch (err) {
+        console.error("Error checking premium:", err);
+
         setLeftView("premium");
-        return; 
+        return;
       }
-    } catch (err) {
-      console.error("Error checking premium:", err);
-     
-      setLeftView("premium");
-      return;
     }
-  }
     setLeftView(s);
   };
   const handleViewRight = (s) => {
@@ -77,11 +82,21 @@ export default function EditorIndex() {
           headers: { "Content-Type": "application/json" },
         }
       );
+      const contentType = res.headers["content-type"];
 
-      const blob = res.data;
-      console.log(blob);
-
-      setPdfUrl(URL.createObjectURL(blob));
+      if (contentType.includes("application/pdf")) {
+        setIsError(false);
+        const blob = res.data;
+        setPdfUrl(URL.createObjectURL(blob));
+        setDebug(false);
+      } else {
+        setIsError(true);
+        setDebug(true);
+        const text = await res.data.text();
+        setErrorFix(text);
+        setPdfUrl("");
+        console.log("Compilation error: " + text);
+      }
     } catch (err) {
       console.error("Error compiling LaTeX:", err);
     } finally {
@@ -119,12 +134,24 @@ export default function EditorIndex() {
       </div>
       <div className="flex flex-col-reverse  md:flex-row flex-1 md:overflow-hidden">
         {leftView == "PDF" ? (
-          <PdfViewer pdfUrl={pdfUrl} loading={loading} />
+          <PdfViewer
+            pdfUrl={pdfUrl}
+            loading={loading}
+            isError={isError}
+            setErrorFix={setErrorFix}
+            ErrorFix={ErrorFix}
+            setDebug={setDebug}
+            debug={debug}
+          />
         ) : leftView == "versions" ? (
           <Versions projectid={projectid} />
         ) : leftView == "math" ? (
           <MathSymbolsEditor editorRef={editorRef} />
-        ) : leftView == "premium" ? <PremiumIndex />: (
+        ): leftView == "Gemini" ? (
+          <AIChat />
+        ) : leftView == "premium" ? (
+          <PremiumIndex />
+        ) : (
           <FolderView
             saveFile={saveFile}
             projectid={projectid}
@@ -144,9 +171,6 @@ export default function EditorIndex() {
             <>
               {" "}
               <Commit projectid={projectid} handleViewRight={handleViewRight} />
-              {/* 
-                        
- */}
             </>
           ) : (
             <MonacoEditor

@@ -2,8 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../../../api";
 import ProjectList from "./ProjectList";
-import Profile from "./Profile";
-
 export default function UserProfileIndex() {
   const { username } = useParams(); // 👈 here you get "id" from the URL
   const [projects, setprojects] = useState([]); // title state
@@ -24,7 +22,7 @@ export default function UserProfileIndex() {
   }, [username]);
 
   return (
-    <div className="px-16 ">
+    <div className="px-2 md:px-16 ">
       <div className="flex mt-4">
         <ProjectList projects={projects} author={author} />
       </div>

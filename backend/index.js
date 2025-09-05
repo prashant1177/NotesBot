@@ -40,8 +40,10 @@ app.use(
       if (!origin) {
         return callback(new Error("CORS not allowed: missing Origin"), false);
       }
-      const normalizedOrigin = origin.replace(/\/$/, '');
-      const normalizedAllowedOrigins = allowedOrigins.map(o => o.replace(/\/$/, ''));
+      const normalizedOrigin = origin.replace(/\/$/, "");
+      const normalizedAllowedOrigins = allowedOrigins.map((o) =>
+        o.replace(/\/$/, "")
+      );
 
       if (normalizedAllowedOrigins.includes(normalizedOrigin)) {
         callback(null, true);
@@ -50,15 +52,15 @@ app.use(
       }
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: [
-      'Content-Type', 
-      'Authorization', 
-      'X-Requested-With',
-      'Accept',
-      'Origin'
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+      "Origin",
     ],
-    optionsSuccessStatus: 200 // no trailing comma needed
+    optionsSuccessStatus: 200, // no trailing comma needed
   })
 );
 
@@ -88,7 +90,6 @@ async function database() {
 app.use("/projects", projectRoutes); // all routes start with /api/projects
 app.use("/versions", versionsRoutes); // all routes start with /api/projects
 app.use("/api", premiumRoutes); // all routes start with /api/projects
-
 
 app.post("/register", async (req, res) => {
   const { fullname, email, username, password } = req.body;
@@ -136,9 +137,9 @@ app.post("/verify-otp", async (req, res) => {
 
 app.post("/login", (req, res, next) => {
   passport.authenticate("local", { session: false }, (err, user, info) => {
-    if (err || !user)
+    if (err || !user){
       return res.status(400).json({ msg: info?.message || "Login failed" });
-
+    }
     // Issue JWT
     const token = jwt.sign(
       { id: user.id, username: user.fullname },

@@ -5,10 +5,30 @@ import { Viewer, Worker } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import PdfTools from "./PdfTools";
 import { useState } from "react";
+import Button from "../../ui/Button/Button";
+import api from "../../api";
+import ErrorByAI, { generateFormattedHtml } from "./ErrorByAI";
 
-export default function PdfViewer({ pdfUrl, loading }) {
-  const [isChecked, setIsChecked] = useState(true); // ✅ default ON
-
+export default function PdfViewer({
+  pdfUrl,
+  loading,
+  isError,
+  ErrorFix,
+  setErrorFix,
+  setDebug,
+  debug
+}) {
+  const [isChecked, setIsChecked] = useState(true);
+  const [thinking, setThinking] = useState(false);
+  
+  const handleAskAi = async () => {
+    setThinking(true);
+    const res = await api.post(`/projects/debugerror`, { error: ErrorFix });
+    
+    setErrorFix(generateFormattedHtml(res.data.debuggedError));
+    setThinking(false);
+    setDebug(false);
+  }; 
   return (
     <div className="flex flex-col flex-1 relative ">
       <div className="shrink-0">
@@ -26,8 +46,8 @@ export default function PdfViewer({ pdfUrl, loading }) {
             <div className="animate-spin rounded-full h-24 w-24 border-b-4"></div>
           </div>
         )}
-        {pdfUrl &&
-          (isChecked ? (
+        {pdfUrl ? (
+          isChecked ? (
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
               <Viewer className="h-full w-full " fileUrl={pdfUrl} />
             </Worker>
@@ -37,7 +57,12 @@ export default function PdfViewer({ pdfUrl, loading }) {
               className="h-full w-full border-0"
               title="PDF Viewer"
             />
-          ))}{" "}
+          )
+        ) : (
+          isError && (
+            <ErrorByAI handleAskAi={handleAskAi} thinking={thinking} debug={debug} ErrorFix={ErrorFix} />
+          )
+        )}{" "}
       </div>
     </div>
   );

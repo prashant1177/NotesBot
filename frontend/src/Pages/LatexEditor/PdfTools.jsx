@@ -3,10 +3,15 @@ import api from "../../api";
 import { ArrowDownToLine } from "lucide-react";
 import Button from "../../ui/Button/Button";
 
-export default function PdfTools({ isChecked, setIsChecked, pdfUrl }) {
+export default function PdfTools({
+  isChecked,
+  setIsChecked,
+  pdfUrl,
+}) {
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
+
 
   const downloadpdf = async () => {
     const a = document.createElement("a");
@@ -41,10 +46,9 @@ export default function PdfTools({ isChecked, setIsChecked, pdfUrl }) {
           Fast Preview Mode
         </span>
       </label>
-
-      <Button onClick={downloadpdf} className="text-gray-300">
-        Download
-      </Button>
+        <Button onClick={downloadpdf} className="text-gray-300">
+          Download
+        </Button>
     </div>
   );
 }

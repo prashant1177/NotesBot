@@ -85,10 +85,13 @@ export default function PremiumIndex() {
           {/* Premium features list */}
           <ul className="text-left text-gray-700 space-y-2 mb-6">
             <li className="flex items-center gap-2">
-              <span className="text-purple-600">✔</span> AI Integration
+              <span className="text-purple-600">✔</span>Get AI Assitance
             </li>
             <li className="flex items-center gap-2">
-              <span className="text-purple-600">✔</span> Save 10x Commits /
+              <span className="text-purple-600">✔</span>Debug Error With AI
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-purple-600">✔</span> Save 50 Commits /
               Version
             </li>
             <li className="flex items-center gap-2">
@@ -97,9 +100,6 @@ export default function PremiumIndex() {
             <li className="flex items-center gap-2">
               <span className="text-purple-600">✔</span> Simplifies Math
               Keyboard
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-purple-600">✔</span> Auto Compile
             </li>
             <li className="flex items-center gap-2">
               <span className="text-purple-600">✔</span> Compile Templates

@@ -17,7 +17,7 @@ export default function EditorTool({
         onClick={() => handleViewLeft("files")}
         className={`${
           leftView == "files"
-            ? "bg-gray-300 text-gray-950"
+            ? "bg-gray-900 text-gray-300"
             : "text-gray-950"
         } px-2 sm:px-4 py-2 text-xs sm:text-sm whitespace-nowrap`}
       >
@@ -27,7 +27,7 @@ export default function EditorTool({
       <button
         onClick={() => handleViewLeft("PDF")}
         className={`${
-          leftView == "PDF" ? "bg-gray-300 text-gray-950" : "text-gray-950"
+          leftView == "PDF" ? "bg-gray-900 text-gray-300" : "text-gray-950"
         } px-2 sm:px-4 py-2 text-xs sm:text-sm whitespace-nowrap`}
       >
         <span className="hidden sm:inline">View PDF</span>
@@ -37,7 +37,7 @@ export default function EditorTool({
       <button
         className={`${
           leftView === "versions"
-            ? "bg-gray-300 text-gray-950"
+            ? "bg-gray-900 text-gray-300"
             : "text-gray-950"
         } px-2 sm:px-4 py-2 text-xs sm:text-sm whitespace-nowrap`}
         onClick={() => handleViewLeft("versions")}
@@ -49,12 +49,24 @@ export default function EditorTool({
         onClick={() => handleViewLeft("math")}
         className={`${
           leftView == "math"
-            ? "bg-gray-300 text-gray-950"
+            ? "bg-gray-900 text-gray-300"
             : "text-gray-950"
         } px-2 sm:px-4 py-2 text-xs sm:text-sm whitespace-nowrap`}
       >
         <span className="hidden sm:inline">Math Symbols</span>
         <span className="sm:hidden">Math</span>
+      </button>
+
+       <button
+        onClick={() => handleViewLeft("Gemini")}
+        className={`${
+          leftView == "Gemini"
+            ? "bg-gray-900 text-gray-300"
+            : "text-gray-950"
+        } px-2 sm:px-4 py-2 text-xs sm:text-sm whitespace-nowrap`}
+      >
+        <span className="hidden sm:inline">Ask Gemini</span>
+        <span className="sm:hidden">Gemini</span>
       </button>
     </div>
   </div>
@@ -68,7 +80,8 @@ export default function EditorTool({
     </Button>
     <Button 
       onClick={() => compileLatexWithImage()}
-      className="text-xs sm:text-sm px-3 sm:px-4 py-2 flex-shrink-0"
+      className="text-xs sm:text-sm px-3 sm:px-4 py-2 flex-shrink-0 "
+      varient="primary"
     > 
       <span className="hidden sm:inline">Compile PDF</span>
       <span className="sm:hidden">Compile</span>
