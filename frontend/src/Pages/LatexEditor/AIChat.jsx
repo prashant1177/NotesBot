@@ -43,7 +43,7 @@ async function callGemini(rawUserText) {
     }
   }
 
-  return ( <div className="flex flex-col h-full w-full items-center bg-gray-50">
+  return ( <div className="flex flex-col h-full flex-1 items-center bg-gray-50">
       <div className="flex-1 w-full overflow-y-auto p-6 gap-8 flex flex-col-reverse">
     <div className="text-gray-500 text-center" >The chat will be cleared on refresh</div>
         {loading && (

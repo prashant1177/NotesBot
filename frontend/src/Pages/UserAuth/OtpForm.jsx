@@ -5,7 +5,7 @@ import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import { LockIcon } from "lucide-react";
 
-const OtpForm = ({ token }) => {
+const OtpForm = ({ token, setToken, setShowOtpForm }) => {
   const [otp, setOtp] = useState("");
 
   const navigate = useNavigate();
@@ -25,20 +25,22 @@ const OtpForm = ({ token }) => {
   const handleCancel = async () => {
     if (window.confirm("Are you sure you want to go back?")) {
       navigate(`/register`);
+      setToken(null);
+      setShowOtpForm(false);
     } else {
       console.log("Cancelled!");
     }
   };
   return (
-    <div className="w-full max-w-md space-y-8">
-      <form onSubmit={handleVerifyOtp} className="space-y-6">
+    <div className="w-full max-w-md text-gray-800">
+      <form onSubmit={handleVerifyOtp} className="space-y-6  p-4 rounded-2xl border-2 border-gray-200 bg-gray-50 shadow-sm">
         <div className="text-center">
           <h1 className="text-2xl font-medium mb-2">Enter OTP</h1>
         </div>
 
         <div className="space-y-2">
-          <label className="flex items-center gap-2 font-medium text-sm">
-            <LockIcon className="w-4 h-4 text-chart-3" />
+          <label className="flex items-center gap-2 font-medium text-sm text-gray-700">
+            <LockIcon className="w-4 h-4 text-chart-3 " />
             OTP
           </label>
           <Input
@@ -48,9 +50,15 @@ const OtpForm = ({ token }) => {
             required
             maxLength={6}
             placeholder="Enter OTP..."
+            className="mb-4"
           />
         </div>
-        <Button className="bg-red-500 mr-4" onClick={handleCancel}>
+        <Button
+          type="button"
+          onClick={handleCancel}
+          varient="muted"
+          className=" me-4"
+        >
           Cancel
         </Button>
         <Button type="submit">Verify OTP</Button>

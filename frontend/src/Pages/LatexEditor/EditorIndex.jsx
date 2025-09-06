@@ -50,7 +50,7 @@ export default function EditorIndex() {
   }, [projectid]);
 
   const handleViewLeft = async (s) => {
-    if (s === "math") {
+  /*  if (s === "math") {
       try {
         const res = await api.get("/api/checkpremium");
 
@@ -64,7 +64,7 @@ export default function EditorIndex() {
         setLeftView("premium");
         return;
       }
-    }
+    } */
     setLeftView(s);
   };
   const handleViewRight = (s) => {

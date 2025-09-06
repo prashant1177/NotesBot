@@ -35,7 +35,7 @@ export default function FolderTools({
     <div className="h-5 border-l border-gray-600" />
 
     {/* Upload File */}
-    <button className="flex items-center gap-2 hover:text-blue-500 transition-all">
+    <button onClick={()=> alert("This feature will be available in future.")} className="flex items-center gap-2 hover:text-blue-500 transition-all">
       <Upload size={18} />
       <span className="hidden sm:inline">Upload File</span>
     </button>

@@ -4,8 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { User, Lock, Sparkles, Brain, ArrowRight } from "lucide-react";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
-import {jwtDecode} from "jwt-decode";
-
+import { jwtDecode } from "jwt-decode";
 function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -18,12 +17,12 @@ function Login() {
       const res = await api.post("/login", form);
       const token = res.data.token;
       localStorage.setItem("token", token);
-          const decoded = jwtDecode(token);
+      const decoded = jwtDecode(token);
       console.log(decoded);
       localStorage.setItem("username", decoded.username);
 
       setAuthToken(token);
-      
+
       localStorage.getItem("token");
       window.location.href = "/";
     } catch (err) {
@@ -34,13 +33,14 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center px-4 py-8">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-medium mb-2">Welcome Back</h1>
-        </div>
+    <div className="h-screen flex justify-center items-center px-2  lg:px-32 bg-gray-100 text-gray-700">
+      
+      <div className="md:w-1/2   w-full space-y-8 flex justify-center  md:p-8 ">
 
-        <div className="bg-card/50 border border-border/20 rounded-lg p-8 backdrop-blur-md">
+        <div className="w-full rounded-2xl border-2 border-gray-200 p-4 md:p-8 backdrop-blur-md bg-gray-50 shadow-sm">
+        <div className="text-center">
+          <h1 className="text-2xl font-medium mb-2 text-gray-800">Welcome Back</h1>
+        </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label className="flex items-center gap-2 font-medium text-sm">
@@ -52,6 +52,7 @@ function Login() {
                 placeholder="Enter your username"
                 required
                 onChange={(e) => setForm({ ...form, username: e.target.value })}
+                   
               />
             </div>
 
@@ -69,7 +70,8 @@ function Login() {
             </div>
 
             <div className="w-full flex justify-center">
-              <Button type="submit" disabled={loading}>
+              <Button type="submit" disabled={loading} 
+                    >
                 {loading ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
