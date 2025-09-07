@@ -33,7 +33,7 @@ const OtpForm = ({ token, setToken, setShowOtpForm }) => {
   };
   return (
     <div className="w-full max-w-md text-gray-800">
-      <form onSubmit={handleVerifyOtp} className="space-y-6  p-4 rounded-2xl border-2 border-gray-200 bg-gray-50 shadow-sm">
+      <form onSubmit={handleVerifyOtp} className="space-y-6  p-4 rounded-2xl md:border-1 border-gray-100 ">
         <div className="text-center">
           <h1 className="text-2xl font-medium mb-2">Enter OTP</h1>
         </div>

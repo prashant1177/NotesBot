@@ -11,9 +11,9 @@ import { Link } from "react-router-dom";
 export default function UserEdit() {
   const [form, setForm] = useState({
     fullname: "",
-    email: "",
-    username: "",
     userabout: "",
+    username: "",
+    email: "",
   });
   const [premium, setPremium] = useState(true);
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function UserEdit() {
     }
   };
 
-  // saveChanges 
+  // saveChanges
   const saveChanges = async () => {
     try {
       const res = await api.put("/user", form);
@@ -80,7 +80,7 @@ export default function UserEdit() {
                       setForm({ ...form, username: e.target.value })
                     }
                     placeholder="your_username"
-                    required
+                    disabled
                   />
                 </div>
               </div>
@@ -99,7 +99,7 @@ export default function UserEdit() {
                       setForm({ ...form, email: e.target.value })
                     }
                     required
-                    placeholder="you@example.com"
+                    disabled
                   />
                 </div>
                 <div className="space-y-2 md:col-span-1">
@@ -124,7 +124,12 @@ export default function UserEdit() {
                     <span className="bg-gradient-to-br from-blue-500 to-blue-700 text-gray-50 px-4 py-2 rounded-md  font-semibold">
                       Premium User
                     </span>
-                    <button onClick={()=> alert(`You will be shortly contacted via email.`) } className="text-sm text-gray-500 hover:text-red-500">
+                    <button
+                      onClick={() =>
+                        alert(`You will be shortly contacted via email.`)
+                      }
+                      className="text-sm text-gray-500 hover:text-red-500"
+                    >
                       Cancel Premium
                     </button>
                   </div>
@@ -133,7 +138,7 @@ export default function UserEdit() {
                     to={`/pricing`}
                     className="px-4 py-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-500 text-gray-50 hover:bg-blue-400 focus:ring-blue-300"
                   >
-                   Buy Premium
+                    Buy Premium
                   </Link>
                 )}
                 <div className="flex gap-4">

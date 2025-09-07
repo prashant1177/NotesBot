@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../../api";
+import api, { setAuthToken } from "../../api";
 import { Link, useNavigate } from "react-router-dom";
 import {
   User,
@@ -13,19 +13,19 @@ import {
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import OtpForm from "./OtpForm";
+import { GoogleLogin } from "@react-oauth/google";
 
 function Register() {
   const [form, setForm] = useState({
     fullname: "",
     email: "",
-    username: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
   const [showOtpForm, setShowOtpForm] = useState(false);
   const [token, setToken] = useState(null); // JWT token from backend
 
-  const [errors, setErrors] = useState({ username: "", password: "" });
+  const [errors, setErrors] = useState({ password: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,14 +41,20 @@ function Register() {
       alert(err.response?.data?.msg || "Error registering");
     }
   };
-  const validateUsername = (value) => {
-    const regex = /^[a-zA-Z0-9._]+$/; // Instagram-like (letters, numbers, dot, underscore)
-    if (/\s/.test(value)) return "Username must not contain spaces";
-    if (!regex.test(value))
-      return "Only letters, numbers, underscores and periods are allowed";
-    return "";
-  };
 
+  const handleGoogleOAuth = async (response) => {
+    try {
+      const res = await api.post("/auth/google", {
+        tokenId: response.credential,
+      });
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("username", res.data.username);
+      setAuthToken(res.data.token);
+      window.location.href = "/";
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const validatePassword = (value) => {
     const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
     if (!strongRegex.test(value))
@@ -57,125 +63,103 @@ function Register() {
   };
 
   return (
-    <div className="w-full min-h-screen p-4 lg:px-32  flex items-center justify-center bg-gray-100">
+    <div className="w-full  p-4  flex  justify-center ">
       {!showOtpForm ? (
-        <div className="sm:w-1/2 w-full">
-          <div className="bg-card/50  rounded-lg md:p-8  backdrop-blur-md flex items-center">
-            <div className=" lg:flex-1 w-full lg:p-8 p-4  flex flex-col items-center rounded-2xl border-2 border-gray-200 bg-gray-50 shadow-sm">
-                <div className="text-center text-gray-800">
-                  <h1 className="text-2xl font-medium mb-8">
-                    Create your account{" "}
-                  </h1>
-                </div>
-              <form onSubmit={handleSubmit} className="space-y-6 text-gray-700 lg:min-w-2/3 w-full">
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 font-medium text-sm">
-                    <UserPlus className="w-4 h-4 text-chart-1" />
-                    Full Name
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder="Enter your full name"
-                    required
-                    onChange={(e) =>
-                      setForm({ ...form, fullname: e.target.value })
-                    }
-                  />
-                </div>{" "}
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 font-medium text-sm">
-                    <Mail className="w-4 h-4 text-chart-1" />
-                    Email
-                  </label>
-                  <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    required
-                    onChange={(e) =>
-                      setForm({ ...form, email: e.target.value })
-                    }
-                   
-                  />
-                </div>{" "}
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 font-medium text-sm">
-                    <User className="w-4 h-4 text-chart-2" />
-                    Username
-                  </label>
-                  <Input
-                    type="text"
-                    placeholder="Choose a username"
-                    required
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setForm({ ...form, username: val });
-                      setErrors({ ...errors, username: validateUsername(val) });
-                    }}
-                   
-                  />
-                  {errors.username && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.username}
-                    </p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 font-medium text-sm">
-                    <Lock className="w-4 h-4 text-chart-3" />
-                    Password
-                  </label>
-                  <Input
-                    type="password"
-                    placeholder="Password"
-                    required
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setForm({ ...form, password: val });
-                      setErrors({ ...errors, password: validatePassword(val) });
-                    }}
-                   
-                  />
-                  {errors.password && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.password}
-                    </p>
-                  )}
-                </div>
-                <div className="flex w-full justify-center">
-                  <Button
-                    type="submit"
-                    disabled={loading || errors.username || errors.password}
-                  >
-                    {loading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                        Creating Account...
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        Create Account
-                        <ArrowRight className="w-4 h-4" />
-                      </div>
-                    )}
-                  </Button>
-                </div>
-              </form>
-              <div className="mt-6 text-center space-y-3 text-gray-700">
-                <p className="text-sm ">
-                  Already have an account?{" "}
-                  <Link to="/login" className="transition-colors font-medium">
-                    Sign in
-                  </Link>
-                </p>
-                <Link to="/" className="text-sm  transition-colors">
-                  ← Back to Home
-                </Link>
+        <div className="md:w-1/3  w-full">
+          <div className=" lg:flex-1 w-full lg:p-8 p-4  flex flex-col items-center rounded-2xl md:border-1 border-gray-100">
+            <GoogleLogin
+              onSuccess={handleGoogleOAuth}
+              onError={() => console.log("Login Failed")}
+            />
+            <div className="flex items-center my-4 w-full">
+              <hr className="flex-grow border-b border-gray-100" />
+              <span className="mx-2 text-gray-500">or</span>
+              <hr className="flex-grow border-b border-gray-100" />
+            </div>
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-6 text-gray-700  w-full"
+            >
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 font-medium text-sm">
+                  <UserPlus className="w-4 h-4 text-chart-1" />
+                  Full Name
+                </label>
+                <Input
+                  type="text"
+                  placeholder="Enter your full name"
+                  required
+                  onChange={(e) =>
+                    setForm({ ...form, fullname: e.target.value })
+                  }
+                />
+              </div>{" "}
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 font-medium text-sm">
+                  <Mail className="w-4 h-4 text-chart-1" />
+                  Email
+                </label>
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  required
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                />
+              </div>{" "}
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 font-medium text-sm">
+                  <Lock className="w-4 h-4 text-chart-3" />
+                  Password
+                </label>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  required
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setForm({ ...form, password: val });
+                    setErrors({ ...errors, password: validatePassword(val) });
+                  }}
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                )}
               </div>
+              <div className="flex w-full justify-center mb-4">
+                <Button type="submit" disabled={loading || errors.password}>
+                  {loading ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      Creating Account...
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      Create Account
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
+                  )}
+                </Button>
+              </div>
+            </form>
+            <div className="mt-6 text-center space-y-3 text-gray-700">
+              <p className="text-sm ">
+                Already have an account?{" "}
+                <Link to="/login" className="transition-colors font-medium">
+                  Sign in
+                </Link>
+              </p>
+              <Link to="/" className="text-sm  transition-colors">
+                ← Back to Home
+              </Link>
             </div>
           </div>
         </div>
       ) : (
-        <OtpForm token={token} setToken={setToken} setShowOtpForm={setShowOtpForm}/>
+        <OtpForm
+          token={token}
+          setToken={setToken}
+          setShowOtpForm={setShowOtpForm}
+        />
       )}
     </div>
   );

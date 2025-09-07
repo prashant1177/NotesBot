@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema({
+  googleId: { type: String }, 
   fullname: { type: String, required: true },
   email: { type: String, required: true, unique: true, lowercase: true },
   username: { type: String, required: true, unique: true, lowercase: true },
@@ -11,11 +12,11 @@ const UserSchema = new mongoose.Schema({
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Project",
-      }
+      },
     ],
     default: [],
   },
-  password: { type: String, required: true },
+  password: { type: String },
 
   isVerified: { type: Boolean, default: false },
 

@@ -13,7 +13,7 @@ const versionsRoutes = require("./routes/versionsRoutes");
 const premiumRoutes = require("./routes/premiumRoutes");
 const session = require("express-session");
 const configurePassport = require("./config/passport.js");
-const { authenticateJWT, viewCount } = require("./middleware/middleware.js");
+const { authenticateJWT } = require("./middleware/middleware.js");
 const JWT_SECRET = process.env.JWT_SECRET; // ⚠️ store in .env in production
 
 const sendOtpEmail = require("./utils/sendEmail");
@@ -32,6 +32,7 @@ const allowedOrigins = [
   "https://latexwriter.com",
   "https://www.latexwriter.com",
   "http://localhost:5173",
+  "http://localhost:8080",
 ];
 app.use(
   cors({
@@ -92,18 +93,17 @@ app.use("/versions", versionsRoutes); // all routes start with /api/projects
 app.use("/api", premiumRoutes); // all routes start with /api/projects
 
 app.post("/register", async (req, res) => {
-  const { fullname, email, username, password } = req.body;
+  const { fullname, email, password } = req.body;
   try {
-    let user = await User.findOne({ username });
-    let emailcheck = await User.findOne({ email });
-    if ((user || emailcheck) && (user.isVerified || emailcheck.isVerified))
+    let user = await User.findOne({ email });
+    if (user && user.isVerified)
       return res.status(400).json({ msg: "User already exists" });
 
-    if (!user && !emailcheck) {
+    if (!user) {
       user = new User({
         fullname,
         email,
-        username,
+        username: email.split("@")[0],
         userabout: "",
         password,
       });
@@ -137,16 +137,63 @@ app.post("/verify-otp", async (req, res) => {
 
 app.post("/login", (req, res, next) => {
   passport.authenticate("local", { session: false }, (err, user, info) => {
-    if (err || !user){
+    if (err || !user) {
       return res.status(400).json({ msg: info?.message || "Login failed" });
     }
     // Issue JWT
     const token = jwt.sign(
-      { id: user.id, username: user.fullname },
+      { id: user.id},
       JWT_SECRET
     );
-    return res.json({ token });
+    return res.json({ token, username: user.fullname  });
   })(req, res, next);
+});
+// Start Google OAuth
+
+// Route to handle Google OAuth
+app.post("/auth/google", async (req, res) => {
+  const { tokenId } = req.body; // frontend sends Google ID token
+
+  // Verify token with Google
+  const { OAuth2Client } = require("google-auth-library");
+  const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: tokenId,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    let user = await User.findOne({ email: payload.email });
+
+    if (!user) {
+      user = await User.create({
+        googleId: payload.sub,
+        email: payload.email,
+        fullname: payload.name,
+        username: payload.email.split("@")[0],
+        isVerified: true, // Google emails are verified already
+      });
+    }
+    console.log(user);
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user._id, username: user.fullname },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    res.json({
+      token,
+      user: { id: user._id, username: user.fullname },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ error: "Invalid Google token" });
+  }
 });
 
 app.get("/searchnotes", async (req, res) => {
@@ -199,10 +246,10 @@ app.put("/user", authenticateJWT, async (req, res) => {
       .status(403)
       .json({ error: "Authentication error: you cannot edit this note" });
   }
-  const { fullname, email, username, userabout } = req.body;
+  const { fullname, userabout } = req.body;
   const user = await User.findByIdAndUpdate(
     req.user.id,
-    { fullname, email, username, userabout },
+    { fullname, userabout },
     { new: true }
   );
 

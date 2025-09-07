@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { User, Lock, Sparkles, Brain, ArrowRight } from "lucide-react";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
-import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from "@react-oauth/google";
 function Login() {
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -17,9 +17,7 @@ function Login() {
       const res = await api.post("/login", form);
       const token = res.data.token;
       localStorage.setItem("token", token);
-      const decoded = jwtDecode(token);
-      console.log(decoded);
-      localStorage.setItem("username", decoded.username);
+      localStorage.setItem("username", res.data.username);
 
       setAuthToken(token);
 
@@ -31,28 +29,48 @@ function Login() {
       setLoading(false);
     }
   };
-
+  const handleGoogleOAuth = async (response) => {
+    try {
+      const res = await api.post("/auth/google", {
+        tokenId: response.credential,
+      });
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("username", res.data.username);
+      setAuthToken(res.data.token);
+      window.location.href = "/";
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
-    <div className="h-screen flex justify-center items-center px-2  lg:px-32 bg-gray-100 text-gray-700">
-      
-      <div className="md:w-1/2   w-full space-y-8 flex justify-center  md:p-8 ">
+    <div className="w-full flex justify-center  p-4   text-gray-800">
+      <div className="md:w-1/3  w-full">
+        <div className=" lg:flex-1 w-full lg:p-8 p-4  flex flex-col items-center rounded-2xl md:border-1 border-gray-100">
+          
+          <GoogleLogin
+            onSuccess={handleGoogleOAuth}
+            onError={() => console.log("Login Failed")}
+          />
+          <div className="flex items-center my-4 w-full">
+            <hr className="flex-grow border-b border-gray-100" />
+            <span className="mx-2 text-gray-500">or</span>
+            <hr className="flex-grow border-b border-gray-100" />
+          </div>
 
-        <div className="w-full rounded-2xl border-2 border-gray-200 p-4 md:p-8 backdrop-blur-md bg-gray-50 shadow-sm">
-        <div className="text-center">
-          <h1 className="text-2xl font-medium mb-2 text-gray-800">Welcome Back</h1>
-        </div>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6 text-gray-700  w-full"
+          >
             <div className="space-y-2">
               <label className="flex items-center gap-2 font-medium text-sm">
                 <User className="w-4 h-4 text-chart-1" />
-                Username
+                Email
               </label>
               <Input
                 type="text"
-                placeholder="Enter your username"
+                placeholder="Enter your email"
                 required
-                onChange={(e) => setForm({ ...form, username: e.target.value })}
-                   
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
             </div>
 
@@ -69,9 +87,8 @@ function Login() {
               />
             </div>
 
-            <div className="w-full flex justify-center">
-              <Button type="submit" disabled={loading} 
-                    >
+            <div className="w-full flex justify-center mb-4">
+              <Button type="submit" disabled={loading}>
                 {loading ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />

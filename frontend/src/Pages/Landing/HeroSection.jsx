@@ -1,7 +1,7 @@
 import { Sparkles, Zap, BookOpen, Link2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../ui/Button/Button";
-import LatexWriterImage from "../../assets/LatexWriterImage.png";
+import LatexWriterEditor from "../../assets/LatexWriterEditor.webp";
 
 export function HeroSection() {
   return (
@@ -37,8 +37,8 @@ export function HeroSection() {
 
         <div className="flex-1 flex items-center justify-center h-full w-full mt-12 md:mt-24  rounded-4xl shadow-2xl ">
           <img
-            src={LatexWriterImage}
-            alt="LatexWriterImage"
+            src={LatexWriterEditor}
+            alt="LatexWriterEditor"
             className="object-cover h-full rounded-4xl"
           />
         </div>

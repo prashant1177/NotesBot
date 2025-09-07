@@ -20,6 +20,10 @@ import { BlogPosts } from "./Blogs/BlogPosts";
 import BlogView from "./Blogs/BlogView";
 import About from "./SitePages/About";
 import PrivacyPolicy from "./SitePages/PrivacyPolicy";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import ContactSupport from "./SitePages/ContactSupport";
+import TermsAndConditions from "./SitePages/TermsAndConditions";
+
 function App() {
   const [isActive, setIsActive] = useState(false);
   const [sidebarHide, setSidebarHide] = useState("w-16");
@@ -35,11 +39,10 @@ function App() {
       setSidebarHide("w-64");
     }
   };
-  useEffect(() => {
-    console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
-  }, []);
   return (
     <Router>
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+
       <div>
         {token ? (
           <Sidebar
@@ -76,11 +79,14 @@ function App() {
             <Route path="/documentation" element={<DocumentationIndex />} />
             <Route path="/pricing" element={<PremiumPage />} />
             <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+            <Route path="/contact" element={<ContactSupport />} />
+            <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
 
             <Route path="/create/project" element={<CreateProject />} />
           </Routes>
         </div>
       </div>
+      </GoogleOAuthProvider>
     </Router>
   );
 }

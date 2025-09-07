@@ -9,7 +9,9 @@ export function Footer() {
           <p className="mb-4 md:mb-0">
             © {new Date().getFullYear()} LaTeX Writer. All rights reserved.
           </p>
+          <Link to={"/TermsAndConditions"} className="underline">Terms & Conditions</Link>
           <Link to={"/PrivacyPolicy"} className="underline">Privacy Policy</Link>
+          <Link to={"/contact"} className="underline">Contact us</Link>
         </div>
 
         {/* Right Side */}
