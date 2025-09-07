@@ -104,12 +104,10 @@ export function FeaturesSection() {
             Features
           </Badge>
           <h2 className="text-3xl md:text-4xl font-medium mb-4">
-            Supercharge Your Note-Taking
+            Supercharge Your LaTeX Experience
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Experience the future of note-taking with AI-powered features that
-            adapt to your thinking style
-          </p>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+Reimagine LaTeX with an AI assistant that simplifies complexity, accelerates your workflow, and empowers every researcher, student, and creator.          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
