@@ -176,20 +176,13 @@ app.post("/auth/google", async (req, res) => {
         isVerified: true, // Google emails are verified already
       });
     }
-    console.log(user);
     // Generate JWT
     const token = jwt.sign(
-      { id: user._id, username: user.fullname },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "7d",
-      }
+      { id: user._id },
+     JWT_SECRET
     );
 
-    res.json({
-      token,
-      user: { id: user._id, username: user.fullname },
-    });
+    res.json({ token, username: user.fullname  });
   } catch (err) {
     console.error(err);
     res.status(400).json({ error: "Invalid Google token" });
