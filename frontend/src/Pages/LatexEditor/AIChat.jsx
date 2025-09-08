@@ -43,7 +43,7 @@ async function callGemini(rawUserText) {
     }
   }
 
-  return ( <div className="flex flex-col h-full flex-1 items-center bg-gray-50">
+  return ( <div className="flex flex-col h-full flex-1 max-w-1/2 items-center bg-gray-50">
       <div className="flex-1 w-full overflow-y-auto p-6 gap-8 flex flex-col-reverse">
     <div className="text-gray-500 text-center" >The chat will be cleared on refresh</div>
         {loading && (
@@ -54,7 +54,7 @@ async function callGemini(rawUserText) {
         {responses.map((r, idx) => (
           <div
             key={idx}
-            className="prose p-4 border border-gray-200 rounded-xl shadow-sm bg-white text-gray-900 hover:shadow-md transition-shadow duration-200"
+            className="text-wrap prose p-4 border border-gray-200 rounded-xl shadow-sm bg-white text-gray-900 hover:shadow-md transition-shadow duration-200"
             dangerouslySetInnerHTML={{ __html: marked(r.text) }}
           />
         ))}

@@ -23,6 +23,7 @@ import PrivacyPolicy from "./SitePages/PrivacyPolicy";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import ContactSupport from "./SitePages/ContactSupport";
 import TermsAndConditions from "./SitePages/TermsAndConditions";
+import WebsiteFeatures from "./SitePages/WebsiteFeatures";
 
 function App() {
   const [isActive, setIsActive] = useState(false);
@@ -81,6 +82,7 @@ function App() {
             <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
             <Route path="/contact" element={<ContactSupport />} />
             <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
+            <Route path="/features" element={<WebsiteFeatures />} />
 
             <Route path="/create/project" element={<CreateProject />} />
           </Routes>

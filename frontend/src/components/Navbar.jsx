@@ -31,10 +31,10 @@ export default function Navbar() {
               </li>
               <li>
                 <Link
-                  to="/About"
+                  to="/features"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  About
+                  Features
                 </Link>
               </li>
               <li>
@@ -51,6 +51,14 @@ export default function Navbar() {
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Documentation
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/About"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  About
                 </Link>
               </li>
             </ul>

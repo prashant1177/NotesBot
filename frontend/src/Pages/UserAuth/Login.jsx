@@ -31,6 +31,7 @@ function Login() {
   };
   const handleGoogleOAuth = async (response) => {
     try {
+    setLoading(true);
       const res = await api.post("/auth/google", {
         tokenId: response.credential,
       });
@@ -40,6 +41,8 @@ function Login() {
       window.location.href = "/";
     } catch (err) {
       console.error(err);
+    }finally {
+      setLoading(false);
     }
   };
   return (

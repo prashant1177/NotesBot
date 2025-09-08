@@ -29,7 +29,7 @@ export default function EditorIndex() {
   const navigate = useNavigate();
   const [pdfUrl, setPdfUrl] = useState("");
   const [latex, setLatex] = useState(
-    "\\documentclass{article}\n\\begin{document}\nHello Tectonic!\n\\end{document}"
+    "Loading your content..."
   );
   const editorRef = useRef(null);
   useEffect(() => {
@@ -130,6 +130,7 @@ export default function EditorIndex() {
           handleViewLeft={handleViewLeft}
           leftView={leftView}
           rightView={rightView}
+          loading={loading}
         />
       </div>
       <div className="flex flex-col-reverse  md:flex-row flex-1 md:overflow-hidden">

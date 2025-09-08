@@ -508,11 +508,15 @@ router.post("/savefile/:id", authenticateJWT, async (req, res) => {
   const { currfile, latex } = req.body;
 
   try {
-    const hash = crypto.createHash("sha1").update(latex).digest("hex");
-
     // Fetch the file first
     const file = await File.findById(currfile);
+    if (req.user.id.toString() !== file.owner.toString()) {
+      return res.status(400).json({ message: "Authentication issue" });
+    }
+
     if (!file) return res.status(404).json({ message: "File not found" });
+
+    const hash = crypto.createHash("sha1").update(latex).digest("hex");
 
     const oldBlobId = file.blobId;
 
