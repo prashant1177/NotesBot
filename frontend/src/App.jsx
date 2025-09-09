@@ -14,9 +14,8 @@ import EditorIndex from "./Pages/LatexEditor/EditorIndex";
 import UserProfileIndex from "./Pages/Projects/MyProjectsList/UserProfileIndex";
 import TemplatesIndex from "./Pages/Templates/TemplatesIndex";
 import PremiumPage from "./Pages/Premium/PremiumPage";
-import DocumentationIndex from "./Pages/Documentation/DocumentationIndex";
+import LatexDocumentationIndex from "./Pages/Documentation/LatexDocumentationIndex";
 import BlogIndex from "./Blogs/BlogIndex";
-import { BlogPosts } from "./Blogs/BlogPosts";
 import BlogView from "./Blogs/BlogView";
 import About from "./SitePages/About";
 import PrivacyPolicy from "./SitePages/PrivacyPolicy";
@@ -24,6 +23,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import ContactSupport from "./SitePages/ContactSupport";
 import TermsAndConditions from "./SitePages/TermsAndConditions";
 import WebsiteFeatures from "./SitePages/WebsiteFeatures";
+import MyProfileIndex from "./Pages/Projects/MyProjectsList/MYProfileIndex";
+import LatexWriterDocumentationIndex from "./Pages/Documentation/LatexWriterDocumentationIndex";
 
 function App() {
   const [isActive, setIsActive] = useState(false);
@@ -63,7 +64,7 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={token ? <UserProfileIndex /> : <Landing />}
+              element={token ? <MyProfileIndex /> : <Landing />}
             />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
@@ -77,7 +78,8 @@ function App() {
             <Route path="/About" element={<About />} />
             <Route path="/Blog" element={<BlogIndex />} />
             <Route path="/Blog/:blogSlug" element={<BlogView />} />
-            <Route path="/documentation" element={<DocumentationIndex />} />
+            <Route path="/documentation/latex" element={<LatexDocumentationIndex />} />
+            <Route path="/documentation/latexwriter" element={<LatexWriterDocumentationIndex />} />
             <Route path="/pricing" element={<PremiumPage />} />
             <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
             <Route path="/contact" element={<ContactSupport />} />

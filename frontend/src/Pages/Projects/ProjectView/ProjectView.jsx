@@ -105,82 +105,97 @@ export default function ProjectView() {
         setViewPdf={setViewPdf}
         viewPdf={viewPdf}
       />
-      <div className="flex flex-col gap-4 md:gap-0 md:flex-row w-full">
-        <div className="flex-1 flex flex-col w-full border-r-1 border-gray-200">
-          <div className=" text-gray-900 pb-2  border-b-8 border-gray-100">
-            <h1 className="flex text-gray-800 mb-2 items-center gap-2 text-2xl pt-4 px-4 md:px-8">
-              <LibraryBig strokeWidth={1} size={20} />
-              {project.title}
-            </h1>
-            <div className="flex justify-between gap-4 pe-8 px-4 md:px-8">
-              <h1>Project files listed below</h1>
-              <div className="flex gap-4">
-                <h1>
-                  Last Changed: {new Date(project.createdAt).toLocaleString()}
-                </h1>
+      {project.title ? (
+        <div className="flex flex-col gap-4 md:gap-0 md:flex-row w-full">
+          <div className="flex-1 flex flex-col w-full border-r-1 border-gray-200">
+            <div className=" text-gray-900 pb-2  border-b-8 border-gray-100">
+              <h1 className="flex text-gray-800 mb-2 items-center gap-2 text-2xl pt-4 px-4 md:px-8">
+                <LibraryBig strokeWidth={1} size={20} />
+                {project.title}
+              </h1>
+              <div className="flex justify-between gap-4 pe-8 px-4 md:px-8">
+                <h1>Project files listed below</h1>
+                <div className="flex gap-4">
+                  <h1>
+                    Last Changed: {new Date(project.createdAt).toLocaleString()}
+                  </h1>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex flex-col">
-            {folders?.map((folderInside, i) => (
-              <button
-                onClick={() => openFolder(folderInside._id)}
-                className="border-b-2 border-gray-200 p-2 flex gap-2 items-center  px-4 md:px-8"
-                key={i}
-              >
-                <Folder size={16} />
-                {folderInside.name}
-              </button>
-            ))}
-            {files?.map((filesInside, i) => (
-              <div
-                className="flex justify-between border-b-2 border-gray-200  px-4 md:px-8"
-                key={i}
-              >
+            <div className="flex flex-col">
+              {folders?.map((folderInside, i) => (
                 <button
-                  onClick={() => openFile(filesInside._id)}
-                  className={` p-2 flex gap-2 items-center ${
-                    currfile == filesInside._id && "text-blue-800"
-                  }`}
+                  onClick={() => openFolder(folderInside._id)}
+                  className="border-b-2 border-gray-200 p-2 flex gap-2 items-center  px-4 md:px-8"
+                  key={i}
                 >
-                  <FileType2 size={16} className={``} />
-                  {filesInside.name}
+                  <Folder size={16} />
+                  {folderInside.name}
                 </button>
-              </div>
-            ))}
-            {backFolder && (
-              <button
-                onClick={() => openFolder(backFolder)}
-                className="border-b-1 border-gray-200 bg-gray-50 p-2 flex gap-2 items-center  px-4 md:px-8"
-              >
-                <MoveLeft size={16} />
-                Go Back
-              </button>
+              ))}
+              {files?.map((filesInside, i) => (
+                <div
+                  className="flex justify-between border-b-2 border-gray-200  px-4 md:px-8"
+                  key={i}
+                >
+                  <button
+                    onClick={() => openFile(filesInside._id)}
+                    className={` p-2 flex gap-2 items-center ${
+                      currfile == filesInside._id && "text-blue-800"
+                    }`}
+                  >
+                    <FileType2 size={16} className={``} />
+                    {filesInside.name}
+                  </button>
+                </div>
+              ))}
+              {backFolder && (
+                <button
+                  onClick={() => openFolder(backFolder)}
+                  className="border-b-1 border-gray-200 bg-gray-50 p-2 flex gap-2 items-center  px-4 md:px-8"
+                >
+                  <MoveLeft size={16} />
+                  Go Back
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="flex-1 h-screen flex">
+            {viewPdf && pdfUrl ? (
+              <PdfViewer pdfUrl={pdfUrl} loading={loading} />
+            ) : viewPdf ? (
+              <PremiumIndex />
+            ) : (
+              latex && (
+                <div className="border-l-1 border-gray-200 w-full flex flex-col flex-1 relative ">
+                  <div className="shrink-0">
+                    <h1 className="flex text-gray-800 items-center gap-2 text-2xl  p-2 bg-gray-200 w-full">
+                      <File /> File Content
+                    </h1>
+                  </div>
+                  <div className="flex-1 overflow-auto px-4 whitespace-pre-wrap font-mono">
+                    {latex}
+                  </div>
+                </div>
+              )
             )}
           </div>
         </div>
-
-        <div className="flex-1 h-screen flex">
-          {viewPdf && pdfUrl ? (
-            <PdfViewer pdfUrl={pdfUrl} loading={loading} />
-          ) : viewPdf ? (
-            <PremiumIndex />
-          ) : (
-            latex && (
-              <div className="border-l-1 border-gray-200 w-full flex flex-col flex-1 relative ">
-                <div className="shrink-0">
-                  <h1 className="flex text-gray-800 items-center gap-2 text-2xl  p-2 bg-gray-200 w-full">
-                    <File /> File Content
-                  </h1>
-                </div>
-                <div className="flex-1 overflow-auto px-4 whitespace-pre-wrap font-mono">
-                  {latex}
-                </div>
-              </div>
-            )
-          )}
+      ) : (
+        <div className="flex flex-col items-center justify-center my-8">
+          <div class="animate-pulse flex flex-col items-center gap-4 w-60">
+            <div>
+              <div class="w-48 h-6 bg-gray-400 rounded-md"></div>
+              <div class="w-28 h-4 bg-gray-400 mx-auto mt-3 rounded-md"></div>
+            </div>
+            <div class="h-7 bg-gray-400 w-full rounded-md"></div>
+            <div class="h-7 bg-gray-400 w-full rounded-md"></div>
+            <div class="h-7 bg-gray-400 w-full rounded-md"></div>
+            <div class="h-7 bg-gray-400 w-1/2 rounded-md"></div>
+          </div>{" "}
         </div>
-      </div>
+      )}
     </div>
   );
 }

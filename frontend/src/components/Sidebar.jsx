@@ -1,4 +1,3 @@
-import Button from "../ui/Button/Button";
 import {
   ArrowLeftToLine,
   ArrowRightFromLine,
@@ -49,7 +48,7 @@ export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
           to={`/create/project`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
         >
-          <PencilLine size={24} /> {isActive ? <span>New Note</span> : null}
+          <PencilLine size={24} /> {isActive ? <span>New Project</span> : null}
         </Link>
         
         <Link
@@ -61,11 +60,11 @@ export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
         </Link>
 
         <Link
-          to={`/documentation`}
+          to={`/documentation/latex`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
         >
           <BadgeInfo />
-          {isActive ? <span>Documentation</span> : null}
+          {isActive ? <span>Latex Documentation</span> : null}
         </Link>
 
         <button

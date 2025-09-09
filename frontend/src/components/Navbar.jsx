@@ -24,7 +24,7 @@ export default function Navbar() {
               <li>
                 <Link
                   to="/"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className=" hover:text-blue-500 transition-colors"
                 >
                   Home
                 </Link>
@@ -32,7 +32,7 @@ export default function Navbar() {
               <li>
                 <Link
                   to="/features"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className=" hover:text-blue-500 transition-colors"
                 >
                   Features
                 </Link>
@@ -40,23 +40,37 @@ export default function Navbar() {
               <li>
                 <Link
                   to="/Blog"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className=" hover:text-blue-500 transition-colors"
                 >
                   Blog
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/Documentation"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
+             <li className="relative group">
+                <button className="flex items-center  hover:text-blue-500 transition-colors gap-1">
                   Documentation
-                </Link>
+                 
+                </button>
+
+                <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-10">
+                  <Link
+                    to="/documentation/latex"
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors"
+                  >
+                    Latex
+                  </Link>
+                  <Link
+                    to="/documentation/latexwriter"
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors"
+                  >
+                    LatexWriter
+                  </Link>
+                </div>
               </li>
+
               <li>
                 <Link
                   to="/About"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className=" hover:text-blue-500 transition-colors"
                 >
                   About
                 </Link>
@@ -78,7 +92,7 @@ export default function Navbar() {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-muted-foreground hover:text-primary transition-colors p-2"
+              className=" hover:text-blue-500 transition-colors p-2"
               aria-label="Toggle menu"
             >
               <svg
@@ -116,7 +130,7 @@ export default function Navbar() {
                 <li>
                   <Link
                     to="/"
-                    className="block text-muted-foreground hover:text-primary transition-colors py-2"
+                    className="block  hover:text-blue-500 transition-colors py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Home
@@ -124,8 +138,17 @@ export default function Navbar() {
                 </li>
                 <li>
                   <Link
+                    to="/features"
+                    className="block  hover:text-blue-500 transition-colors py-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                   Features
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     to="/About"
-                    className="block text-muted-foreground hover:text-primary transition-colors py-2"
+                    className="block  hover:text-blue-500 transition-colors py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     About
@@ -134,19 +157,30 @@ export default function Navbar() {
                 <li>
                   <Link
                     to="/Blog"
-                    className="block text-muted-foreground hover:text-primary transition-colors py-2"
+                    className="block  hover:text-blue-500 transition-colors py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Blog
                   </Link>
                 </li>
                 <li>
+                  <button className="flex items-center  hover:text-blue-500 transition-colors gap-1">
+                  Documentation
+                 
+                </button>
                   <Link
-                    to="/Documentation"
-                    className="block text-muted-foreground hover:text-primary transition-colors py-2"
-                    onClick={() => setIsMenuOpen(false)}
+                    to="/documentation/latex"
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors"
+                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Documentation
+                    Latex
+                  </Link>
+                  <Link
+                    to="/documentation/latexwriter"
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors"
+                     onClick={() => setIsMenuOpen(false)}
+                  >
+                    LatexWriter
                   </Link>
                 </li>
               </ul>

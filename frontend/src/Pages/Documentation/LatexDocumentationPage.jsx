@@ -552,7 +552,7 @@ const sampleDocumentation = [
   },
 ];
 
-const DocumentationPage = ({ documentation = sampleDocumentation }) => {
+const LatexDocumentationPage = ({ documentation = sampleDocumentation }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedSections, setExpandedSections] = useState({});
   const [activeSection, setActiveSection] = useState("");
@@ -676,7 +676,7 @@ const DocumentationPage = ({ documentation = sampleDocumentation }) => {
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Documentation
+           Latex Documentation
           </h1>
 
           {/* Search Bar */}
@@ -745,4 +745,4 @@ const DocumentationPage = ({ documentation = sampleDocumentation }) => {
   );
 };
 
-export default DocumentationPage;
+export default LatexDocumentationPage;

@@ -9,7 +9,7 @@ export default function BlogView() {
   const blog = BlogPosts.find((post) => post.slug === blogSlug);
   return (
     <div className="w-full">
-      <div className=" md:w-4/6 mx-auto md:p-6 p-2 text-justify shadow-lg">
+      <div className=" md:w-4/6 mx-auto md:p-6 p-2 text-justify">
         {/* Title */}
         <div className="border-b-1 border-gray-400">
           <h1 className="text-4xl font-bold mb-4 text-center">{blog.title}</h1>

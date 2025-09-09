@@ -61,15 +61,11 @@ export default function PremiumIndex() {
 };
   return (
     <div className="h-full w-full flex items-center justify-center relative overflow-hidden">
-      {/* Soft blurred decorative background shapes */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute left-[-10%] top-[-10%] w-[45rem] h-[45rem] rounded-full bg-gradient-to-tr from-purple-300 via-pink-300 to-yellow-200 opacity-30 blur-3xl transform rotate-12" />
-        <div className="absolute right-[-8%] bottom-[-12%] w-[40rem] h-[40rem] rounded-full bg-gradient-to-br from-cyan-200 via-blue-200 to-indigo-300 opacity-25 blur-2xl transform -rotate-6" />
-      </div>
+    
 
       {/* Glass card with slight backdrop blur — Overleaf-esque minimal UI */}
       <div className="relative z-10 w-full max-w-2xl mx-4">
-        <div className="backdrop-blur-sm bg-white/60 border border-white/40 rounded-2xl shadow-2xl p-12 flex flex-col items-center text-center">
+        <div className="backdrop-blur-sm bg-white/60 border border-white/40 rounded-2xl p-12 flex flex-col items-center text-center">
           <div className="mb-6">
             <h1 className="text-3xl font-semibold text-gray-800">Premium</h1>
             <p className="mt-2 text-gray-600">
@@ -112,7 +108,7 @@ export default function PremiumIndex() {
 
           {/* Center button */}
           <button
-            className="relative inline-flex items-center justify-center px-10 py-3 rounded-full font-medium text-white shadow-lg
+            className="relative inline-flex items-center justify-center px-10 py-3 rounded-full font-medium text-white 
 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 active:scale-95 transition-transform duration-150"
             aria-label="Upgrade to Premium"
             onClick={handleUpgrade}

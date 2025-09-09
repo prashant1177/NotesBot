@@ -37,13 +37,15 @@ function Register() {
       setToken(res.data.token);
       setShowOtpForm(true); // show OTP input
     } catch (err) {
-      setLoading(false);
       alert(err.response?.data?.msg || "Error registering");
+    }finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleOAuth = async (response) => {
     try {
+      setLoading(true);
       const res = await api.post("/auth/google", {
         tokenId: response.credential,
       });
@@ -53,6 +55,8 @@ function Register() {
       window.location.href = "/";
     } catch (err) {
       console.error(err);
+    }finally {
+      setLoading(false);
     }
   };
   const validatePassword = (value) => {

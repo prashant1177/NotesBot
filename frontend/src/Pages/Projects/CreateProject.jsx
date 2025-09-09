@@ -33,13 +33,13 @@ export default function CreateProject() {
         }
       }
       console.error("Failed to save note:", err);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
   return (
     <div className="flex flex-col items-center  w-full p-4 sm:p-6">
-      <div className="w-full max-w-2xl lg:w-3/6 flex flex-col space-y-6 sm:space-y-8 p-4 sm:p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 mt-8 sm:mt-12 lg:mt-16 shadow-2xl">
+      <div className="w-full max-w-2xl lg:w-3/6 flex flex-col space-y-6 sm:space-y-8 p-4 sm:p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 mt-8 sm:mt-12 lg:mt-16 ">
         <div className="text-center">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Create New Project
@@ -53,6 +53,7 @@ export default function CreateProject() {
               Title
             </label>
             <Input
+              disabled={loading}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               varient="transparent"
@@ -66,6 +67,7 @@ export default function CreateProject() {
               About (Optional)
             </label>
             <TextArea
+              disabled={loading}
               value={about}
               onChange={(e) => setAbout(e.target.value)}
               varient="transparent"
@@ -84,6 +86,7 @@ export default function CreateProject() {
               placeholder="Add relevant topics separated with commas"
               className="transition-all duration-200 focus:scale-[1.02]"
               type="text"
+              disabled={loading}
             />
           </div>
         </div>
@@ -96,9 +99,8 @@ export default function CreateProject() {
             <div className="relative">
               <input
                 type="checkbox"
-                onClick={() =>
-                  privatMark ? setPrivateMark(fasle) : setPrivateMark(true)
-                }
+                onChange={() => setPrivateMark(!privatMark)}
+                disabled={loading}
                 className="h-5 w-5 text-blue-600 border-2 border-gray-300 rounded-md focus:ring-blue-500 focus:ring-2 transition-all duration-200 cursor-pointer hover:border-blue-400"
               />
             </div>
@@ -106,17 +108,18 @@ export default function CreateProject() {
 
           <div className="order-1 sm:order-2">
             <Button
-            disabled={loading}
+              disabled={loading}
               onClick={handleSave}
-              className="w-full sm:w-auto px-8 py-2.5 transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
-            >{loading ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              className="w-full sm:w-auto px-8 py-2.5 transition-all duration-200 hover:scale-105 active:scale-95 "
+            >
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                   Just a moment…
-                  </div>
-                ) : (                  <div className="flex items-center gap-2">
-
-              Create Project</div>  )}
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">Create Project</div>
+              )}
             </Button>
           </div>
         </div>

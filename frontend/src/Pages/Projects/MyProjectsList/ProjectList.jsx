@@ -1,18 +1,15 @@
 import {
   NoteCard,
-  NoteCardAbout,
   NoteCardHeader,
   NoteCardTitle,
 } from "../../../ui/Card/Card";
 import { Link } from "react-router-dom";
-import { Eye, Heart, LibraryBig } from "lucide-react";
+import { LibraryBig } from "lucide-react";
 
-export default function ProjectList({ projects, author }) {
+export default function ProjectList({ projects }) {
   return (
-    <div className="mt-8 flex flex-col w-full sm:px-4 lg:pe-16">
-  <h1 className="text-2xl font-bold mb-6 flex items-center gap-2 justify-center">
-    <LibraryBig strokeWidth={1} size={24} /> Projects by {author.fullname}
-  </h1>{" "}
+    <div className="mt-8 flex flex-col w-full sm:px-4">
+  {" "}
   {projects && projects.length > 0 ? (
    
       <div className="flex flex-col gap-6">

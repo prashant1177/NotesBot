@@ -141,11 +141,8 @@ app.post("/login", (req, res, next) => {
       return res.status(400).json({ msg: info?.message || "Login failed" });
     }
     // Issue JWT
-    const token = jwt.sign(
-      { id: user.id},
-      JWT_SECRET
-    );
-    return res.json({ token, username: user.fullname  });
+    const token = jwt.sign({ id: user.id }, JWT_SECRET);
+    return res.json({ token, username: user.fullname });
   })(req, res, next);
 });
 // Start Google OAuth
@@ -177,12 +174,9 @@ app.post("/auth/google", async (req, res) => {
       });
     }
     // Generate JWT
-    const token = jwt.sign(
-      { id: user._id },
-     JWT_SECRET
-    );
+    const token = jwt.sign({ id: user._id }, JWT_SECRET);
 
-    res.json({ token, username: user.fullname  });
+    res.json({ token, username: user.fullname });
   } catch (err) {
     console.error(err);
     res.status(400).json({ error: "Invalid Google token" });
@@ -275,7 +269,7 @@ app.get("/profile/:username", authenticateJWT, async (req, res) => {
   const projects = await Project.find({ owner: author._id }).sort({
     createdAt: -1,
   });
-
+  
   res.json({ author, projects });
 });
 

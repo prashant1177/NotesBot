@@ -32,7 +32,7 @@ export default function WebsiteFeatures() {
             <Link to="/register" className="w-full">
               <Button className="w-full">Start Now </Button>
             </Link>{" "}
-            <Link to="/Documentation" className="w-full">
+            <Link to="/Documentation/latex" className="w-full">
               <Button className="w-full" varient="muted">
                 {" "}
                 Explore Latex Tutorial
