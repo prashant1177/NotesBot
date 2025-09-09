@@ -1,8 +1,12 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Landing from "./Pages/Landing/Landing";
 import Navbar from "./components/Navbar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Login from "./Pages/UserAuth/Login";
 import Register from "./Pages/UserAuth/Register";
 import Sidebar from "./components/Sidebar";
@@ -19,12 +23,13 @@ import BlogIndex from "./Blogs/BlogIndex";
 import BlogView from "./Blogs/BlogView";
 import About from "./SitePages/About";
 import PrivacyPolicy from "./SitePages/PrivacyPolicy";
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import ContactSupport from "./SitePages/ContactSupport";
 import TermsAndConditions from "./SitePages/TermsAndConditions";
 import WebsiteFeatures from "./SitePages/WebsiteFeatures";
 import MyProfileIndex from "./Pages/Projects/MyProjectsList/MYProfileIndex";
 import LatexWriterDocumentationIndex from "./Pages/Documentation/LatexWriterDocumentationIndex";
+import { Footer } from "./components/Footer";
 
 function App() {
   const [isActive, setIsActive] = useState(false);
@@ -41,10 +46,10 @@ function App() {
       setSidebarHide("w-64");
     }
   };
-  return (
-    <Router>
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+  const location = useLocation(); 
 
+  return (
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <div>
         {token ? (
           <Sidebar
@@ -73,25 +78,35 @@ function App() {
             <Route path="/project/:projectid" element={<ProjectView />} />
             <Route path="/profile/:username" element={<UserProfileIndex />} />
             <Route path="/templates" element={<TemplatesIndex />} />
-            
+
             {/*    Sitepage */}
             <Route path="/About" element={<About />} />
             <Route path="/Blog" element={<BlogIndex />} />
             <Route path="/Blog/:blogSlug" element={<BlogView />} />
-            <Route path="/documentation/latex" element={<LatexDocumentationIndex />} />
-            <Route path="/documentation/latexwriter" element={<LatexWriterDocumentationIndex />} />
+            <Route
+              path="/documentation/latex"
+              element={<LatexDocumentationIndex />}
+            />
+            <Route
+              path="/documentation/latexwriter"
+              element={<LatexWriterDocumentationIndex />}
+            />
             <Route path="/pricing" element={<PremiumPage />} />
             <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
             <Route path="/contact" element={<ContactSupport />} />
-            <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
+            <Route
+              path="/TermsAndConditions"
+              element={<TermsAndConditions />}
+            />
             <Route path="/features" element={<WebsiteFeatures />} />
 
             <Route path="/create/project" element={<CreateProject />} />
           </Routes>
+
+          {location.pathname.startsWith("/latexeditor") ? null : <Footer />}
         </div>
       </div>
-      </GoogleOAuthProvider>
-    </Router>
+    </GoogleOAuthProvider>
   );
 }
 

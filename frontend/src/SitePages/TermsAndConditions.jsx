@@ -1,5 +1,4 @@
 import React from "react";
-import { Footer } from "../components/Footer";
 import { Asterisk } from "lucide-react";
 
 const TermsAndConditions = () => {
@@ -70,7 +69,6 @@ const TermsAndConditions = () => {
           </section>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

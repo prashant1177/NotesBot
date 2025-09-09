@@ -2,8 +2,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { BlogPosts } from "./BlogPosts";
-import { Footer } from "../components/Footer";
-
 export default function BlogView() {
   const { blogSlug } = useParams();
   const blog = BlogPosts.find((post) => post.slug === blogSlug);
@@ -22,7 +20,6 @@ export default function BlogView() {
           dangerouslySetInnerHTML={{ __html: blog.content }}
         ></div>
       </div>
-      <Footer />
     </div>
   );
 }

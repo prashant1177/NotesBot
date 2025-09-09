@@ -4,7 +4,6 @@ import { FeaturesSection } from "./Features";
 import { CTASection } from "../../components/CTASection";
 import { HeroSection } from "./HeroSection";
 import { HowItWorksSection } from "../../components/HowItWorksSection";
-import { Footer } from "../../components/Footer";
 
 export default function Landing() {
   
@@ -12,7 +11,6 @@ export default function Landing() {
       <HeroSection/>
       <FeaturesSection/>
       <HowItWorksSection/>
-      <Footer/>
       </div>
   );
 }

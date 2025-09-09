@@ -9,11 +9,15 @@ export function Footer() {
           <p className="mb-4 md:mb-0">
             © {new Date().getFullYear()} LaTeX Writer. All rights reserved.
           </p>
-          <Link to={"/TermsAndConditions"} className="underline">Terms & Conditions</Link>
-          <Link to={"/PrivacyPolicy"} className="underline">Privacy Policy</Link>
-          <Link to={"/contact"} className="underline">Contact us</Link>
         </div>
-
+<div className="flex flex-col md:flex-row md:gap-3 gap-1 md:items-stretch items-center ">
+  
+          <Link to={"/contact"} >Contact us</Link>
+          <div className="border-r-1 border-gray-400"></div>
+          <Link to={"/PrivacyPolicy"} >Privacy Policy</Link>
+          <div className="border-r-1 border-gray-400"></div>
+          <Link to={"/TermsAndConditions"} >Terms & Conditions</Link>
+  </div>
         {/* Right Side */}
         <p>
           Created by{" "}

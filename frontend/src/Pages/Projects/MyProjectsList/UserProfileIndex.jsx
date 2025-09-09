@@ -22,31 +22,33 @@ export default function UserProfileIndex() {
     fetchData();
   }, [username]);
 
-  return (<div className=" w-full">
-      <div className="sticky top-0 flex justify-between md:px-8 backdrop-blur-md border-b border-gray-500/20  p-4
-    ">
+  return (
+    <div className="min-h-screen w-full">
+      <div
+        className="sticky top-0 flex justify-between md:px-8 backdrop-blur-md border-b border-gray-500/20  p-4
+    "
+      >
         <h1 className="text-gray-800 text-xl font-medium flex items-center gap-2 py-2 uppercase">
           {" "}
           <LibraryBig className="text-gray-700" />
-         PROJECTS BY {username}
-            </h1>
-            
-          </div>
-      
-    <div className="px-2 md:px-16 ">
-      {" "}
-      <div className="flex flex-col mt-8">
-        {author ? (
-          <ProjectList projects={projects}  />
-        ) : (
-          
-        <NoteCard className="bg-gray-100 animate-pulse text-gray-500 mt-8">
-        <NoteCardHeader>
-          <h1 className="text-center w-full">Loading you content... </h1>
-        </NoteCardHeader>
-      </NoteCard>
-        )}
+          PROJECTS BY {username}
+        </h1>
       </div>
-    </div></div>
+
+      <div className="px-2 md:px-16 ">
+        {" "}
+        <div className="flex flex-col mt-8">
+          {author ? (
+            <ProjectList projects={projects} />
+          ) : (
+            <NoteCard className="bg-gray-100 animate-pulse text-gray-500 mt-8">
+              <NoteCardHeader>
+                <h1 className="text-center w-full">Loading you content... </h1>
+              </NoteCardHeader>
+            </NoteCard>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

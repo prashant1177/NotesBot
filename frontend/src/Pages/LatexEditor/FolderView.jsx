@@ -106,77 +106,92 @@ export default function FolderView({
         projectid={projectid}
         uploadImage={uploadImage}
       />
-      <div className="flex flex-col text-gray-800">
-        {createNew && (
-          <div className="w-full flex items-center gap-4 mt-2  px-8">
-            <Input
-              className="border-2 border-blue-500"
-              placeholder={
-                createNew === "folder" ? "Enter folder name" : "Enter file name"
-              }
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-            />
-            <X
-              className="text-red-500 cursor-pointer"
-              onClick={() => {
-                setNewName("");
-                setCreateNew(null);
-              }}
-            />
-            <CirclePlus
-              className="text-green-500 cursor-pointer"
-              onClick={() =>
-                createNew === "folder" ? newFolder(newName) : newFile(newName)
-              }
-            />
-          </div>
-        )}
-
-       
-        {folders?.map((folderInside, i) => (
-          <button
-            onClick={() => openFolder(folderInside._id)}
-            className="border-b-2 border-gray-200 p-2 flex gap-2 items-center  px-8"
-            key={i}
-          >
-            <Folder size={16} />
-            {folderInside.name}
-          </button>
-        ))}
-        {files?.map((filesInside, i) => (
-          <div
-            className="flex justify-between border-b-2 border-gray-200  px-8"
-            key={i}
-          >
-            <button
-              onClick={() => openFile(filesInside._id)}
-              className={` p-2 flex gap-2 items-center ${
-                currFile == filesInside._id && "text-blue-800"
-              }`}
-            >
+      {!currFolder ? (
+        <div className="flex flex-col text-gray-800">
+          {" "}
+          <div className="flex justify-between bg-gray-100 border-b-2 border-gray-200  px-8 animate-pulse">
+            <button className={` p-2 flex gap-2 items-center `}>
               <FileType2 size={16} className={``} />
-              {filesInside.name}
+              Main.tex
             </button>
-            <button
-              className=" hover:text-red-500 transition-colors"
-              onClick={() => deleteFile(filesInside._id)}
-            >
+            <button className=" hover:text-red-500 transition-colors">
               <Trash strokeWidth={1} />{" "}
             </button>
           </div>
-        ))}
-         {backFolder && (
-          <button
-            onClick={() => openFolder(backFolder)}
-            className="border-y-1 border-gray-200 bg-gray-100 p-2 flex gap-2 items-center  px-8"
-          >
-            <MoveLeft size={16}/>
-            Go Back
-          </button>
-        )}
-        
-      </div>
+        </div>
+      ) : (
+        <div className="flex flex-col text-gray-800">
+          {createNew && (
+            <div className="w-full flex items-center gap-4 mt-2  px-8">
+              <Input
+                className="border-2 border-blue-500"
+                placeholder={
+                  createNew === "folder"
+                    ? "Enter folder name"
+                    : "Enter file name"
+                }
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+              <X
+                className="text-red-500 cursor-pointer"
+                onClick={() => {
+                  setNewName("");
+                  setCreateNew(null);
+                }}
+              />
+              <CirclePlus
+                className="text-green-500 cursor-pointer"
+                onClick={() =>
+                  createNew === "folder" ? newFolder(newName) : newFile(newName)
+                }
+              />
+            </div>
+          )}
+
+          {folders?.map((folderInside, i) => (
+            <button
+              onClick={() => openFolder(folderInside._id)}
+              className="border-b-2 border-gray-200 p-2 flex gap-2 items-center  px-8"
+              key={i}
+            >
+              <Folder size={16} />
+              {folderInside.name}
+            </button>
+          ))}
+          {files?.map((filesInside, i) => (
+            <div
+              className="flex justify-between border-b-2 border-gray-200  px-8"
+              key={i}
+            >
+              <button
+                onClick={() => openFile(filesInside._id)}
+                className={` p-2 flex gap-2 items-center ${
+                  currFile == filesInside._id && "text-blue-800"
+                }`}
+              >
+                <FileType2 size={16} className={``} />
+                {filesInside.name}
+              </button>
+              <button
+                className=" hover:text-red-500 transition-colors"
+                onClick={() => deleteFile(filesInside._id)}
+              >
+                <Trash strokeWidth={1} />{" "}
+              </button>
+            </div>
+          ))}
+          {backFolder && (
+            <button
+              onClick={() => openFolder(backFolder)}
+              className="border-y-1 border-gray-200 bg-gray-100 p-2 flex gap-2 items-center  px-8"
+            >
+              <MoveLeft size={16} />
+              Go Back
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

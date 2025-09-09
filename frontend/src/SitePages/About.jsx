@@ -1,6 +1,5 @@
 import React from 'react';
 import { Users, Award, Target, Heart, Mail, BookOpen } from 'lucide-react';
-import { Footer } from '../components/Footer';
 
 const About = () => {
   return (
@@ -109,8 +108,7 @@ A Computer Science student with a strong passion for technology, problem-solving
        
       </div>
 
-      {/* Footer */}
-      <Footer/>
+      
     </div>
   );
 };

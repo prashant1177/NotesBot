@@ -38,7 +38,7 @@ export default function CreateProject() {
     }
   };
   return (
-    <div className="flex flex-col items-center  w-full p-4 sm:p-6">
+    <div className="min-h-screen flex flex-col items-center  w-full p-4 sm:p-6">
       <div className="w-full max-w-2xl lg:w-3/6 flex flex-col space-y-6 sm:space-y-8 p-4 sm:p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 mt-8 sm:mt-12 lg:mt-16 ">
         <div className="text-center">
            <h1 className="text-gray-800 text-2xl sm:text-3xl font-medium  gap-2 py-2 uppercase">

@@ -1,5 +1,4 @@
 import React from "react";
-import { Footer } from "../components/Footer";
 import { Mail } from "lucide-react";
 
 const ContactSupport = () => {
@@ -56,8 +55,7 @@ const ContactSupport = () => {
         </p>
         </section>
       </div>
-    </div>
-    <Footer/></div>
+    </div></div>
   );
 };
 

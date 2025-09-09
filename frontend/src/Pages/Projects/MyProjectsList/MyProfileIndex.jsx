@@ -23,7 +23,7 @@ export default function MyProfileIndex() {
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="min-h-screen w-full">
       <div className="sticky top-0 flex justify-between md:px-8 backdrop-blur-md border-b border-gray-500/20 p-4
 ">
         <h1 className="text-gray-800 text-xl font-medium flex items-center gap-2 ">

@@ -5,7 +5,6 @@ import latexmathsymbols from "../assets/latexmathsymbols.webp";
 import latexreviredf from "../assets/latexreviredf.webp";
 import latexwritererrorassistant from "../assets/latexwritererrorassistant.webp";
 import latexwriteraskgemini from "../assets/latexwriteraskgemini.webp";
-import { Footer } from "../components/Footer";
 
 export default function WebsiteFeatures() {
   return (
@@ -313,7 +312,6 @@ export default function WebsiteFeatures() {
           </div>
         </div>
       </div>
-      <Footer/>
     </div>
   );
 }

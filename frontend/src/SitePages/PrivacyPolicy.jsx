@@ -1,6 +1,5 @@
 import React from "react";
 import { Shield, Mail, Lock, Eye, Users, FileText } from "lucide-react";
-import { Footer } from "../components/Footer";
 
 const PrivacyPolicy = () => {
   return (
@@ -219,8 +218,6 @@ const PrivacyPolicy = () => {
         </section>
       </div>
 
-      {/* Footer */}
-      <Footer />
     </div>
   );
 };
