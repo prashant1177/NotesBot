@@ -194,6 +194,7 @@ export default function ProjectView() {
             <div class="h-7 bg-gray-400 w-full rounded-md"></div>
             <div class="h-7 bg-gray-400 w-1/2 rounded-md"></div>
           </div>{" "}
+          <h6 className="text-gray-400 text-lg mt-8" >Loading project...</h6>
         </div>
       )}
     </div>

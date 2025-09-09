@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import api from "../../../api";
 import ProjectList from "./ProjectList";
 import { LibraryBig } from "lucide-react";
+import { NoteCard, NoteCardHeader } from "../../../ui/Card/Card";
 export default function UserProfileIndex() {
   const { username } = useParams();
   const [projects, setprojects] = useState([]);
@@ -22,7 +23,7 @@ export default function UserProfileIndex() {
   }, [username]);
 
   return (<div className=" w-full">
-      <div className="sticky top-0 flex justify-between md:px-8 backdrop-blur-md border-b border-border/20 p-4
+      <div className="sticky top-0 flex justify-between md:px-8 backdrop-blur-md border-b border-gray-500/20  p-4
     ">
         <h1 className="text-gray-800 text-xl font-medium flex items-center gap-2 py-2 uppercase">
           {" "}
@@ -36,20 +37,14 @@ export default function UserProfileIndex() {
       {" "}
       <div className="flex flex-col mt-8">
         {author ? (
-          <ProjectList projects={projects} author={author} />
+          <ProjectList projects={projects}  />
         ) : (
-          <div className="flex flex-col items-center justify-center my-8">
-              <div class="animate-pulse flex flex-col items-center gap-4 w-60">
-                <div>
-                  <div class="w-48 h-6 bg-gray-400 rounded-md"></div>
-                  <div class="w-28 h-4 bg-gray-400 mx-auto mt-3 rounded-md"></div>
-                </div>
-                <div class="h-7 bg-gray-400 w-full rounded-md"></div>
-                <div class="h-7 bg-gray-400 w-full rounded-md"></div>
-                <div class="h-7 bg-gray-400 w-full rounded-md"></div>
-                <div class="h-7 bg-gray-400 w-1/2 rounded-md"></div>
-              </div>{" "}
-            </div>
+          
+        <NoteCard className="bg-gray-100 animate-pulse text-gray-500 mt-8">
+        <NoteCardHeader>
+          <h1 className="text-center w-full">Loading you content... </h1>
+        </NoteCardHeader>
+      </NoteCard>
         )}
       </div>
     </div></div>

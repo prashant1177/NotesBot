@@ -12,11 +12,12 @@ export default function WebsiteFeatures() {
     <div className="pt-4 md:pt-16 w-full">
       <div className="flex flex-col w-full h-full  mx-auto items-center  z-10 md:gap-2 md:max-w-5/6 px-4 sm:px-6 lg:px-8">
         <div className="w-full h-full flex-1 flex flex-col justify-center md:text-center my-4 md:my-0 items-center">
-          <div className=" hidden md:inline-flex  px-4 py-2 rounded-full border border-gray-600 mb-8 text-gray-600 bg-gray-200">
-            <span className="text-sm ">
-              Everything You Need to Know About LatexWriter
-            </span>
-          </div>
+          <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Features 
+          </h1>
+          <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
+        </div>
           <h1 className="text-4xl lg:text-6xl font-medium mb-6 text-center text-gray-800 md:leading-18 tracking-tight md:tracking-wide">
             Key Features and <br />
             How to Use Them

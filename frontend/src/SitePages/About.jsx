@@ -5,12 +5,12 @@ import { Footer } from '../components/Footer';
 const About = () => {
   return (
     <div>
-      <div className="max-w-4xl mx-auto px-6 py-12 space-y-16">
+      <div className="max-w-4xl mx-auto px-6 py-4 md:py-16 space-y-16">
         
         {/* About Us Header */}
-        <div className="text-center">
+       <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            About Us 
+            About 
           </h1>
           <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
         </div>

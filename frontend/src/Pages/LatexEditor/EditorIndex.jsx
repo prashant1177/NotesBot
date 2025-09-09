@@ -31,15 +31,18 @@ export default function EditorIndex() {
   const [latex, setLatex] = useState(
     "Loading your content..."
   );
+  const [fetch, setFetch] = useState(false);
   const editorRef = useRef(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setFetch(true)
         const res = await api.get(`/projects/loadEditor/${projectid}`);
         setFolders(res.data.Folders);
         setFiles(res.data.Files);
         setCurrFolder(res.data.rootFolder);
         setCurrFile(res.data.rootFile._id);
+        setFetch(false)
         setLatex(res.data.fileContent);
       } catch (err) {
         console.error("Error fetching project:", err);
@@ -133,7 +136,8 @@ export default function EditorIndex() {
           loading={loading}
         />
       </div>
-      <div className="flex flex-col-reverse  md:flex-row flex-1 md:overflow-hidden">
+
+     <div className="flex flex-col-reverse  md:flex-row flex-1 md:overflow-hidden">
         {leftView == "PDF" ? (
           <PdfViewer
             pdfUrl={pdfUrl}
@@ -167,6 +171,7 @@ export default function EditorIndex() {
             setFiles={setFiles}
           />
         )}
+       
         <div className="flex-1 border-l-1 border-gray-200">
           {rightView == "commit" ? (
             <>
@@ -179,6 +184,7 @@ export default function EditorIndex() {
               setLatex={setLatex}
               handleEditorMount={handleEditorMount}
               editorRef={editorRef}
+              fetch={fetch}
             />
           )}
         </div>
@@ -186,3 +192,4 @@ export default function EditorIndex() {
     </div>
   );
 }
+

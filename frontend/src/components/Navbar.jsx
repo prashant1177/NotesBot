@@ -45,6 +45,14 @@ export default function Navbar() {
                   Blog
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/About"
+                  className=" hover:text-blue-500 transition-colors"
+                >
+                  About
+                </Link>
+              </li>
              <li className="relative group">
                 <button className="flex items-center  hover:text-blue-500 transition-colors gap-1">
                   Documentation
@@ -67,14 +75,6 @@ export default function Navbar() {
                 </div>
               </li>
 
-              <li>
-                <Link
-                  to="/About"
-                  className=" hover:text-blue-500 transition-colors"
-                >
-                  About
-                </Link>
-              </li>
             </ul>
           </div>
 
