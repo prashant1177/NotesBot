@@ -23,39 +23,54 @@ const faqData = [
     questions: [
       {
         question: "How do I create an account on latexwriter.com?",
-        answer: `To create an account on LaTeXWriter.com
-Go to https://latexwriter.com/register
-Enter your email, name, and password, or choose to sign in with your Google account.
+        answer: `<p class="text-gray-700 mb-4 leading-relaxed">
+  To create an account on LaTeXWriter.com, go to 
+  <a href="https://latexwriter.com/register" target="_blank" rel="noopener noreferrer" class="text-gray-700 hover:underline">latexwriter.com/register</a>. 
+  Enter your email address, name, and password, or choose to sign in with your Google account. 
+  If you register without using Google, verify your email by entering the one-time password (OTP) sent to you. 
+  After verification is complete, your account will be successfully created.
+</p>
 
-If you register without using a Google account, verify your email using an OTP.
-
-Once the verification is complete, your account will be successfully created.`,
+<ol class="list-decimal list-inside text-gray-700 space-y-2">
+  <li>Visit <a href="https://latexwriter.com/register" target="_blank" rel="noopener noreferrer"  class="font-medium">https://latexwriter.com/register</a>.</li>
+  <li>Fill in your email, name, and password — or click <span class="font-medium">Sign in with Google</span>.</li>
+  <li>If you used email/password, check your inbox for the OTP and enter it to verify your email.</li>
+  <li>Once verified, your LaTeXWriter account is ready to use.</li>
+</ol>`,
       },
       {
         question: "Do I need an account to use the editor?",
-        answer:
-          "While you can try our basic editor without an account, creating a free account unlocks features like saving your work, accessing your documents from anywhere, real-time collaboration, and cloud storage for your projects.",
+        answer: `<p class="text-gray-700 leading-relaxed">
+  Yes, you need to have an account to use the editor. This requirement helps us securely store and manage your files, 
+  ensuring your data is safely maintained and accessible only to you.
+</p>
+
+`,
       },
       {
         question:
           "How can I update my profile details (email, password, display name)?",
-        answer:
-          "Go to Settings by clicking your profile picture in the top right corner. From there, you can update your display name, change your email address, and reset your password. Changes are saved automatically.",
+        answer: `
+<p>
+  You can update your profile details such as your display name and password. However, for security and consistency, 
+  you cannot change your email address or username once your account has been created.
+</p>`,
       },
       {
         question: "I forgot my password – how can I reset it?",
         answer:
-          "Click 'Forgot Password' on the login page. Enter your registered email address, and we'll send you a password reset link. Follow the instructions in the email to create a new password.",
+          "<p>Click 'Forgot Password' on the login page. Enter your registered email address, and we'll send you a password reset link. Follow the instructions in the email to create a new password.</p>",
       },
       {
         question: "How do I delete my latexwriter.com account?",
         answer:
-          "To delete your account, go to Settings > Account > Delete Account. This action is permanent and will remove all your documents and data. We recommend downloading your important projects before deletion.",
+          "<p>To delete your account, go to Sidebar > Account > Delete Account. This action is permanent and will remove all your documents and data. We recommend downloading your important projects before deletion.</p>",
       },
       {
         question: "Can I use latexwriter.com without logging in?",
-        answer:
-          "Yes, we offer a limited guest mode where you can try basic LaTeX editing. However, your work won't be saved, and you won't have access to advanced features like collaboration, templates, or cloud storage.",
+        answer: `<p>
+  No, you cannot use LaTeXWriter as a guest. However, if a project is shared with you in view mode, you will be able to view its contents such as files.
+</p>`,
       },
     ],
   },
@@ -69,28 +84,48 @@ Once the verification is complete, your account will be successfully created.`,
     questions: [
       {
         question: "How do I start writing math in the editor?",
-        answer:
-          "Use dollar signs for inline math: $x^2 + y^2 = z^2$ or double dollar signs for display math: $$\\int_0^\\infty e^{-x} dx = 1$$. Our editor provides real-time preview so you can see your equations as you type.",
+        answer: `<p class=" leading-relaxed">
+  Use dollar signs for inline math, for example: <span class="font-mono">$x^2 + y^2 = z^2$</span>, 
+  or double dollar signs for display math, for example: 
+  <span class="font-mono">$$\int_0^\infty e^{-x} \, dx = 1$$</span>. 
+  Our editor provides a real-time preview so you can see your equations as you type.
+</p>`,
       },
       {
         question: "Which LaTeX commands are supported?",
-        answer:
-          "We support all standard LaTeX commands and most popular packages including amsmath, amsfonts, graphicx, tikz, and many more. If you need a specific package, check our package documentation or contact support.",
+        answer: `<p class=" leading-relaxed">
+  All standard LaTeX commands are supported in the editor, except for a few outdated or deprecated ones that are not
+  maintained by modern compilers like Tectonic. Commonly used math, text formatting, tables, and figures are fully
+  supported.
+</p>`,
       },
       {
         question: "Does latexwriter.com support inline and block equations?",
-        answer:
-          "Yes! Use $...$ for inline equations within text, and $$...$$ or \\[...\\] for display equations on separate lines. We also support equation environments like \\begin{equation}, \\begin{align}, and \\begin{gather}.",
+        answer: `<p class="leading-relaxed">
+  Yes, LaTeXWriter.com supports both inline and block equations, giving you the flexibility to format your mathematical content the way you need. Inline equations are useful when you want to include math seamlessly within a line of text.
+</p>
+
+<p class="leading-relaxed">
+  Block equations, on the other hand, are displayed separately and centered, making them ideal for highlighting important formulas or longer mathematical expressions. You can use both styles depending on your document’s requirements.
+</p>`,
       },
       {
         question: "Can I insert figures, tables, and references?",
-        answer:
-          "Absolutely! Upload images through the file manager, create tables using tabular environments, and manage references with BibTeX. Our editor includes helpers for common elements like figures and tables.",
+        answer: `
+<p class="leading-relaxed">
+  Yes, you can easily insert figures, tables, and references with just one click. The toolbar provides ready-made syntax for adding these elements, so you only need to edit them as per your requirements.
+</p>`,
       },
       {
         question: "How do I add packages – are all LaTeX packages supported?",
-        answer:
-          "Add packages using \\usepackage{packagename} in your preamble. We support most CTAN packages. If a package isn't available, it will show in the error log, and you can request it through our support.",
+        answer: `<p class="leading-relaxed">
+  You do not need to manually install any packages. Simply include them at the top of your document using 
+  <span class="font-mono">\\usepackage{...}</span>, and everything will be handled for you in the backend.
+</p>
+
+<p class="leading-relaxed">
+  LaTeXWriter supports all standard packages, except for a few deprecated ones that are outdated and no longer useful.
+</p>`,
       },
       {
         question: "Why is my equation not rendering properly?",
@@ -109,23 +144,35 @@ Once the verification is complete, your account will be successfully created.`,
     questions: [
       {
         question: "What is the difference between editor and preview mode?",
-        answer:
-          "Editor mode shows your raw LaTeX code with syntax highlighting. Preview mode shows the compiled output as it would appear in a PDF. You can use split view to see both simultaneously or switch between them.",
+        answer: `<p class="leading-relaxed">
+  The <span class="font-medium">Editor mode</span> is powered by the Visual Studio Monaco editor and is designed for creating and managing your project files such as <span class="font-mono">.tex</span> and <span class="font-mono">.bib</span>. In this mode, you have full access to write, edit, and organize your LaTeX documents. Only the project owner has permission to make changes, ensuring that your content remains secure and under your control. This mode is best suited for actively working on your LaTeX projects and making updates in real time.
+</p>
+
+<p class="leading-relaxed">
+  The <span class="font-medium">Preview mode</span>, on the other hand, is intended for sharing your project with others. When you share a project in preview mode, recipients can view your files and compiled output but cannot make any edits. This makes it useful for collaboration when you only want others to review or reference your work without altering the original files. In the future, LaTeXWriter plans to introduce a true collaboration feature, similar to how GitHub allows multiple contributors to work together, where team members will be able to edit and contribute in a controlled way.
+</p>`,
       },
       {
         question: "How do I enable/disable real-time preview?",
-        answer:
-          "Click the preview toggle button in the toolbar, or use Ctrl+P (Cmd+P on Mac). You can also set preview preferences in Settings to auto-compile after a certain delay or only on manual trigger.",
+        answer: `<p class="leading-relaxed">
+  You can enable or disable real-time preview simply by switching to another tab. The editor will continue to compile your files into PDF in the background, so disabling the preview does not affect your editing process.
+</p>
+
+<p class="leading-relaxed">
+  This means you can work without distraction and save system resources if you don’t need to see the live preview. When you’re ready, just switch back to the preview tab to view the compiled output.
+</p>`,
       },
       {
         question: "Is there a dark mode in the editor?",
-        answer:
-          "Yes! Click the theme toggle in the top right corner or go to Settings > Appearance. We offer multiple themes including Dark, Light, and several color schemes optimized for LaTeX editing.",
+        answer: `<p class="leading-relaxed">
+  No, currently there is no dark mode available in the editor. However, a dark mode feature is planned for the future, possibly by the first week of October.
+</p>`,
       },
       {
         question: "How do I save my work while writing?",
-        answer:
-          "Your work auto-saves every few seconds when you're logged in. You can also manually save using Ctrl+S (Cmd+S on Mac). The save status is shown in the bottom bar of the editor.",
+        answer: `<p class="leading-relaxed">
+  Your work is automatically saved every few seconds while you are logged in. You can also manually save your files by going to the file structure and selecting "Save." The save status is displayed in the bottom bar of the editor so you can always see when your changes have been recorded.
+</p>`,
       },
       {
         question: "Can I undo/redo changes in the editor?",
@@ -137,6 +184,18 @@ Once the verification is complete, your account will be successfully created.`,
           "Does latexwriter.com support auto-completion or syntax highlighting?",
         answer:
           "Yes! Our editor provides intelligent auto-completion for LaTeX commands, environments, and citations. Syntax highlighting helps you identify different parts of your code, and we show matching brackets and braces.",
+      },
+      {
+        question: "What is commit changes?",
+        answer: `<p class="leading-relaxed">
+    By committing changes, you save the current state of your project permanently. Free users can save up to 5 commits; if you create more, the oldest commits will be removed. Premium users can save up to 50 commits.
+  </p>`,
+      },
+      {
+        question: "How do I commit my current version?",
+        answer: `<p class="leading-relaxed">
+    You can click on "Commit Changes" to save the current version of your file permanently. This allows you to go back to this version at any time.
+  </p>`,
       },
     ],
   },
@@ -151,33 +210,32 @@ Once the verification is complete, your account will be successfully created.`,
       {
         question: "How can I create a new project/document?",
         answer:
-          "Click 'New Project' from your dashboard. Choose from a blank document, select a template (article, report, presentation), or upload existing LaTeX files. Name your project and start writing immediately.",
-      },
+`<p class="leading-relaxed">
+  Click "Create New Project" from your dashboard. Enter a title for your project, and optionally add an "About" description and relevant topics. Then click "Create Project." Your project will be created instantly, and you can start writing immediately.
+</p>`      },
       {
         question: "How do I upload an existing LaTeX file to latexwriter.com?",
         answer:
-          "Use 'Upload Project' from your dashboard. You can upload .tex files, images, .bib files, and other assets. Drag and drop multiple files or use the file browser. ZIP files are automatically extracted.",
+          "Use 'Upload File' from your dashboard. You can upload .tex files, images, .bib files, and other assets. Drag and drop files or use the file browser.",
       },
       {
         question: "Can I organize my documents into folders?",
         answer:
-          "Yes, create folders from your dashboard to organize projects by topic, course, or any system that works for you. You can move projects between folders and create nested folder structures.",
+        `<p class="leading-relaxed">
+  Yes, by default a file structure is provided with a <span class="font-mono">main.tex</span> file. You can add new files or delete existing ones as needed to organize your project.
+</p>`
       },
       {
         question: "How many projects can I save for free?",
         answer:
-          "Free accounts can create unlimited public projects and up to 10 private projects. Premium accounts have unlimited private projects plus advanced features like priority compilation and larger file uploads.",
-      },
-      {
-        question: "How do I rename or delete a document?",
-        answer:
-          "Right-click on any project in your dashboard to see options for rename, delete, duplicate, or move. You can also access these options from the project settings menu within the editor.",
+          "Free accounts can create 1 private projects. Premium accounts have unlimited private projects plus advanced features like priority compilation and larger file uploads.",
       },
       {
         question: "Can I duplicate a project for editing?",
         answer:
-          "Yes, right-click any project and select 'Duplicate' or 'Clone'. This creates an identical copy that you can modify without affecting the original. Useful for creating variations or templates.",
-      },
+`<p class="leading-relaxed">
+  Yes, by going to the project view, you can fork your own project. This will simply duplicate the project, allowing you to make changes without affecting the original.
+</p>`      },
     ],
   },
   {
@@ -189,17 +247,7 @@ Once the verification is complete, your account will be successfully created.`,
       "Collaborate with others on LaTeX documents, share your work, and manage permissions for team projects and academic collaboration.",
     questions: [
       {
-        question: "How can I share my LaTeX project with others?",
-        answer:
-          "Click 'Share' in your project. You can invite people by email, create shareable links, or make projects public. Set permissions for each collaborator: view-only, comment, or full edit access.",
-      },
-      {
-        question: "Does latexwriter.com allow real-time collaboration?",
-        answer:
-          "Yes! Multiple users can edit the same document simultaneously. You'll see others' cursors and changes in real-time, with automatic conflict resolution and a chat feature for communication.",
-      },
-      {
-        question: "Can I export my project as a PDF, DOCX, or image?",
+        question: "Can I export my project as a PDF?",
         answer:
           "Yes, use the 'Download' menu to export as PDF, or individual images of pages. DOCX export is available for premium users. You can also download the raw LaTeX source and all project files.",
       },
@@ -226,14 +274,13 @@ Once the verification is complete, your account will be successfully created.`,
       {
         question: "How do I export my LaTeX document as a PDF?",
         answer:
-          "Click the 'PDF' button in the toolbar or use Ctrl+Enter (Cmd+Enter on Mac). The PDF compiles in the cloud and opens in a new tab. You can also schedule automatic PDF generation when you make changes.",
-      },
-      {
-        question:
-          "Can I download my project files (.tex, images, bibliography)?",
-        answer:
-          "Yes, use 'Download' > 'Source' to get a ZIP file with all your project files including .tex, images, .bib files, and any other assets. This lets you work offline or switch to other LaTeX editors.",
-      },
+`<p class="leading-relaxed">
+  To export your LaTeX document as a PDF, go to the "View PDF" section, where you will find an option to download the PDF. This will always download the final compiled version. 
+</p>
+
+<p class="leading-relaxed">
+  If you want to print the PDF, turn off Preview mode. The final PDF will then be visible along with the print option.
+</p`      },
       {
         question: "Do I need to install LaTeX locally to export?",
         answer:
@@ -267,17 +314,28 @@ Once the verification is complete, your account will be successfully created.`,
       {
         question: "How can I debug LaTeX errors in latexwriter.com?",
         answer:
-          "Use our built-in error highlighting that shows problems directly in the editor. The error panel provides detailed messages with line numbers. Click on errors to jump to the problematic code location.",
-      },
+`<p class="leading-relaxed">
+  Any LaTeX errors will be clearly displayed in the editor, helping you save time by quickly identifying issues. 
+</p>
+
+<p class="leading-relaxed">
+  If you don’t understand an error, you can click on the "Error Assistant." It will explain the error in simple language, although it may take 2-3 seconds to generate the explanation.
+</p>`      },
       {
         question: "What should I do if my document fails to render?",
         answer:
-          "First, check for basic syntax errors. Try compiling a minimal document to isolate the issue. If problems persist, use 'Help' > 'Share for debugging' to get assistance from our support team.",
+          "First, check for basic syntax errors. Try compiling a minimal document to isolate the issue. If problems persist, use 'Ask Gemini' > 'paste the error' to get assistance from our AI-Assitant.",
       },
       {
         question: "Why are some LaTeX packages not working?",
         answer:
-          "We support most CTAN packages, but some may not be installed. Check the error log for 'File not found' messages. Contact support to request specific packages, and we'll typically add them within 24 hours.",
+        `<p class="leading-relaxed">
+  LaTeXWriter supports all modern packages using XeLaTeX. However, some older or deprecated packages may not work. 
+</p>
+
+<p class="leading-relaxed">
+  If you encounter such an issue, you can reach out to us. If the package exists, we will make sure to add support for it as soon as possible.
+</p>`
       },
       {
         question: "How do I fix 'undefined control sequence' errors?",
@@ -297,33 +355,41 @@ Once the verification is complete, your account will be successfully created.`,
       {
         question: "Is latexwriter.com free to use?",
         answer:
-          "Yes! Our free plan includes unlimited public projects, up to 10 private projects, basic collaboration, and PDF export. Premium plans offer unlimited private projects, priority compilation, and advanced features.",
-      },
+`<p class="leading-relaxed">
+  Mostly yes, LaTeXWriter has a free version that allows you to create one project without any limitations. 
+</p>
+
+<p class="leading-relaxed">
+  To create more than one project or access additional features, you will need to upgrade to the premium version.
+</p>`      },
       {
         question: "What's included in the free plan vs premium?",
         answer:
-          "Free: Unlimited public projects, 10 private projects, basic templates, 1GB storage. Premium: Unlimited private projects, advanced templates, priority support, 10GB storage, advanced collaboration tools, and export options.",
-      },
+`<p class="leading-relaxed">
+  The free plan includes almost all features of LaTeXWriter, with the main limitation being that you can create only one project. Free users can save up to 5 commits per project.
+</p>
+
+<p class="leading-relaxed">
+  Premium users enjoy additional benefits, such as faster compilation speed due to a priority queue, the ability to save up to 50 commits, and the option to compile projects directly in the view mode without opening the editor. Premium plans also include several other advanced features to enhance the editing and sharing experience.
+</p>`      },
       {
         question: "How can I upgrade to premium?",
         answer:
-          "Click 'Upgrade' in your dashboard or go to Settings > Billing. Choose monthly or annual billing (annual saves 20%). We accept credit cards, PayPal, and other payment methods.",
-      },
+`<p class="leading-relaxed">
+  To upgrade to premium, go to the "Premium" tab and click on "Get Premium." Complete the payment of ₹799 or $9, and all premium features will become available to you immediately.
+</p>`      },
       {
         question: "How do I cancel my subscription?",
         answer:
-          "Go to Settings > Billing > Cancel Subscription. Your premium features remain active until the current billing period ends. You can reactivate anytime without losing your data.",
-      },
-      {
-        question: "Do you offer student discounts?",
-        answer:
-          "Yes! Students get 50% off premium plans. Verify your student status with your .edu email address or upload student documentation. The discount applies for up to 4 years.",
-      },
+`<p class="leading-relaxed">
+  To cancel your subscription, go to your user settings where you will find a "Cancel" option. Click it to complete the cancellation. For confirmation, you can also send an email to the support team.
+</p>`      },
       {
         question: "Which payment methods are supported?",
         answer:
-          "We accept major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers. All payments are processed securely through Stripe with industry-standard encryption.",
-      },
+`<p class="leading-relaxed">
+  Payments are handled securely through Razorpay. You can use any debit card, credit card, or UPI, including both international and domestic cards.
+</p>`      },
     ],
   },
   {
@@ -352,7 +418,7 @@ Once the verification is complete, your account will be successfully created.`,
       {
         question: "How long are my files stored?",
         answer:
-          "Active accounts: indefinitely. Inactive free accounts: 12 months after last login. Premium accounts: as long as subscription is active. Deleted accounts: 30-day grace period before permanent deletion.",
+          "Active accounts: indefinitely. Inactive free accounts: 6 months after last login. Premium accounts: as long as subscription is active. Deleted accounts: 30-day grace period before permanent deletion.",
       },
       {
         question: "How do I permanently delete my data from latexwriter.com?",
@@ -397,7 +463,7 @@ Once the verification is complete, your account will be successfully created.`,
       {
         question: "What should I do if the website is down?",
         answer:
-          "Check our status page at status.latexwriter.com for real-time updates. Follow @LaTeXWriter on social media for announcements. If issues persist, contact support with details about the problem you're experiencing.",
+          "Follow @LaTeXWriter on social media for announcements. If issues persist, contact support with details about the problem you're experiencing.",
       },
     ],
   },
@@ -421,19 +487,16 @@ Once the verification is complete, your account will be successfully created.`,
           "LaTeXWriter focuses on user experience with faster compilation, better error handling, modern UI, and unique features like smart auto-completion and advanced collaboration tools. We also offer competitive pricing and excellent customer support.",
       },
       {
-        question: "Do you provide templates for quick start?",
-        answer:
-          "Yes! We offer templates for academic papers (IEEE, ACM, APA), reports, presentations, CVs, and more. Access them via 'New Project' > 'From Template' or browse our template gallery for inspiration.",
-      },
-      {
         question: "Where can I report a bug or request a feature?",
         answer:
-          "Use the 'Feedback' button in the editor or email support@latexwriter.com. For feature requests, visit our community forum where you can vote on suggestions and discuss with other users.",
-      },
+`<p class="leading-relaxed">
+  You can report a bug or request a feature by visiting our Reddit page or tagging us on X, and you will typically receive a reply within 2-3 hours. 
+  Alternatively, you can email us directly at <a href="mailto:support@latexwriter.com" class="underline">support@latexwriter.com</a>.
+</p>`      },
       {
         question: "How do I contact support?",
         answer:
-          "Email support@latexwriter.com for help, use the chat widget on our website, or create a ticket in your dashboard under Help > Support. Premium users get priority response within 24 hours.",
+          "Email support@latexwriter.com for help, Premium users get priority response within 6 hours.",
       },
     ],
   },

@@ -74,7 +74,7 @@ const LatexWriterDocumentationPageView = () => {
 
                 {isExpanded && (
                   <div
-                    className="px-6 py-4 border-t border-gray-100 text-gray-800"
+                    className="px-6 py-4 border-t border-gray-100 text-gray-700"
                     dangerouslySetInnerHTML={{ __html: qa.answer }}
                   ></div>
                 )}
