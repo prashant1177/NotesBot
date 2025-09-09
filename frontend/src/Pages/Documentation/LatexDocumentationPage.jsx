@@ -5,6 +5,7 @@ import {
   Search,
   FileText,
   Hash,
+  ChevronLeft,
 } from "lucide-react";
 
 // Sample documentation data structure
@@ -552,20 +553,12 @@ const sampleDocumentation = [
   },
 ];
 
-const LatexDocumentationPage = ({ documentation = sampleDocumentation }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [expandedSections, setExpandedSections] = useState({});
-  const [activeSection, setActiveSection] = useState("");
+const LatexDocumentationPage = ({ documentation = sampleDocumentation }) => {const [searchTerm, setSearchTerm] = useState("");
+  const [activeSection, setActiveSection] = useState(
+    documentation[0]?.id || "" // show first one by default
+  );
 
-  // Toggle section expansion
-  const toggleSection = (sectionId) => {
-    setExpandedSections((prev) => ({
-      ...prev,
-      [sectionId]: !prev[sectionId],
-    }));
-  };
-
-  // Filter documentation based on search
+  // Filter docs
   const filteredDocs = documentation.filter(
     (doc) =>
       doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -579,93 +572,93 @@ const LatexDocumentationPage = ({ documentation = sampleDocumentation }) => {
       )
   );
 
-  // Render subsections if they exist
-  const renderSubsections = (subsections) => {
-    if (!subsections) return null;
+  const activeIndex = filteredDocs.findIndex((d) => d.id === activeSection);
+  const prevDoc = activeIndex > 0 ? filteredDocs[activeIndex - 1] : null;
+  const nextDoc =
+    activeIndex < filteredDocs.length - 1
+      ? filteredDocs[activeIndex + 1]
+      : null;
 
-    return (
+  // Render code block
+  const renderCode = (code) =>
+    code && (
+      <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm mt-3">
+        <code>{code}</code>
+      </pre>
+    );
+
+  // Render subsections
+  const renderSubsections = (subsections) =>
+    subsections && (
       <div className="ml-6 space-y-3">
-        {subsections.map((subsection, index) => (
-          <div key={index} className="border-l-2 border-blue-200 pl-4">
-            <h5 className="font-semibold text-gray-800 flex items-center">
-              <Hash className="w-4 h-4 mr-1" />
-              {subsection.name}
-            </h5>
-            <p className="text-gray-600 text-sm mt-1">
-              {subsection.description}
-            </p>
-            {subsection.parameters && (
+        {subsections.map((sub, i) => (
+          <div key={i} className="border-l-2 border-gray-200 pl-4">
+            <h5 className="font-semibold text-gray-800">{sub.name}</h5>
+            <p className="text-gray-600 text-sm mt-1">{sub.description}</p>
+            {sub.parameters && (
               <div className="mt-2 p-2 bg-gray-50 rounded text-xs">
                 <span className="font-medium">Parameters:</span>{" "}
-                {subsection.parameters}
+                {sub.parameters}
               </div>
             )}
-            {subsection.solution && (
+            {sub.solution && (
               <div className="mt-2 p-2 bg-green-50 border-l-4 border-green-400 rounded text-sm">
                 <span className="font-medium text-green-800">Solution:</span>
-                <p className="text-green-700 mt-1">{subsection.solution}</p>
+                <p className="text-green-700 mt-1">{sub.solution}</p>
               </div>
             )}
           </div>
         ))}
       </div>
     );
-  };
 
-  // Render code blocks
-  const renderCode = (code) => {
-    if (!code) return null;
-
-    return (
-      <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm mt-3">
-        <code>{code}</code>
-      </pre>
-    );
-  };
-
-  // Render individual documentation section
-  const renderDocSection = (doc) => {
-    const isExpanded = expandedSections[doc.id];
+  // Render active section
+  const renderActiveSection = () => {
+    const doc = filteredDocs.find((d) => d.id === activeSection);
+    if (!doc) return null;
 
     return (
-      <div
-        id={doc.id}
-        key={doc.id}
-        className="bg-white rounded-lg shadow-md mb-6"
-      >
-        <div
-          className="p-6 cursor-pointer border-b border-gray-200 hover:bg-gray-50 transition-colors"
-          onClick={() => toggleSection(doc.id)}
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <FileText className="w-5 h-5 text-blue-600 mr-3" />
-              <h2 className="text-xl font-bold text-gray-800">{doc.title}</h2>
-            </div>
-            {isExpanded ? (
-              <ChevronDown className="w-5 h-5 text-gray-500" />
-            ) : (
-              <ChevronRight className="w-5 h-5 text-gray-500" />
-            )}
-          </div>
-          <p className="text-gray-600 mt-2">{doc.content}</p>
+      <div id={doc.id} className="bg-white rounded-lg shadow-md p-6">
+        <div className="flex items-center mb-4">
+          <FileText className="w-5 h-5 text-blue-600 mr-2" />
+          <h2 className="text-2xl font-bold text-gray-800">{doc.title}</h2>
         </div>
+        <p className="text-gray-700 mb-6">{doc.content}</p>
 
-        {isExpanded && doc.sections && (
-          <div className="p-6 space-y-6">
-            {doc.sections.map((section, index) => (
-              <div key={index} className="border-l-4 border-blue-500 pl-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  {section.subheading}
-                </h3>
-                <p className="text-gray-700 mb-3">{section.paragraph}</p>
-
-                {renderCode(section.code)}
-                {renderSubsections(section.subsections)}
-              </div>
-            ))}
+        {doc.sections?.map((section, index) => (
+          <div key={index} className="mb-6 border-l-4 border-blue-500 pl-4">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              {section.subheading}
+            </h3>
+            <p className="text-gray-700 mb-3">{section.paragraph}</p>
+            {renderCode(section.code)}
+            {renderSubsections(section.subsections)}
           </div>
-        )}
+        ))}
+
+        {/* Prev/Next Navigation */}
+        <div className="flex justify-between mt-8">
+          {prevDoc ? (
+            <button
+              onClick={() => setActiveSection(prevDoc.id)}
+              className="flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700"
+            >
+              <ChevronLeft className="w-5 h-5 mr-2" />
+              {prevDoc.title}
+            </button>
+          ) : (
+            <span />
+          )}
+          {nextDoc && (
+            <button
+              onClick={() => setActiveSection(nextDoc.id)}
+              className="flex items-center px-4 py-2 bg-blue-100 hover:bg-blue-200 rounded-lg text-blue-700"
+            >
+              {nextDoc.title}
+              <ChevronRight className="w-5 h-5 ml-2" />
+            </button>
+          )}
+        </div>
       </div>
     );
   };
@@ -676,10 +669,9 @@ const LatexDocumentationPage = ({ documentation = sampleDocumentation }) => {
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
-           Latex Documentation
+            Latex Documentation
           </h1>
-
-          {/* Search Bar */}
+          {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
@@ -693,53 +685,32 @@ const LatexDocumentationPage = ({ documentation = sampleDocumentation }) => {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Table of Contents */}
-        <div className="mb-8 bg-white p-6 rounded-lg shadow-md">
+      {/* Layout */}
+      <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
+        {/* Sidebar */}
+        <aside className="md:w-1/4 bg-white p-4 rounded-lg shadow-md h-fit">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
             Table of Contents
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <nav className="flex flex-col gap-2">
             {filteredDocs.map((doc) => (
-              <a href={`/documentation/#${doc.id}`} key={doc.id}>
-                <button
-                  onClick={() => {
-                    setExpandedSections((prev) => ({
-                      ...prev,
-                      [doc.id]: true,
-                    }));
-                    setActiveSection(doc.id);
-                  }}
-                  className={`text-left p-3 rounded-lg transition-colors ${
-                    activeSection === doc.id
-                      ? "bg-blue-100 text-blue-800 border-2 border-blue-300"
-                      : "bg-gray-50 hover:bg-gray-100 text-gray-700 border-2 border-transparent"
-                  }`}
-                >
-                  <div className="font-medium">{doc.title}</div>
-                  <div className="text-sm opacity-75 mt-1">
-                    {doc.content.substring(0, 50)}...
-                  </div>
-                </button>
-              </a>
+              <button
+                key={doc.id}
+                onClick={() => setActiveSection(doc.id)}
+                className={`text-left p-2 rounded-lg transition-colors ${
+                  activeSection === doc.id
+                    ? "bg-blue-100 text-blue-800"
+                    : "bg-gray-50 hover:bg-gray-100 text-gray-700"
+                }`}
+              >
+                {doc.title}
+              </button>
             ))}
-          </div>
-        </div>
+          </nav>
+        </aside>
 
-        {/* Documentation Sections */}
-        <div className="space-y-6">
-          {filteredDocs.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-lg shadow-md">
-              <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600">
-                No documentation found matching your search.
-              </p>
-            </div>
-          ) : (
-            filteredDocs.map(renderDocSection)
-          )}
-        </div>
+        {/* Main Content */}
+        <main className="md:w-3/4">{renderActiveSection()}</main>
       </div>
     </div>
   );

@@ -30,6 +30,7 @@ import WebsiteFeatures from "./SitePages/WebsiteFeatures";
 import MyProfileIndex from "./Pages/Projects/MyProjectsList/MYProfileIndex";
 import LatexWriterDocumentationIndex from "./Pages/Documentation/LatexWriterDocumentationIndex";
 import { Footer } from "./components/Footer";
+import LatexWriterDocumentationPageView from "./Pages/Documentation/LatexWriterDocumentationPageView";
 
 function App() {
   const [isActive, setIsActive] = useState(false);
@@ -47,6 +48,7 @@ function App() {
     }
   };
   const location = useLocation(); 
+const hiddenFooterPaths = ["/latexeditor", "/login", "/create/project","/register"];
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
@@ -91,6 +93,10 @@ function App() {
               path="/documentation/latexwriter"
               element={<LatexWriterDocumentationIndex />}
             />
+            <Route
+              path="/documentation/latexwriter/:slug"
+              element={<LatexWriterDocumentationPageView />}
+            />
             <Route path="/pricing" element={<PremiumPage />} />
             <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
             <Route path="/contact" element={<ContactSupport />} />
@@ -103,7 +109,7 @@ function App() {
             <Route path="/create/project" element={<CreateProject />} />
           </Routes>
 
-          {location.pathname.startsWith("/latexeditor") ? null : <Footer />}
+{!hiddenFooterPaths.some(path => location.pathname.startsWith(path)) && <Footer />}
         </div>
       </div>
     </GoogleOAuthProvider>

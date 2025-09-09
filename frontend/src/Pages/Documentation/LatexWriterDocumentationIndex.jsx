@@ -1,9 +1,9 @@
-import LatexDocumentationPage from "./LatexDocumentationPage";
+import LatexWriterDocumentationPage from "./LatexWriterDocumentationPage";
 
 export default function LatexWriterDocumentationIndex(){
     return(
         <div>
-       <LatexDocumentationPage/>
+       <LatexWriterDocumentationPage/>
 </div>
     )
 }
