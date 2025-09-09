@@ -27,7 +27,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import ContactSupport from "./SitePages/ContactSupport";
 import TermsAndConditions from "./SitePages/TermsAndConditions";
 import WebsiteFeatures from "./SitePages/WebsiteFeatures";
-import MyProfileIndex from "./Pages/Projects/MyProjectsList/MYProfileIndex";
+import MyProfileIndex from "./Pages/Projects/MyProjectsList/MyProfileIndex";
 import LatexWriterDocumentationIndex from "./Pages/Documentation/LatexWriterDocumentationIndex";
 import { Footer } from "./components/Footer";
 import LatexWriterDocumentationPageView from "./Pages/Documentation/LatexWriterDocumentationPageView";
