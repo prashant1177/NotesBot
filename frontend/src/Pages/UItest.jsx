@@ -1,5 +1,5 @@
 import Button from "../ui/Button/Button"; // adjust path as needed
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/Card/Card";
+import { Card, CardDescription, CardHeader, CardTitle } from "../ui/Card/Card";
 import Input from "../ui/Input/Input";
 
 export default function UItest() {

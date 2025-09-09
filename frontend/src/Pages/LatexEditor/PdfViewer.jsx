@@ -16,19 +16,20 @@ export default function PdfViewer({
   ErrorFix,
   setErrorFix,
   setDebug,
-  debug
+  debug,
+  compileLatexWithImage,
 }) {
   const [isChecked, setIsChecked] = useState(true);
   const [thinking, setThinking] = useState(false);
-  
+
   const handleAskAi = async () => {
     setThinking(true);
     const res = await api.post(`/projects/debugerror`, { error: ErrorFix });
-    
+
     setErrorFix(generateFormattedHtml(res.data.debuggedError));
     setThinking(false);
     setDebug(false);
-  }; 
+  };
   return (
     <div className="flex flex-col flex-1 relative ">
       <div className="shrink-0">
@@ -58,10 +59,26 @@ export default function PdfViewer({
               title="PDF Viewer"
             />
           )
+        ) : isError ? (
+          <ErrorByAI
+            handleAskAi={handleAskAi}
+            thinking={thinking}
+            debug={debug}
+            ErrorFix={ErrorFix}
+          />
         ) : (
-          isError && (
-            <ErrorByAI handleAskAi={handleAskAi} thinking={thinking} debug={debug} ErrorFix={ErrorFix} />
-          )
+          <div className="flex w-full h-full items-center justify-center">
+            {" "}
+            <Button
+              onClick={() => compileLatexWithImage()}
+              className="text-xs sm:text-sm px-3 sm:px-4 py-2 flex-shrink-0 flex items-center gap-2 h-fit"
+              
+              disabled={loading}
+            >
+              <span className="hidden sm:inline">Compile PDF</span>
+              <span className="sm:hidden">Compile</span>
+            </Button>{" "}
+          </div>
         )}{" "}
       </div>
     </div>

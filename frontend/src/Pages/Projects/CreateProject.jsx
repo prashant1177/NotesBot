@@ -46,7 +46,7 @@ export default function CreateProject() {
             Create New Project
             </h1>
             
-          <div className="w-16 h-1 bg-blue-300 mx-auto rounded-full"></div>
+          <div className="w-16 h-1 bg-gray-500 mx-auto rounded-full"></div>
         </div>
 
         <div className="space-y-4 sm:space-y-6">

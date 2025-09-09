@@ -49,7 +49,6 @@ export default function EditorIndex() {
       }
     };
     fetchData();
-    compileLatexWithImage();
   }, [projectid]);
 
   const handleViewLeft = async (s) => {
@@ -147,6 +146,7 @@ export default function EditorIndex() {
             ErrorFix={ErrorFix}
             setDebug={setDebug}
             debug={debug}
+          compileLatexWithImage={compileLatexWithImage}
           />
         ) : leftView == "versions" ? (
           <Versions projectid={projectid} />
