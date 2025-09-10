@@ -23,24 +23,24 @@ const faqData = [
     questions: [
       {
         question: "How do I create an account on latexwriter.com?",
-        answer: `<p class="text-gray-700 mb-4 leading-relaxed">
+        answer: `<p className="text-gray-700 mb-4 leading-relaxed">
   To create an account on LaTeXWriter.com, go to 
-  <a href="https://latexwriter.com/register" target="_blank" rel="noopener noreferrer" class="text-gray-700 hover:underline">latexwriter.com/register</a>. 
+  <a href="https://latexwriter.com/register" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:underline">latexwriter.com/register</a>. 
   Enter your email address, name, and password, or choose to sign in with your Google account. 
   If you register without using Google, verify your email by entering the one-time password (OTP) sent to you. 
   After verification is complete, your account will be successfully created.
 </p>
 
-<ol class="list-decimal list-inside text-gray-700 space-y-2">
-  <li>Visit <a href="https://latexwriter.com/register" target="_blank" rel="noopener noreferrer"  class="font-medium">https://latexwriter.com/register</a>.</li>
-  <li>Fill in your email, name, and password — or click <span class="font-medium">Sign in with Google</span>.</li>
+<ol className="list-decimal list-inside text-gray-700 space-y-2">
+  <li>Visit <a href="https://latexwriter.com/register" target="_blank" rel="noopener noreferrer"  className="font-medium">https://latexwriter.com/register</a>.</li>
+  <li>Fill in your email, name, and password — or click <span className="font-medium">Sign in with Google</span>.</li>
   <li>If you used email/password, check your inbox for the OTP and enter it to verify your email.</li>
   <li>Once verified, your LaTeXWriter account is ready to use.</li>
 </ol>`,
       },
       {
         question: "Do I need an account to use the editor?",
-        answer: `<p class="text-gray-700 leading-relaxed">
+        answer: `<p className="text-gray-700 leading-relaxed">
   Yes, you need to have an account to use the editor. This requirement helps us securely store and manage your files, 
   ensuring your data is safely maintained and accessible only to you.
 </p>
@@ -84,16 +84,16 @@ const faqData = [
     questions: [
       {
         question: "How do I start writing math in the editor?",
-        answer: `<p class=" leading-relaxed">
-  Use dollar signs for inline math, for example: <span class="font-mono">$x^2 + y^2 = z^2$</span>, 
+        answer: `<p className=" leading-relaxed">
+  Use dollar signs for inline math, for example: <span className="font-mono">$x^2 + y^2 = z^2$</span>, 
   or double dollar signs for display math, for example: 
-  <span class="font-mono">$$\int_0^\infty e^{-x} \, dx = 1$$</span>. 
+  <span className="font-mono">$$\int_0^\infty e^{-x} \, dx = 1$$</span>. 
   Our editor provides a real-time preview so you can see your equations as you type.
 </p>`,
       },
       {
         question: "Which LaTeX commands are supported?",
-        answer: `<p class=" leading-relaxed">
+        answer: `<p className=" leading-relaxed">
   All standard LaTeX commands are supported in the editor, except for a few outdated or deprecated ones that are not
   maintained by modern compilers like Tectonic. Commonly used math, text formatting, tables, and figures are fully
   supported.
@@ -101,29 +101,29 @@ const faqData = [
       },
       {
         question: "Does latexwriter.com support inline and block equations?",
-        answer: `<p class="leading-relaxed">
+        answer: `<p className="leading-relaxed">
   Yes, LaTeXWriter.com supports both inline and block equations, giving you the flexibility to format your mathematical content the way you need. Inline equations are useful when you want to include math seamlessly within a line of text.
 </p>
 
-<p class="leading-relaxed">
+<p className="leading-relaxed">
   Block equations, on the other hand, are displayed separately and centered, making them ideal for highlighting important formulas or longer mathematical expressions. You can use both styles depending on your document’s requirements.
 </p>`,
       },
       {
         question: "Can I insert figures, tables, and references?",
         answer: `
-<p class="leading-relaxed">
+<p className="leading-relaxed">
   Yes, you can easily insert figures, tables, and references with just one click. The toolbar provides ready-made syntax for adding these elements, so you only need to edit them as per your requirements.
 </p>`,
       },
       {
         question: "How do I add packages – are all LaTeX packages supported?",
-        answer: `<p class="leading-relaxed">
+        answer: `<p className="leading-relaxed">
   You do not need to manually install any packages. Simply include them at the top of your document using 
-  <span class="font-mono">\\usepackage{...}</span>, and everything will be handled for you in the backend.
+  <span className="font-mono">\\usepackage{...}</span>, and everything will be handled for you in the backend.
 </p>
 
-<p class="leading-relaxed">
+<p className="leading-relaxed">
   LaTeXWriter supports all standard packages, except for a few deprecated ones that are outdated and no longer useful.
 </p>`,
       },
@@ -144,33 +144,33 @@ const faqData = [
     questions: [
       {
         question: "What is the difference between editor and preview mode?",
-        answer: `<p class="leading-relaxed">
-  The <span class="font-medium">Editor mode</span> is powered by the Visual Studio Monaco editor and is designed for creating and managing your project files such as <span class="font-mono">.tex</span> and <span class="font-mono">.bib</span>. In this mode, you have full access to write, edit, and organize your LaTeX documents. Only the project owner has permission to make changes, ensuring that your content remains secure and under your control. This mode is best suited for actively working on your LaTeX projects and making updates in real time.
+        answer: `<p className="leading-relaxed">
+  The <span className="font-medium">Editor mode</span> is powered by the Visual Studio Monaco editor and is designed for creating and managing your project files such as <span className="font-mono">.tex</span> and <span className="font-mono">.bib</span>. In this mode, you have full access to write, edit, and organize your LaTeX documents. Only the project owner has permission to make changes, ensuring that your content remains secure and under your control. This mode is best suited for actively working on your LaTeX projects and making updates in real time.
 </p>
 
-<p class="leading-relaxed">
-  The <span class="font-medium">Preview mode</span>, on the other hand, is intended for sharing your project with others. When you share a project in preview mode, recipients can view your files and compiled output but cannot make any edits. This makes it useful for collaboration when you only want others to review or reference your work without altering the original files. In the future, LaTeXWriter plans to introduce a true collaboration feature, similar to how GitHub allows multiple contributors to work together, where team members will be able to edit and contribute in a controlled way.
+<p className="leading-relaxed">
+  The <span className="font-medium">Preview mode</span>, on the other hand, is intended for sharing your project with others. When you share a project in preview mode, recipients can view your files and compiled output but cannot make any edits. This makes it useful for collaboration when you only want others to review or reference your work without altering the original files. In the future, LaTeXWriter plans to introduce a true collaboration feature, similar to how GitHub allows multiple contributors to work together, where team members will be able to edit and contribute in a controlled way.
 </p>`,
       },
       {
         question: "How do I enable/disable real-time preview?",
-        answer: `<p class="leading-relaxed">
+        answer: `<p className="leading-relaxed">
   You can enable or disable real-time preview simply by switching to another tab. The editor will continue to compile your files into PDF in the background, so disabling the preview does not affect your editing process.
 </p>
 
-<p class="leading-relaxed">
+<p className="leading-relaxed">
   This means you can work without distraction and save system resources if you don’t need to see the live preview. When you’re ready, just switch back to the preview tab to view the compiled output.
 </p>`,
       },
       {
         question: "Is there a dark mode in the editor?",
-        answer: `<p class="leading-relaxed">
+        answer: `<p className="leading-relaxed">
   No, currently there is no dark mode available in the editor. However, a dark mode feature is planned for the future, possibly by the first week of October.
 </p>`,
       },
       {
         question: "How do I save my work while writing?",
-        answer: `<p class="leading-relaxed">
+        answer: `<p className="leading-relaxed">
   Your work is automatically saved every few seconds while you are logged in. You can also manually save your files by going to the file structure and selecting "Save." The save status is displayed in the bottom bar of the editor so you can always see when your changes have been recorded.
 </p>`,
       },
@@ -187,13 +187,13 @@ const faqData = [
       },
       {
         question: "What is commit changes?",
-        answer: `<p class="leading-relaxed">
+        answer: `<p className="leading-relaxed">
     By committing changes, you save the current state of your project permanently. Free users can save up to 5 commits; if you create more, the oldest commits will be removed. Premium users can save up to 50 commits.
   </p>`,
       },
       {
         question: "How do I commit my current version?",
-        answer: `<p class="leading-relaxed">
+        answer: `<p className="leading-relaxed">
     You can click on "Commit Changes" to save the current version of your file permanently. This allows you to go back to this version at any time.
   </p>`,
       },
@@ -210,7 +210,7 @@ const faqData = [
       {
         question: "How can I create a new project/document?",
         answer:
-`<p class="leading-relaxed">
+`<p className="leading-relaxed">
   Click "Create New Project" from your dashboard. Enter a title for your project, and optionally add an "About" description and relevant topics. Then click "Create Project." Your project will be created instantly, and you can start writing immediately.
 </p>`      },
       {
@@ -221,8 +221,8 @@ const faqData = [
       {
         question: "Can I organize my documents into folders?",
         answer:
-        `<p class="leading-relaxed">
-  Yes, by default a file structure is provided with a <span class="font-mono">main.tex</span> file. You can add new files or delete existing ones as needed to organize your project.
+        `<p className="leading-relaxed">
+  Yes, by default a file structure is provided with a <span className="font-mono">main.tex</span> file. You can add new files or delete existing ones as needed to organize your project.
 </p>`
       },
       {
@@ -233,7 +233,7 @@ const faqData = [
       {
         question: "Can I duplicate a project for editing?",
         answer:
-`<p class="leading-relaxed">
+`<p className="leading-relaxed">
   Yes, by going to the project view, you can fork your own project. This will simply duplicate the project, allowing you to make changes without affecting the original.
 </p>`      },
     ],
@@ -274,11 +274,11 @@ const faqData = [
       {
         question: "How do I export my LaTeX document as a PDF?",
         answer:
-`<p class="leading-relaxed">
+`<p className="leading-relaxed">
   To export your LaTeX document as a PDF, go to the "View PDF" section, where you will find an option to download the PDF. This will always download the final compiled version. 
 </p>
 
-<p class="leading-relaxed">
+<p className="leading-relaxed">
   If you want to print the PDF, turn off Preview mode. The final PDF will then be visible along with the print option.
 </p`      },
       {
@@ -314,11 +314,11 @@ const faqData = [
       {
         question: "How can I debug LaTeX errors in latexwriter.com?",
         answer:
-`<p class="leading-relaxed">
+`<p className="leading-relaxed">
   Any LaTeX errors will be clearly displayed in the editor, helping you save time by quickly identifying issues. 
 </p>
 
-<p class="leading-relaxed">
+<p className="leading-relaxed">
   If you don’t understand an error, you can click on the "Error Assistant." It will explain the error in simple language, although it may take 2-3 seconds to generate the explanation.
 </p>`      },
       {
@@ -329,11 +329,11 @@ const faqData = [
       {
         question: "Why are some LaTeX packages not working?",
         answer:
-        `<p class="leading-relaxed">
+        `<p className="leading-relaxed">
   LaTeXWriter supports all modern packages using XeLaTeX. However, some older or deprecated packages may not work. 
 </p>
 
-<p class="leading-relaxed">
+<p className="leading-relaxed">
   If you encounter such an issue, you can reach out to us. If the package exists, we will make sure to add support for it as soon as possible.
 </p>`
       },
@@ -355,39 +355,39 @@ const faqData = [
       {
         question: "Is latexwriter.com free to use?",
         answer:
-`<p class="leading-relaxed">
+`<p className="leading-relaxed">
   Mostly yes, LaTeXWriter has a free version that allows you to create one project without any limitations. 
 </p>
 
-<p class="leading-relaxed">
+<p className="leading-relaxed">
   To create more than one project or access additional features, you will need to upgrade to the premium version.
 </p>`      },
       {
         question: "What's included in the free plan vs premium?",
         answer:
-`<p class="leading-relaxed">
+`<p className="leading-relaxed">
   The free plan includes almost all features of LaTeXWriter, with the main limitation being that you can create only one project. Free users can save up to 5 commits per project.
 </p>
 
-<p class="leading-relaxed">
+<p className="leading-relaxed">
   Premium users enjoy additional benefits, such as faster compilation speed due to a priority queue, the ability to save up to 50 commits, and the option to compile projects directly in the view mode without opening the editor. Premium plans also include several other advanced features to enhance the editing and sharing experience.
 </p>`      },
       {
         question: "How can I upgrade to premium?",
         answer:
-`<p class="leading-relaxed">
+`<p className="leading-relaxed">
   To upgrade to premium, go to the "Premium" tab and click on "Get Premium." Complete the payment of ₹799 or $9, and all premium features will become available to you immediately.
 </p>`      },
       {
         question: "How do I cancel my subscription?",
         answer:
-`<p class="leading-relaxed">
+`<p className="leading-relaxed">
   To cancel your subscription, go to your user settings where you will find a "Cancel" option. Click it to complete the cancellation. For confirmation, you can also send an email to the support team.
 </p>`      },
       {
         question: "Which payment methods are supported?",
         answer:
-`<p class="leading-relaxed">
+`<p className="leading-relaxed">
   Payments are handled securely through Razorpay. You can use any debit card, credit card, or UPI, including both international and domestic cards.
 </p>`      },
     ],
@@ -489,9 +489,9 @@ const faqData = [
       {
         question: "Where can I report a bug or request a feature?",
         answer:
-`<p class="leading-relaxed">
+`<p className="leading-relaxed">
   You can report a bug or request a feature by visiting our Reddit page or tagging us on X, and you will typically receive a reply within 2-3 hours. 
-  Alternatively, you can email us directly at <a href="mailto:support@latexwriter.com" class="underline">support@latexwriter.com</a>.
+  Alternatively, you can email us directly at <a href="mailto:support@latexwriter.com" className="underline">support@latexwriter.com</a>.
 </p>`      },
       {
         question: "How do I contact support?",

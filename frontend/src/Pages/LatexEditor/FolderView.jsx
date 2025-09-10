@@ -1,7 +1,5 @@
 import {
   CirclePlus,
-  Delete,
-  DeleteIcon,
   FileType2,
   Folder,
   MoveLeft,
@@ -25,15 +23,32 @@ export default function FolderView({
   saveFile,
   projectid,
   setLatex,
+  setImageUrl
 }) {
   const [createNew, setCreateNew] = useState(null); // content state
   const [newName, setNewName] = useState(""); // content state
   const [backFolder, setBackFolder] = useState(null);
 
-  const openFile = async (fileID) => {
+  const openFile = async (fileID, fileName) => {
+    const ext = fileName.split(".").pop().toLowerCase();
+
+    if (["png", "jpg", "jpeg", "gif", "svg", "webp"].includes(ext)) {
+      const res = await api.get(`/projects/getfile/${projectid}`, {
+        params: { fileID },
+        responseType: "arraybuffer",
+      });
+      const blob = new Blob([res.data], {
+        type: res.headers["content-type"] || "image/*",
+      });
+      setImageUrl(URL.createObjectURL(blob));
+      setCurrFile(fileID);
+      return;
+    }
+
     const res = await api.get(`/projects/getfile/${projectid}`, {
-      params: { fileID: fileID },
+      params: { fileID },
     });
+    setImageUrl(null);
     setLatex(res.data.fileContent);
     setCurrFile(fileID);
   };
@@ -59,9 +74,6 @@ export default function FolderView({
     setNewName("");
     setCreateNew(null);
     setFiles(res.data.Files);
-    console.log(
-      "File Created Successfully +   setLatex(res.data.fileContent);"
-    );
   };
 
   const newFolder = async (foldername) => {
@@ -73,9 +85,6 @@ export default function FolderView({
     setFolders(res.data.Folders);
     setNewName("");
     setCreateNew(null);
-    console.log(
-      "File Created Successfully +   setLatex(res.data.fileContent);"
-    );
   };
   
   const uploadImage = async (file) => {
@@ -86,7 +95,6 @@ export default function FolderView({
     const res = await api.post(`/projects/uploadimage/${projectid}`, formData);
     setFiles(res.data.Files);
     const data = await res.data.json();
-    console.log(data);
   };
 
   const deleteFile = async (fileID) => {
@@ -94,9 +102,6 @@ export default function FolderView({
       fileID,
     });
     setFiles(res.data.Files);
-    console.log(
-      "File Deleted Successfully +   setLatex(res.data.fileContent);"
-    );
   };
   return (
     <div className="flex-1">
@@ -165,7 +170,7 @@ export default function FolderView({
               key={i}
             >
               <button
-                onClick={() => openFile(filesInside._id)}
+                onClick={() => openFile(filesInside._id, filesInside.name)}
                 className={` p-2 flex gap-2 items-center ${
                   currFile == filesInside._id && "text-blue-800"
                 }`}

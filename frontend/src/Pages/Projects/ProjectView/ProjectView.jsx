@@ -1,12 +1,10 @@
 import {
+  ArrowLeftToLine,
   File,
   FileType2,
   Folder,
-  LetterText,
-  LibraryBig,
   MoveLeft,
 } from "lucide-react";
-import Button from "../../../ui/Button/Button";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ProjectTools from "./ProjectTools";
@@ -30,7 +28,9 @@ export default function ProjectView() {
   const [viewPdf, setViewPdf] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
 
+  const [showDetails, setShowDetails] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,17 +38,12 @@ export default function ProjectView() {
         setFolders(res.data.Folders);
         setFiles(res.data.Files);
         setCurrFolder(res.data.rootFolder);
-        setCurrFile(res.data.rootFile._id);
-        setLatex(res.data.fileContent);
         setProject(res.data.projects);
       } catch (err) {
         console.error("Error fetching project:", err);
       }
     };
-
     fetchData();
-
-    compileLatexWithImage();
   }, [projectid]);
 
   const compileLatexWithImage = async () => {
@@ -80,12 +75,30 @@ export default function ProjectView() {
     }
   };
 
-  const openFile = async (fileID) => {
+  const openFile = async (fileID, fileName) => {
+    const ext = fileName.split(".").pop().toLowerCase();
+
+    if (["png", "jpg", "jpeg", "gif", "svg", "webp"].includes(ext)) {
+      const res = await api.get(`/projects/getfile/${projectid}`, {
+        params: { fileID },
+        responseType: "arraybuffer",
+      });
+      const blob = new Blob([res.data], {
+        type: res.headers["content-type"] || "image/*",
+      });
+      setImageUrl(URL.createObjectURL(blob));
+      setCurrFile(fileID);
+      setShowDetails(false);
+      return;
+    }
+
     const res = await api.get(`/projects/getfile/${projectid}`, {
-      params: { fileID: fileID },
+      params: { fileID },
     });
+    setImageUrl(null);
     setLatex(res.data.fileContent);
     setCurrFile(fileID);
+    setShowDetails(false);
   };
 
   const openFolder = async (folderID) => {
@@ -103,17 +116,18 @@ export default function ProjectView() {
       <ProjectTools
         projectid={projectid}
         setViewPdf={setViewPdf}
+        compileLatexWithImage={compileLatexWithImage}
         viewPdf={viewPdf}
+        setShowDetails={setShowDetails}
       />
       {project.title ? (
         <div className="flex flex-col gap-4 md:gap-0 md:flex-row w-full">
-          <div className="flex-1 flex flex-col w-full border-r-1 border-gray-200">
-            <div className=" text-gray-900 pb-2  border-b-8 border-gray-100">
-              <h1 className="flex text-gray-800 mb-2 items-center gap-2 text-2xl pt-4 px-4 md:px-8">
-                <LibraryBig strokeWidth={1} size={20} />
+          <div className="flex-1 flex flex-col w-full border-r-1 border-gray-100 ">
+            <div className=" text-gray-200 mb-2   bg-gray-950">
+              <h1 className="flex items-center gap-2 text-2xl py-2 px-4 md:px-8 border-b-1 border-gray-300/30" >
                 {project.title}
               </h1>
-              <div className="flex justify-between gap-4 pe-8 px-4 md:px-8">
+              <div className="flex justify-between gap-4 pe-8 px-4 py-2 md:px-8 bg-gray-900 text-gray-400 text-sm">
                 <h1>Project files listed below</h1>
                 <div className="flex gap-4">
                   <h1>
@@ -139,7 +153,7 @@ export default function ProjectView() {
                   key={i}
                 >
                   <button
-                    onClick={() => openFile(filesInside._id)}
+                    onClick={() => openFile(filesInside._id, filesInside.name)}
                     className={` p-2 flex gap-2 items-center ${
                       currfile == filesInside._id && "text-blue-800"
                     }`}
@@ -161,40 +175,51 @@ export default function ProjectView() {
             </div>
           </div>
 
-          <div className="flex-1 h-screen flex">
+          <div className="flex-1 h-screen flex overflow-auto">
             {viewPdf && pdfUrl ? (
               <PdfViewer pdfUrl={pdfUrl} loading={loading} />
             ) : viewPdf ? (
               <PremiumIndex />
-            ) : (
-              latex && (
-                <div className="border-l-1 border-gray-200 w-full flex flex-col flex-1 relative ">
-                  <div className="shrink-0">
-                    <h1 className="flex text-gray-800 items-center gap-2 text-2xl  p-2 bg-gray-200 w-full">
-                      <File /> File Content
-                    </h1>
-                  </div>
+            ) : !showDetails && (latex || imageUrl) ? (
+              <div className="border-l-1 border-gray-200 w-full flex flex-col flex-1 relative ">
+                <div className="shrink-0 flex justify-between p-2 md:p-4 pe-4 bg-gray-100 text-sm text-gray-800">
+                  <h1 className="flex  items-center gap-2">
+                    <File size={20} />
+                    File Content
+                  </h1>
+                  <button
+                    onClick={() => setShowDetails(true)}
+                    className="flex items-center gap-2"
+                  >
+                    <ArrowLeftToLine size={20} /> Close
+                  </button>
+                </div>
+                {imageUrl ? (
+                  <img src={imageUrl} alt="Image" className="w-full"/>
+                ) : (
                   <div className="flex-1 overflow-auto px-4 whitespace-pre-wrap font-mono">
                     {latex}
                   </div>
-                </div>
-              )
+                )}
+              </div>
+            ) : (
+              <ProjectViewSidebar project={project} />
             )}
           </div>
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center my-8">
-          <div class="animate-pulse flex flex-col items-center gap-4 w-60">
+          <div className="animate-pulse flex flex-col items-center gap-4 w-60">
             <div>
-              <div class="w-48 h-6 bg-gray-400 rounded-md"></div>
-              <div class="w-28 h-4 bg-gray-400 mx-auto mt-3 rounded-md"></div>
+              <div className="w-48 h-6 bg-gray-400 rounded-md"></div>
+              <div className="w-28 h-4 bg-gray-400 mx-auto mt-3 rounded-md"></div>
             </div>
-            <div class="h-7 bg-gray-400 w-full rounded-md"></div>
-            <div class="h-7 bg-gray-400 w-full rounded-md"></div>
-            <div class="h-7 bg-gray-400 w-full rounded-md"></div>
-            <div class="h-7 bg-gray-400 w-1/2 rounded-md"></div>
+            <div className="h-7 bg-gray-400 w-full rounded-md"></div>
+            <div className="h-7 bg-gray-400 w-full rounded-md"></div>
+            <div className="h-7 bg-gray-400 w-full rounded-md"></div>
+            <div className="h-7 bg-gray-400 w-1/2 rounded-md"></div>
           </div>{" "}
-          <h6 className="text-gray-400 text-lg mt-8" >Loading project...</h6>
+          <h6 className="text-gray-400 text-lg mt-8">Loading project...</h6>
         </div>
       )}
     </div>

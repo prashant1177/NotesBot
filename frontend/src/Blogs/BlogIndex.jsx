@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const BlogIndex = () => {
   return (
-    <div className="max-w-7xl mx-auto  pt-4 md:pt-16">
+    <div className="max-w-7xl mx-auto  py-4 md:py-16">
       <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Blogs

@@ -28,6 +28,7 @@ export default function EditorIndex() {
   const [rightView, setRightView] = useState("Editor");
   const navigate = useNavigate();
   const [pdfUrl, setPdfUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
   const [latex, setLatex] = useState(
     "Loading your content..."
   );
@@ -169,6 +170,7 @@ export default function EditorIndex() {
             setFolders={setFolders}
             files={files}
             setFiles={setFiles}
+            setImageUrl={setImageUrl}
           />
         )}
        
@@ -185,6 +187,7 @@ export default function EditorIndex() {
               handleEditorMount={handleEditorMount}
               editorRef={editorRef}
               fetch={fetch}
+              imageUrl={imageUrl}
             />
           )}
         </div>

@@ -32,7 +32,6 @@ async function errorHandling(error) {
         "You are a LaTeX error-solving AI. For any LaTeX error input, respond only with the following details: Error: Copy the exact LaTeX error message. Line: Specify the line number(s) where the error occurs (if available). Cause: Explain why the error occurs. Fix: Give the exact solution, including the corrected LaTeX command or code snippet - If you know the exact solution, and any minimal changes needed in the document to resolve the error. Do not add anything else. Focus entirely on providing a precise, actionable fix.",
     },
   });
-  console.log(response.text);
   return response.text;
 }
 
@@ -47,10 +46,9 @@ router.post("/askGemini", authenticateJWT, async (req, res) => {
     contents: input,
     config: {
       systemInstruction:
-        "Your are an AI Assitant and your name is Latexwriter.AI",
+        "Your are an AI Assitant and your name is Latexwriter.AI - Help users with LaTeX related queries in a concise manner. Provide code snippets when necessary. Also, keep your responses as short as possible.",
     },
   });
-  console.log(response.text);
   return res.json({ text: response.text });
 });
 router.post("/debugerror", authenticateJWT, async (req, res) => {
@@ -154,54 +152,6 @@ router.post("/compile/:id", authenticateJWT, async (req, res) => {
   }
 });
 
-// Compile LaTeX project route
-/* router.post("/compile/:id", authenticateJWT, async (req, res) => {
-  try {
-    const project = await Project.findById(req.params.id);
-    if (!project) return res.status(404).json({ error: "Project not found" });
-
-    console.log("Loading......");
-    // Fetch all project files and folders
-    const folders = await Folder.find({ project: project._id });
-    const files = await File.find({ project: project._id }).populate("blobId");
-
-    // Create a temporary folder
-    const tmpDir = await tmp.dir({ unsafeCleanup: true });
-    const tempPath = tmpDir.path;
-
-    // Write all files and folders recursively
-    await writeProjectToTemp(tempPath, folders, files, project.rootFolder);
-
-    console.log("3");
-    // Compile the main file (main.tex)
-    const mainFile = files.find(
-      (f) => f._id.toString() === project.rootFile.toString()
-    );
-    console.log("4");
-    if (!mainFile)
-      return res.status(404).json({ error: "Main file not found" });
-
-    const mainFilePath = path.join(tempPath, mainFile.name);
-    console.log("5");
-    await execPromise(`tectonic "${mainFilePath}" --outdir="${tempPath}"`);
-    console.log("6");
-
-    const pdfPath = path.join(tempPath, mainFile.name.replace(".tex", ".pdf"));
-    console.log("7");
-    const pdfBuffer = fs.readFileSync(pdfPath);
-    console.log("8");
-
-    res.setHeader("Content-Type", "application/pdf");
-    res.send(pdfBuffer);
-    console.log(pdfBuffer);
-    // Clean up temp folder
-    tmpDir.cleanup();
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.stderr || "Compilation failed" });
-  }
-}); */
-
 const texTemplate = `
 \\documentclass{article}
 \\usepackage[utf8]{inputenc}
@@ -214,7 +164,7 @@ const texTemplate = `
 
 \\maketitle
 
-Hello, world! This is a LaTeX File, Created Later.
+Hello, world! This is your main.tex.
 
 \\end{document}
 `;
@@ -270,8 +220,16 @@ router.get("/getfile/:id", authenticateJWT, async (req, res) => {
   try {
     const { fileID } = req.query;
     const file = await File.findById(fileID).populate("blobId");
+    if (!file) return res.status(404).json({ message: "File not found" });
 
-    res.json({ fileContent: file.blobId.content.toString() });
+    const blob = file.blobId;
+
+    if (blob.isBinary) {
+      res.set("Content-Type", blob.mime);
+      return res.send(blob.content);
+    } else {
+      res.json({ fileContent: file.blobId.content.toString() });
+    }
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -399,7 +357,7 @@ router.get("/view/:id", authenticateJWT, async (req, res) => {
     if (!req.user) {
       res.status(500).json({ message: "Login to view" });
     }
-    const projects = await Project.findById(req.params.id);
+    const projects = await Project.findById(req.params.id).populate("owner");
 
     const Folders = await Folder.find({
       parent: projects.rootFolder.toString(),
@@ -407,16 +365,11 @@ router.get("/view/:id", authenticateJWT, async (req, res) => {
     const Files = await File.find({
       parent: projects.rootFolder.toString(),
     });
-    const rootFile = await File.findById(projects.rootFile.toString()).populate(
-      "blobId"
-    );
     res.json({
       projects,
       Folders,
       Files,
-      rootFile,
       rootFolder: projects.rootFolder.toString(),
-      fileContent: rootFile.blobId.content.toString(),
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -446,10 +399,14 @@ router.post("/create", authenticateJWT, async (req, res) => {
   if (req.user.projects?.includes(foldername)) {
     return res.json({ message: "Folder exist error" });
   }
+  const topicsArr = topics
+    .split(",")
+    .map((t) => t.trim())
+    .filter((t) => t.length);
   const project = new Project({
     title,
     about,
-    topics,
+    topics: topicsArr,
     owner: req.user._id,
     private,
   });

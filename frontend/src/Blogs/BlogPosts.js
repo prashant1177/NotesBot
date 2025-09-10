@@ -22,42 +22,42 @@ export const BlogPosts = [
         <p>LaTeX (pronounced “Lay-tech” or “Lah-tech”) is a markup language and document preparation system. Unlike word processors where you see the final document as you type, LaTeX allows you to focus on <strong>content</strong> while it handles the formatting.</p>
 
         <h3>LaTeX vs Word Processors</h3>
-        <div class="overflow-x-auto">
-          <table class="table-auto border border-gray-300 w-full text-left">
-            <thead class="bg-gray-100">
+        <div className="overflow-x-auto">
+          <table className="table-auto border border-gray-300 w-full text-left">
+            <thead className="bg-gray-100">
               <tr>
-                <th class="px-4 py-2 border">Feature</th>
-                <th class="px-4 py-2 border">LaTeX</th>
-                <th class="px-4 py-2 border">Word Processors (MS Word/Google Docs)</th>
+                <th className="px-4 py-2 border">Feature</th>
+                <th className="px-4 py-2 border">LaTeX</th>
+                <th className="px-4 py-2 border">Word Processors (MS Word/Google Docs)</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="px-4 py-2 border">Formatting</td>
-                <td class="px-4 py-2 border">Automated, consistent</td>
-                <td class="px-4 py-2 border">Manual, error-prone</td>
+                <td className="px-4 py-2 border">Formatting</td>
+                <td className="px-4 py-2 border">Automated, consistent</td>
+                <td className="px-4 py-2 border">Manual, error-prone</td>
               </tr>
-              <tr class="bg-gray-50">
-                <td class="px-4 py-2 border">Equations</td>
-                <td class="px-4 py-2 border">Professional typesetting</td>
-                <td class="px-4 py-2 border">Limited capabilities</td>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 border">Equations</td>
+                <td className="px-4 py-2 border">Professional typesetting</td>
+                <td className="px-4 py-2 border">Limited capabilities</td>
               </tr>
               <tr>
-                <td class="px-4 py-2 border">References</td>
-                <td class="px-4 py-2 border">BibTeX integration</td>
-                <td class="px-4 py-2 border">Manual citation management</td>
+                <td className="px-4 py-2 border">References</td>
+                <td className="px-4 py-2 border">BibTeX integration</td>
+                <td className="px-4 py-2 border">Manual citation management</td>
               </tr>
-              <tr class="bg-gray-50">
-                <td class="px-4 py-2 border">Collaboration</td>
-                <td class="px-4 py-2 border">Version control friendly</td>
-                <td class="px-4 py-2 border">Difficult for multiple authors</td>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 border">Collaboration</td>
+                <td className="px-4 py-2 border">Version control friendly</td>
+                <td className="px-4 py-2 border">Difficult for multiple authors</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <h3>Brief History</h3>
-        <ul class="list-disc pl-6">
+        <ul className="list-disc pl-6">
           <li><strong>TeX:</strong> Developed by Donald Knuth in the late 1970s for high-quality typesetting.</li>
           <li><strong>LaTeX:</strong> Created by Leslie Lamport in the 1980s to simplify TeX and make it more accessible to researchers.</li>
         </ul>
@@ -70,28 +70,28 @@ export const BlogPosts = [
         <p>LaTeX offers several powerful features that make it indispensable for researchers:</p>
 
         <h3>Professional Typesetting</h3>
-        <ul class="list-disc pl-6">
+        <ul className="list-disc pl-6">
           <li>Complex equations and mathematical symbols.</li>
           <li>Well-formatted tables and figures.</li>
           <li>Automatic numbering for sections, tables, and figures.</li>
         </ul>
 
         <h3>Automated Formatting</h3>
-        <ul class="list-disc pl-6">
+        <ul className="list-disc pl-6">
           <li>Table of contents generated automatically.</li>
           <li>Consistent headers and footers throughout the document.</li>
           <li>Cross-references for sections, tables, and figures.</li>
         </ul>
 
         <h3>High-Quality Output</h3>
-        <ul class="list-disc pl-6">
+        <ul className="list-disc pl-6">
           <li>Generates PDF documents ready for journal submission.</li>
           <li>Maintains consistent formatting across devices.</li>
           <li>Ideal for documents with heavy technical content.</li>
         </ul>
 
         <h3>Version Control Compatibility</h3>
-        <ul class="list-disc pl-6">
+        <ul className="list-disc pl-6">
           <li>Integrates seamlessly with Git and GitHub.</li>
           <li>Multiple authors can collaborate without overwriting each other’s work.</li>
           <li>Track changes efficiently over time.</li>
@@ -106,25 +106,25 @@ export const BlogPosts = [
         <p>LaTeX handles complex equations and symbols perfectly, eliminating formatting headaches. This precision ensures your papers meet rigorous academic standards.</p>
 
         <h3>Consistency and Standardization</h3>
-        <ul class="list-disc pl-6">
+        <ul className="list-disc pl-6">
           <li>Ideal for theses, dissertations, and journal papers.</li>
           <li>Automatically formats headings, captions, and references consistently.</li>
         </ul>
 
         <h3>Bibliography and Referencing Made Easy</h3>
-        <ul class="list-disc pl-6">
+        <ul className="list-disc pl-6">
           <li>BibTeX integration automates citation management.</li>
           <li>No need to manually format hundreds of references.</li>
         </ul>
 
         <h3>Collaboration-Friendly</h3>
-        <ul class="list-disc pl-6">
+        <ul className="list-disc pl-6">
           <li>Works with version control systems like Git.</li>
           <li>Co-authors can edit documents simultaneously without conflicts.</li>
         </ul>
 
         <h3>Time-Saving for Repetitive Tasks</h3>
-        <ul class="list-disc pl-6">
+        <ul className="list-disc pl-6">
           <li>Automatic cross-referencing.</li>
           <li>Indexing and glossary generation.</li>
           <li>Saves hours compared to manual formatting in Word.</li>
@@ -134,7 +134,7 @@ export const BlogPosts = [
       <!-- Use Cases -->
       <section>
         <h2>5. Common Use Cases in Research</h2>
-        <ol class="list-decimal pl-6">
+        <ol className="list-decimal pl-6">
           <li><strong>Academic Papers and Journal Submissions:</strong> Professional formatting for peer-reviewed journals.</li>
           <li><strong>Theses and Dissertations:</strong> Handles large documents with chapters, appendices, and references.</li>
           <li><strong>Presentations Using Beamer:</strong> Create visually appealing slides with consistent formatting.</li>
@@ -145,59 +145,59 @@ export const BlogPosts = [
       <!-- LaTeX vs Word -->
       <section>
         <h2>6. LaTeX vs Word Processors</h2>
-        <div class="overflow-x-auto">
-          <table class="table-auto border border-gray-300 w-full text-left">
-            <thead class="bg-gray-100">
+        <div className="overflow-x-auto">
+          <table className="table-auto border border-gray-300 w-full text-left">
+            <thead className="bg-gray-100">
               <tr>
-                <th class="px-4 py-2 border">Aspect</th>
-                <th class="px-4 py-2 border">LaTeX</th>
-                <th class="px-4 py-2 border">Word Processors</th>
+                <th className="px-4 py-2 border">Aspect</th>
+                <th className="px-4 py-2 border">LaTeX</th>
+                <th className="px-4 py-2 border">Word Processors</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="px-4 py-2 border">Learning Curve</td>
-                <td class="px-4 py-2 border">Steeper, requires coding</td>
-                <td class="px-4 py-2 border">Easier, WYSIWYG interface</td>
+                <td className="px-4 py-2 border">Learning Curve</td>
+                <td className="px-4 py-2 border">Steeper, requires coding</td>
+                <td className="px-4 py-2 border">Easier, WYSIWYG interface</td>
               </tr>
-              <tr class="bg-gray-50">
-                <td class="px-4 py-2 border">Formatting</td>
-                <td class="px-4 py-2 border">Automated, precise</td>
-                <td class="px-4 py-2 border">Manual, prone to errors</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-2 border">Collaboration</td>
-                <td class="px-4 py-2 border">Excellent with Git</td>
-                <td class="px-4 py-2 border">Difficult for multiple authors</td>
-              </tr>
-              <tr class="bg-gray-50">
-                <td class="px-4 py-2 border">Equations</td>
-                <td class="px-4 py-2 border">Professional typesetting</td>
-                <td class="px-4 py-2 border">Limited functionality</td>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 border">Formatting</td>
+                <td className="px-4 py-2 border">Automated, precise</td>
+                <td className="px-4 py-2 border">Manual, prone to errors</td>
               </tr>
               <tr>
-                <td class="px-4 py-2 border">References</td>
-                <td class="px-4 py-2 border">BibTeX integration</td>
-                <td class="px-4 py-2 border">Manual management</td>
+                <td className="px-4 py-2 border">Collaboration</td>
+                <td className="px-4 py-2 border">Excellent with Git</td>
+                <td className="px-4 py-2 border">Difficult for multiple authors</td>
               </tr>
-              <tr class="bg-gray-50">
-                <td class="px-4 py-2 border">Output Quality</td>
-                <td class="px-4 py-2 border">Journal-ready PDFs</td>
-                <td class="px-4 py-2 border">Variable quality</td>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 border">Equations</td>
+                <td className="px-4 py-2 border">Professional typesetting</td>
+                <td className="px-4 py-2 border">Limited functionality</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 border">References</td>
+                <td className="px-4 py-2 border">BibTeX integration</td>
+                <td className="px-4 py-2 border">Manual management</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-2 border">Output Quality</td>
+                <td className="px-4 py-2 border">Journal-ready PDFs</td>
+                <td className="px-4 py-2 border">Variable quality</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <h3>Pros of LaTeX for Researchers:</h3>
-        <ul class="list-disc pl-6">
+        <ul className="list-disc pl-6">
           <li>High-quality, professional documents</li>
           <li>Excellent for technical content</li>
           <li>Easy collaboration and version control</li>
         </ul>
 
         <h3>Cons of LaTeX:</h3>
-        <ul class="list-disc pl-6">
+        <ul className="list-disc pl-6">
           <li>Initial learning curve</li>
           <li>Less intuitive than word processors</li>
         </ul>
@@ -208,14 +208,14 @@ export const BlogPosts = [
         <h2>7. Getting Started with LaTeX</h2>
 
         <h3>Recommended Editors</h3>
-        <ul class="list-disc pl-6">
-          <li><a href="https://latexwriter.com" target="_blank" class="text-blue-600 hover:underline">LaTeXWriter</a>: Browser-based, ideal for beginners.</li>
+        <ul className="list-disc pl-6">
+          <li><a href="https://latexwriter.com" target="_blank" className="text-blue-600 hover:underline">LaTeXWriter</a>: Browser-based, ideal for beginners.</li>
           <li>TeXShop (Mac): Lightweight desktop editor.</li>
           <li>TeXstudio (Windows/Linux): Feature-rich, open-source editor.</li>
         </ul>
 
         <h3>Basic Structure of a LaTeX Document</h3>
-        <pre class="bg-gray-100 p-4 rounded overflow-x-auto text-sm">
+        <pre className="bg-gray-100 p-4 rounded overflow-x-auto text-sm">
  \\documentclass{article}
  \\usepackage[utf8]{inputenc}
  \\title{My First LaTeX Document}
@@ -245,8 +245,8 @@ E = mc^2
       <!-- Tips -->
       <section>
         <h2>8. Tips for New Researchers</h2>
-        <ul class="list-disc pl-6">
-          <li>Start with <a href="https://latexwriter.com" target="_blank" class="text-blue-600 hover:underline">LaTeXWriter</a> for simplicity.</li>
+        <ul className="list-disc pl-6">
+          <li>Start with <a href="https://latexwriter.com" target="_blank" className="text-blue-600 hover:underline">LaTeXWriter</a> for simplicity.</li>
           <li>Learn BibTeX for reference management.</li>
           <li>Use templates provided by journals or universities.</li>
           <li>Practice regularly with small projects like notes or reports.</li>
@@ -264,17 +264,17 @@ E = mc^2
       <section>
         <h2>10. Call to Action</h2>
         <p>Ready to get started?</p>
-        <ul class="list-disc pl-6">
-          <li>Try creating a simple LaTeX project using <a href="https://latexwriter.com" target="_blank" class="text-blue-600 hover:underline">LaTeXWriter</a>.</li>
+        <ul className="list-disc pl-6">
+          <li>Try creating a simple LaTeX project using <a href="https://latexwriter.com" target="_blank" className="text-blue-600 hover:underline">LaTeXWriter</a>.</li>
           <li>Experiment with writing a short paper or a technical report.</li>
           <li>Explore templates for your field and integrate BibTeX for references.</li>
         </ul>
 
         <p><strong>Resources for Beginners:</strong></p>
-        <ul class="list-disc pl-6">
-          <li><a href="https://latexwriter.com" target="_blank" class="text-blue-600 hover:underline">LaTeXWriter Tutorials</a></li>
-          <li><a href="https://en.wikibooks.org/wiki/LaTeX" target="_blank" class="text-blue-600 hover:underline">LaTeX Wikibook</a></li>
-          <li><a href="https://tex.stackexchange.com/" target="_blank" class="text-blue-600 hover:underline">StackExchange LaTeX Community</a></li>
+        <ul className="list-disc pl-6">
+          <li><a href="https://latexwriter.com" target="_blank" className="text-blue-600 hover:underline">LaTeXWriter Tutorials</a></li>
+          <li><a href="https://en.wikibooks.org/wiki/LaTeX" target="_blank" className="text-blue-600 hover:underline">LaTeX Wikibook</a></li>
+          <li><a href="https://tex.stackexchange.com/" target="_blank" className="text-blue-600 hover:underline">StackExchange LaTeX Community</a></li>
         </ul>
       </section>`,
     author: "LaTeX Writer Official",
@@ -399,9 +399,9 @@ E = mc^2
     content: `
    <article className="prose mx-auto p-6"> <header>  <p> Writing professional documents often means choosing the right tool. In this post we compare <strong>LaTeX vs Word</strong> to help you decide which to use. We explain what each system is, highlight their strengths and weaknesses, and give honest advice on <strong>why you might pick LaTeX over Word</strong> (and vice versa). Along the way we’ll use simple language and real examples so even beginners can follow. By the end, you’ll know which tool suits your needs – whether you’re a student writing a thesis, a job seeker preparing a resume, or anyone else curious about document typesetting. </p> </header> <section> <h2>What is LaTeX?</h2> <p> LaTeX is a <strong>free, high-quality typesetting system</strong> based on the TeX language. Instead of a click-and-format interface, you write LaTeX documents using plain text markup commands (like <code>\\section{…}</code> for section headings). LaTeX then <strong>automatically formats</strong> your document into a professional PDF. </p> <p> It was originally designed for scientists and engineers, so it handles complex math and references with ease. Many journals and universities offer LaTeX templates to ensure your paper or thesis looks exactly as required. Because LaTeX uses plain text files, it’s <strong>open-source and portable</strong> – you can edit the same file on any computer without compatibility issues. </p> </section> <section> <h2>What is Microsoft Word?</h2> <p> Microsoft Word (often just “Word”) is a <strong>graphical word processor</strong> by Microsoft. It’s the de facto standard for general documents like letters, reports, and business papers. Word is <strong>WYSIWYG</strong> (“what you see is what you get”), meaning you format text directly on screen. </p> <p> It uses menus and buttons for bold, fonts, tables, images, etc. Word is easy for beginners: you can start typing right away without learning any code. However, Word files are typically binary or complex formats, so sharing them across different systems can sometimes cause issues. Word is licensed as part of Microsoft Office or Microsoft 365 (subscription), so it’s not free unless you use free alternatives like Google Docs. </p> </section> <section> <h2>LaTeX vs Word: Key Differences</h2>
 
-        <div class="overflow-x-auto">
-          <table class="table-auto border border-gray-300 w-full text-left">
-            <thead class="bg-gray-100">
+        <div className="overflow-x-auto">
+          <table className="table-auto border border-gray-300 w-full text-left">
+            <thead className="bg-gray-100">
       <tr>
         <th className="border px-4 py-2 text-left">Feature</th>
         <th className="border px-4 py-2 text-left">Word</th>
@@ -409,7 +409,7 @@ E = mc^2
       </tr>
     </thead>
     <tbody>
-              <tr class="bg-gray-50">
+              <tr className="bg-gray-50">
         <td className="border px-4 py-2">Type of system</td>
         <td className="border px-4 py-2">WYSIWYG word processor (menus and GUI)</td>
         <td className="border px-4 py-2">Markup-based typesetting (text code)</td>
@@ -419,7 +419,7 @@ E = mc^2
         <td className="border px-4 py-2">Very easy for basic tasks; no coding needed</td>
         <td className="border px-4 py-2">Steep learning curve at first; more difficult initially, but efficient once learned</td>
       </tr>
-              <tr class="bg-gray-50">
+              <tr className="bg-gray-50">
         <td className="border px-4 py-2">Document control</td>
         <td className="border px-4 py-2">Manual formatting; changes can be error-prone</td>
         <td className="border px-4 py-2">Automatic styling (consistency built-in)</td>
@@ -429,7 +429,7 @@ E = mc^2
         <td className="border px-4 py-2">Basic equation editor (limited)</td>
         <td className="border px-4 py-2">Excellent support for complex math; gold standard</td>
       </tr>
-              <tr class="bg-gray-50">
+              <tr className="bg-gray-50">
         <td className="border px-4 py-2">Long documents</td>
         <td className="border px-4 py-2">Can lag or crash on very large, complex files</td>
         <td className="border px-4 py-2">Built for long docs (books, theses); handles figures, cross-refs easily</td>
@@ -440,7 +440,7 @@ E = mc^2
         <td className="border px-4 py-2">Automatic numbering and updating (figures, sections)</td>
       </tr>
       
-              <tr class="bg-gray-50">
+              <tr className="bg-gray-50">
         <td className="border px-4 py-2">Citations/Bib</td>
         <td className="border px-4 py-2">Manual or built-in citation tools (limited styles)</td>
         <td className="border px-4 py-2">Automated bibliography (BibTeX/BibLaTeX); consistent formatting</td>
@@ -451,7 +451,7 @@ E = mc^2
         <td className="border px-4 py-2">Real-time via tools like Overleaf; version control via Git</td>
       </tr>
      
-              <tr class="bg-gray-50">
+              <tr className="bg-gray-50">
         <td className="border px-4 py-2">Customization</td>
         <td className="border px-4 py-2">Limited by menus and templates</td>
         <td className="border px-4 py-2">Highly customizable (packages for graphics, layouts)</td>
@@ -461,7 +461,7 @@ E = mc^2
         <td className="border px-4 py-2">Good for most uses</td>
         <td className="border px-4 py-2">Very high-quality typesetting (professional look)</td>
       </tr>
-              <tr class="bg-gray-50">
+              <tr className="bg-gray-50">
         <td className="border px-4 py-4">Cost</td>
         <td className="border px-4 py-4">Paid license (or free with Google Docs/LibreOffice)</td>
         <td className="border px-4 py-4">Free and open-source</td>
@@ -518,8 +518,8 @@ E = mc^2
 <p>
   <strong>Use LaTeX if</strong> you’re producing something lengthy or technical. If your document has many sections, figures, tables, citations, or equations, LaTeX will save time in the long run. It’s also better if you want a highly consistent, polished look without manually tweaking every detail. Learning LaTeX requires effort, but once over that hump you can create very sophisticated layouts much faster than in Word.
 </p>
-<div class="overflow-x-auto">
-          <table class="table-auto border border-gray-300 w-full text-left">
+<div className="overflow-x-auto">
+          <table className="table-auto border border-gray-300 w-full text-left">
     <thead>
       <tr>
         <th className="border px-4 py-2 text-left">Document Type</th>
