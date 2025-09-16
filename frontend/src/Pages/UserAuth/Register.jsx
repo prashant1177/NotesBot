@@ -14,6 +14,7 @@ import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import OtpForm from "./OtpForm";
 import { GoogleLogin } from "@react-oauth/google";
+import SetPasswordForm from "./SetPasswordForm";
 
 function Register() {
   const [form, setForm] = useState({
@@ -23,6 +24,7 @@ function Register() {
   });
   const [loading, setLoading] = useState(false);
   const [showOtpForm, setShowOtpForm] = useState(false);
+  const [showPassword, setshowPassword] = useState(true);
   const [token, setToken] = useState(null); // JWT token from backend
 
   const [errors, setErrors] = useState({ password: "" });
@@ -35,10 +37,10 @@ function Register() {
       const res = await api.post("/register", form);
       alert(res.data.msg);
       setToken(res.data.token);
-      setShowOtpForm(true); // show OTP input
+      setShowOtpForm(true);
     } catch (err) {
       alert(err.response?.data?.msg || "Error registering");
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -52,10 +54,10 @@ function Register() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("username", res.data.username);
       setAuthToken(res.data.token);
-      window.location.href = "/";
+      setshowPassword(true);
     } catch (err) {
       console.error(err);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -68,7 +70,7 @@ function Register() {
 
   return (
     <div className="w-full  p-4  flex  justify-center ">
-      {!showOtpForm ? (
+      {!showOtpForm && !showPassword? (
         <div className="md:w-1/3  w-full">
           <div className=" lg:flex-1 w-full lg:p-8 p-4  flex flex-col items-center rounded-2xl md:border-1 border-gray-100">
             <GoogleLogin
@@ -158,13 +160,15 @@ function Register() {
             </div>
           </div>
         </div>
+      ) : showPassword ? (
+        <SetPasswordForm validatePassword={validatePassword} setErrors={setErrors} errors={errors}/>
       ) : (
         <OtpForm
           token={token}
           setToken={setToken}
           setShowOtpForm={setShowOtpForm}
         />
-      )}
+  ) }
     </div>
   );
 }

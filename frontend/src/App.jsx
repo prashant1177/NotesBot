@@ -31,6 +31,8 @@ import MyProfileIndex from "./Pages/Projects/MyProjectsList/MyProfileIndex";
 import LatexWriterDocumentationIndex from "./Pages/Documentation/LatexWriterDocumentationIndex";
 import { Footer } from "./components/Footer";
 import LatexWriterDocumentationPageView from "./Pages/Documentation/LatexWriterDocumentationPageView";
+import DownloadPage from "./Pages/Download/DownloadPage";
+import SetPasswordForm from "./Pages/UserAuth/SetPasswordForm";
 
 function App() {
   const [isActive, setIsActive] = useState(false);
@@ -82,6 +84,7 @@ const hiddenFooterPaths = ["/latexeditor", "/login", "/create/project","/registe
             <Route path="/templates" element={<TemplatesIndex />} />
 
             {/*    Sitepage */}
+            <Route path="/download" element={<DownloadPage />} />
             <Route path="/About" element={<About />} />
             <Route path="/Blog" element={<BlogIndex />} />
             <Route path="/Blog/:blogSlug" element={<BlogView />} />

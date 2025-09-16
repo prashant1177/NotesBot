@@ -15,7 +15,6 @@ const OtpForm = ({ token, setToken, setShowOtpForm }) => {
     try {
       const res = await api.post("/verify-otp", { token, otp });
       alert(res.data);
-
       navigate(`/login`);
     } catch (err) {
       alert(err.response?.data || "OTP verification failed");

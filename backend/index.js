@@ -145,7 +145,16 @@ app.post("/login", (req, res, next) => {
     return res.json({ token, username: user.fullname });
   })(req, res, next);
 });
-// Start Google OAuth
+// set assword
+app.post("/set-password", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.message("No user found ");
+  }
+  const { password } = req.body;
+  await User.findByIdAndUpdate(req.user.id, { password: password });
+
+  return res.json("Success");
+});
 
 // Route to handle Google OAuth
 app.post("/auth/google", async (req, res) => {
@@ -269,7 +278,7 @@ app.get("/profile/:username", authenticateJWT, async (req, res) => {
   const projects = await Project.find({ owner: author._id }).sort({
     createdAt: -1,
   });
-  
+
   res.json({ author, projects });
 });
 
