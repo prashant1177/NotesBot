@@ -9,6 +9,8 @@ import {
   Brain,
   ArrowRight,
   Mail,
+  EyeOff,
+  Eye,
 } from "lucide-react";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
@@ -24,8 +26,9 @@ function Register() {
   });
   const [loading, setLoading] = useState(false);
   const [showOtpForm, setShowOtpForm] = useState(false);
-  const [showPassword, setshowPassword] = useState(true);
+  const [showPassword, setshowPassword] = useState(false);
   const [token, setToken] = useState(null); // JWT token from backend
+  const [showPasswordInput, setShowPasswordInput] = useState(false); // 👈 toggle for password visibility
 
   const [errors, setErrors] = useState({ password: "" });
 
@@ -70,7 +73,7 @@ function Register() {
 
   return (
     <div className="w-full  p-4  flex  justify-center ">
-      {!showOtpForm && !showPassword? (
+      {!showOtpForm && !showPassword ? (
         <div className="md:w-1/3  w-full">
           <div className=" lg:flex-1 w-full lg:p-8 p-4  flex flex-col items-center rounded-2xl md:border-1 border-gray-100">
             <GoogleLogin
@@ -112,13 +115,13 @@ function Register() {
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                 />
               </div>{" "}
-              <div className="space-y-2">
+              <div className="space-y-2 relative">
                 <label className="flex items-center gap-2 font-medium text-sm">
                   <Lock className="w-4 h-4 text-chart-3" />
                   Password
                 </label>
                 <Input
-                  type="password"
+                  type={showPasswordInput ? "text" : "password"}
                   placeholder="Password"
                   required
                   onChange={(e) => {
@@ -127,6 +130,21 @@ function Register() {
                     setErrors({ ...errors, password: validatePassword(val) });
                   }}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordInput(!showPasswordInput)}
+                  className="absolute right-3 top-0 text-gray-500 hover:text-gray-700"
+                >
+                  {showPasswordInput ? (
+                    <div className="flex items-center gap-2">
+                      Hide <EyeOff size={18} />
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      Show <Eye size={18} />{" "}
+                    </div>
+                  )}
+                </button>
                 {errors.password && (
                   <p className="text-red-500 text-xs mt-1">{errors.password}</p>
                 )}
@@ -161,14 +179,18 @@ function Register() {
           </div>
         </div>
       ) : showPassword ? (
-        <SetPasswordForm validatePassword={validatePassword} setErrors={setErrors} errors={errors}/>
+        <SetPasswordForm
+          validatePassword={validatePassword}
+          setErrors={setErrors}
+          errors={errors}
+        />
       ) : (
         <OtpForm
           token={token}
           setToken={setToken}
           setShowOtpForm={setShowOtpForm}
         />
-  ) }
+      )}
     </div>
   );
 }

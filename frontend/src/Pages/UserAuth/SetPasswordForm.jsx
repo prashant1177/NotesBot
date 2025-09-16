@@ -3,11 +3,12 @@ import api from "../../api";
 import { useNavigate } from "react-router-dom";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
-import { LockIcon } from "lucide-react";
+import { Eye, EyeOff, LockIcon } from "lucide-react";
 
 const SetPasswordForm = ({ validatePassword, errors, setErrors }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPasswordInput, setShowPasswordInput] = useState(false); // 👈 toggle for password visibility
 
   const navigate = useNavigate();
 
@@ -46,13 +47,13 @@ const SetPasswordForm = ({ validatePassword, errors, setErrors }) => {
         </div>
 
         {/* Password */}
-        <div className="space-y-2">
+        <div className="space-y-2 relative">
           <label className="flex items-center gap-2 font-medium text-sm text-gray-700">
             <LockIcon className="w-4 h-4 text-chart-3" />
             New Password
           </label>
           <Input
-            type="password"
+            type={showPasswordInput ? "text" : "password"}
             placeholder="Password"
             required
             onChange={(e) => {
@@ -64,6 +65,21 @@ const SetPasswordForm = ({ validatePassword, errors, setErrors }) => {
           {errors.password && (
             <p className="text-red-500 text-xs mt-1">{errors.password}</p>
           )}
+          <button
+            type="button"
+            onClick={() => setShowPasswordInput(!showPasswordInput)}
+            className="absolute right-3 top-0 text-gray-500 hover:text-gray-700"
+          >
+            {showPasswordInput ? (
+              <div className="flex items-center gap-2">
+                Hide <EyeOff size={18} />
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                Show <Eye size={18} />{" "}
+              </div>
+            )}
+          </button>
         </div>
 
         {/* Confirm Password */}
@@ -73,7 +89,7 @@ const SetPasswordForm = ({ validatePassword, errors, setErrors }) => {
             Confirm Password
           </label>
           <Input
-            type="password"
+            type={showPasswordInput ? "text" : "password"}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
