@@ -3,6 +3,7 @@ import {
   ArrowRightFromLine,
   BadgeInfo,
   FolderDot,
+  HardDriveDownload,
   House,
   Landmark,
   LogOut,
@@ -26,31 +27,28 @@ export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
       className={`transition-all duration-300 z-10 flex flex-col items-center justify-between fixed top-0 left-0 h-screen ${sidebarHide} bg-gray-950   p-4`}
     >
       <div className="flex flex-col space-y-8 items-center justify-center w-full text-gray-500 ">
-        <Link to={`/user`}
+        <Link
+          to={`/user`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full mb-4 pb-4 border-b-2 text-gray-300 border-gray-800`}
         >
           <User />
           {isActive ? <span>{username}</span> : null}
         </Link>
+        
+       
+        {/*
         <Link
           to={`/`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
         >
           <House size={24} /> {isActive ? <span>Home</span> : null}
-        </Link>
-         <Link
-          to={`/templates`}
-          className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
-        >
-          <FolderDot /> {isActive ? <span>Templates</span> : null}
-        </Link>
-        <Link
+        </Link><Link
           to={`/create/project`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
         >
           <PencilLine size={24} /> {isActive ? <span>New Project</span> : null}
-        </Link>
-        
+        </Link>*/}
+
         <Link
           to={`/Pricing`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
@@ -58,7 +56,13 @@ export default function Sidebar({ toggleSidebar, sidebarHide, isActive }) {
           <Landmark />
           {isActive ? <span>Pricing</span> : null}
         </Link>
-
+ <Link
+          to={`/download`}
+          className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}
+        >
+          <HardDriveDownload />
+          {isActive ? <span>Download</span> : null}
+        </Link>
         <Link
           to={`/documentation/latex`}
           className={`flex items-center ${justify} gap-2 text-base font-normal w-full`}

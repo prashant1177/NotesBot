@@ -15,7 +15,7 @@ const session = require("express-session");
 const configurePassport = require("./config/passport.js");
 const { authenticateJWT } = require("./middleware/middleware.js");
 const JWT_SECRET = process.env.JWT_SECRET; // ⚠️ store in .env in production
-const path =  require("path");
+const path = require("path");
 
 const sendOtpEmail = require("./utils/sendEmail");
 const { generateOtpToken, verifyOtpToken } = require("./utils/generateOtp");
@@ -91,7 +91,7 @@ app.use("/api", premiumRoutes); // all routes start with /api/projects
 
 app.get("/download/windows", (req, res) => {
   const file = path.join(__dirname, "installer", "latexwriter.exe");
-  res.download(file, "latexwriter.exe"); 
+  res.download(file, "latexwriter.exe");
 });
 app.post("/register", async (req, res) => {
   const { fullname, email, password } = req.body;
@@ -136,15 +136,29 @@ app.post("/verify-otp", async (req, res) => {
   res.send("Email verified successfully!");
 });
 
-app.post("/login", (req, res, next) => {
-  passport.authenticate("local", { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return res.status(400).json({ msg: info?.message || "Login failed" });
+app.post("/login", async (req, res, next) => {
+  passport.authenticate(
+    "local",
+    { session: false },
+    async (err, user, info) => {
+      if (err || !user) {
+        return res.status(400).json({ msg: info?.message || "Login failed" });
+      }
+      if (!user.isVerified) {
+        const email = user.email;
+        const { otp, token } = generateOtpToken(email);
+        await sendOtpEmail(email, otp);
+
+        return res.json({
+          msg: "OTP sent to email",
+          token,
+          verficationNeeded: true,
+        });
+      }
+      const token = jwt.sign({ id: user.id }, JWT_SECRET);
+      return res.json({ token, username: user.fullname });
     }
-    // Issue JWT
-    const token = jwt.sign({ id: user.id }, JWT_SECRET);
-    return res.json({ token, username: user.fullname });
-  })(req, res, next);
+  )(req, res, next);
 });
 // set assword
 app.post("/set-password", authenticateJWT, async (req, res) => {

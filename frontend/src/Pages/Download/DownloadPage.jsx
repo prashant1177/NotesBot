@@ -32,7 +32,7 @@ export default function DownloadPage() {
     }, 2000);
   };
   return (
-    <div className="min-h-screen bg-white text-black relative flex items-center flex-col">
+    <div className="min-h-screen bg-white text-black relative flex items-center flex-col mb-4">
       {downloadStarted && (
         <div className="absolute top-4 bg-blue-200 px-6 py-2 rounded-2xl text-blue-600 border-1 border-blue-400 transition-all animate-pulse">
           Download Started...
@@ -60,7 +60,7 @@ export default function DownloadPage() {
                 Download for Windows
               </button>
               <p className="text-sm text-gray-500 mt-4">
-                Compatible with Windows 10/11 • 64-bit • 125 MB download
+                Compatible with Windows • 64-bit • 150 MB download
               </p>
             </div>
 

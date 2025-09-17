@@ -15,7 +15,7 @@ const OtpForm = ({ token, setToken, setShowOtpForm }) => {
     try {
       const res = await api.post("/verify-otp", { token, otp });
       alert(res.data);
-      navigate(`/login`);
+      window.location.href = "/login";
     } catch (err) {
       alert(err.response?.data || "OTP verification failed");
     }
@@ -32,7 +32,10 @@ const OtpForm = ({ token, setToken, setShowOtpForm }) => {
   };
   return (
     <div className="w-full max-w-md text-gray-800">
-      <form onSubmit={handleVerifyOtp} className="space-y-6  p-4 rounded-2xl md:border-1 border-gray-100 ">
+      <form
+        onSubmit={handleVerifyOtp}
+        className="space-y-6  p-4 rounded-2xl md:border-1 border-gray-100 "
+      >
         <div className="text-center">
           <h1 className="text-2xl font-medium mb-2">Enter OTP</h1>
         </div>
