@@ -15,15 +15,12 @@ const session = require("express-session");
 const configurePassport = require("./config/passport.js");
 const { authenticateJWT } = require("./middleware/middleware.js");
 const JWT_SECRET = process.env.JWT_SECRET; // ⚠️ store in .env in production
+const path =  require("path");
 
 const sendOtpEmail = require("./utils/sendEmail");
 const { generateOtpToken, verifyOtpToken } = require("./utils/generateOtp");
 
 //Latex
-
-const { exec } = require("child_process");
-const tmp = require("tmp");
-const fs = require("fs");
 const Project = require("./models/Project.js");
 
 app.use(express.json({ limit: "2mb" }));
@@ -92,6 +89,10 @@ app.use("/projects", projectRoutes); // all routes start with /api/projects
 app.use("/versions", versionsRoutes); // all routes start with /api/projects
 app.use("/api", premiumRoutes); // all routes start with /api/projects
 
+app.get("/download/windows", (req, res) => {
+  const file = path.join(__dirname, "installer", "latexwriter.exe");
+  res.download(file, "latexwriter.exe"); 
+});
 app.post("/register", async (req, res) => {
   const { fullname, email, password } = req.body;
   try {
