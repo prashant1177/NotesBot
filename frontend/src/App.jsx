@@ -28,6 +28,7 @@ import { Footer } from "./components/Footer";
 import LatexWriterDocumentationPageView from "./Pages/Documentation/LatexWriterDocumentationPageView";
 import DownloadPage from "./Pages/Download/DownloadPage";
 import SetPasswordForm from "./Pages/UserAuth/SetPasswordForm";
+import SubCancel from "./Pages/UserView/SubCancel";
 
 function App() {
   const [isActive, setIsActive] = useState(false);
@@ -70,6 +71,7 @@ function App() {
 
             {/*    Sitepage */}
             <Route path="/download" element={<DownloadPage />} />
+            <Route path="/cancel/premium" element={<SubCancel />} />
             <Route path="/About" element={<About />} />
             <Route path="/Blog" element={<BlogIndex />} />
             <Route path="/Blog/:blogSlug" element={<BlogView />} />

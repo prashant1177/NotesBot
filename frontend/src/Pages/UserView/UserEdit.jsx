@@ -16,12 +16,8 @@ export default function UserEdit() {
     email: "",
   });
   const [premium, setPremium] = useState(true);
-  const [premiumDetails, setPremiumDetails] = useState({
-    startDate: new Date().toISOString(), // today
-    endDate: new Date(
-      new Date().setMonth(new Date().getMonth() + 1)
-    ).toISOString(), // one month later
-  });
+  const [endDate, setEndDate] = useState(null);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -32,10 +28,7 @@ export default function UserEdit() {
       setForm(res.data.user);
       setPremium(res.data.user.isPremium);
       if (res.data.user.isPremium) {
-        setPremiumDetails({
-          startDate: res.data.user.premiumStart,
-          endDate: res.data.user.premiumEnd,
-        });
+        setEndDate(res.data.user.premiumExpiry);
       }
     } catch (error) {
       console.error(error);
@@ -45,8 +38,9 @@ export default function UserEdit() {
   // saveChanges
   const saveChanges = async () => {
     try {
-      const res = await api.put("/user", form);
-      setForm(res.data.user);
+      const { fullname, userabout } = form;
+      const res = await api.put("/user", { fullname, userabout });
+      alert(res.data.message);
     } catch (error) {
       console.error(error);
     }
@@ -68,7 +62,7 @@ export default function UserEdit() {
             </p>
           </CardHeader>
           <CardContent>
-            <form onSubmit={saveChanges} className="grid gap-6 mt-8">
+            <div className="grid gap-6 mt-8">
               {/* Full Name */}
               <div className="grid grid-cols-1 md:grid-cols-3 items-start gap-4">
                 <label className="flex items-center gap-2 font-medium text-sm">
@@ -159,19 +153,11 @@ export default function UserEdit() {
                 <div className="md:col-span-2 flex flex-col gap-1">
                   {premium ? (
                     <>
-                      {premiumDetails.startDate && (
+                      {endDate && (
                         <p className="text-sm text-gray-500 flex items-center gap-2">
-                          Active :
-                          <span className="font-medium ">
-                            {new Date(
-                              premiumDetails.startDate
-                            ).toLocaleDateString()}
-                          </span>
-                          -
+                          Active Till:
                           <span className="font-medium text-gray-950">
-                            {new Date(
-                              premiumDetails.endDate
-                            ).toLocaleDateString()}
+                            {new Date(endDate).toLocaleDateString()}
                           </span>
                         </p>
                       )}
@@ -180,15 +166,13 @@ export default function UserEdit() {
                         <span className="bg-gradient-to-br from-blue-500 to-blue-700 text-gray-50 px-4 py-2 rounded-md font-semibold">
                           Premium User
                         </span>
-                        <button
+                        <Link
                           type="button"
-                          onClick={() =>
-                            alert(`You will be shortly contacted via email.`)
-                          }
+                          to={`/cancel/premium`}
                           className="text-sm text-gray-500 hover:text-red-500"
                         >
                           Cancel Premium
-                        </button>
+                        </Link>
                       </div>
                     </>
                   ) : (
@@ -209,7 +193,11 @@ export default function UserEdit() {
 
               {/* Buttons */}
               <div className="flex justify-end gap-4">
-                <Button type="submit" className="rounded-2xl">
+                <Button
+                  onClick={saveChanges}
+                  type="button"
+                  className="rounded-2xl"
+                >
                   Save Changes
                 </Button>
                 <Button
@@ -228,7 +216,7 @@ export default function UserEdit() {
                   Logout{" "}
                 </Button>
               </div>
-            </form>
+            </div>
           </CardContent>{" "}
         </div>
       </div>

@@ -267,7 +267,7 @@ app.put("/user", authenticateJWT, async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
-  res.json(user);
+    return res.status(200).json({ message: "User Details updated" });
 });
 
 app.get("/MyProject", authenticateJWT, async (req, res) => {
