@@ -18,6 +18,16 @@ const projectSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  editors: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  socketId:  {
+    type: String,
+    required: true,
+  },
   private: {
     type: Boolean,
     default: true,
@@ -26,12 +36,12 @@ const projectSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Folder",
     required: true,
-  }, 
+  },
   rootFile: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "File",
     required: true,
-  }, 
+  },
   createdAt: {
     type: Date,
     default: Date.now,
