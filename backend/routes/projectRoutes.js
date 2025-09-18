@@ -20,6 +20,7 @@ const util = require("util");
 const execPromise = util.promisify(exec);
 require("dotenv").config(); // Load .env file variables
 const { GoogleGenAI } = require("@google/genai");
+const { shortHash } = require("../utils/socketId.js");
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -172,9 +173,12 @@ Hello, world! This is your main.tex.
 // GetFile
 router.get("/loadEditor/:id", authenticateJWT, async (req, res) => {
   try {
-    const projects = await Project.findById(req.params.id);
-
-    if (req.user.id.toString() !== projects.owner.toString()) {
+    const projects = await Project.findOne({
+      _id: req.params.id,
+      $or: [{ owner: req.user._id }, { editors: req.user._id }],
+    });
+    console.log(projects.owner, req.user.id);
+    if (!projects) {
       return res.status(403).json({ error: "You are not the owner" });
     }
     const Folders = await Folder.find({
@@ -197,6 +201,7 @@ router.get("/loadEditor/:id", authenticateJWT, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
 
 // GetFolder
 router.get("/getfolder/:id", authenticateJWT, async (req, res) => {
@@ -252,7 +257,6 @@ router.post(
 
       // Create hash for deduplication
       const hash = crypto.createHash("sha1").update(file.buffer).digest("hex");
-
       // Check if the blob already exists
       let blob = await Blob.findOne({ hash });
       if (!blob) {
@@ -273,20 +277,20 @@ router.post(
         blobId: blob._id,
         isBinary: true,
       });
+      await newFile.save();
       await Blob.findByIdAndUpdate(blob._id, {
         $addToSet: { filesIDs: newFile._id }, // 🔹 add only if not already present
       });
-      await newFile.save();
-
-      // Return updated file list
-      const Files = await File.find({ parent: currFolder });
-      res.json({ message: "Image uploaded successfully", Files });
+      // Notify everyone in this project room
+      req.io.to(req.params.id).emit("file-created", {
+        file: newFile,
+      });
+      res.status(201).json(newFile);
     } catch (err) {
       res.status(500).json({ message: "Upload failed" });
     }
   }
 );
-
 // Example: Create a new file
 router.post("/newfile/:id", authenticateJWT, async (req, res) => {
   if (!req.user) {
@@ -319,10 +323,13 @@ router.post("/newfile/:id", authenticateJWT, async (req, res) => {
     await Blob.findByIdAndUpdate(blob._id, {
       $addToSet: { filesIDs: newFile._id },
     });
-    const Files = await File.find({
-      parent: currFolder,
+
+    // Notify everyone in this project room
+    req.io.to(req.params.id).emit("file-created", {
+      file: newFile,
     });
-    res.json({ message: "Succces", Files });
+
+    res.status(201).json(newFile);
   } catch (err) {
     res.status(400).json({ message: "Different error" });
   }
@@ -342,15 +349,15 @@ router.post("/newfolder/:id", authenticateJWT, async (req, res) => {
       project: req.params.id,
     });
     await newFolder.save();
-    const Folders = await Folder.find({
-      parent: currFolder,
+    req.io.to(req.params.id).emit("folder-created", {
+      folder: newFolder,
     });
-    res.json({ message: "Succces", Folders });
+
+    res.status(201).json(newFolder);
   } catch (err) {
     res.status(400).json({ message: "Different error" });
   }
 });
-
 // Example: Get all projects from ProjectView
 router.get("/view/:id", authenticateJWT, async (req, res) => {
   try {
@@ -382,12 +389,12 @@ router.post("/create", authenticateJWT, async (req, res) => {
     return res.status(400).json({ message: "Authentication issue" });
   }
   const user = await User.findById(req.user.id).populate("project");
-  if (!user.isPremium && user.project.length > 0) {
+  /*  if (!user.isPremium && user.project.length > 0) {
     return res.status(400).json({
       message: "premium is required for more than one project",
       requiredpremium: true,
     });
-  }
+  }*/
 
   const { title, about, topics, private } = req.body;
   const foldername = title
@@ -399,15 +406,21 @@ router.post("/create", authenticateJWT, async (req, res) => {
   if (req.user.projects?.includes(foldername)) {
     return res.json({ message: "Folder exist error" });
   }
-  const topicsArr = topics
-    .split(",")
-    .map((t) => t.trim())
-    .filter((t) => t.length);
+
+  let topicsarr = [];
+  if (typeof topics === "string" && topics.trim().length > 0) {
+    topicsarr = topics
+      .split(",")
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+  }
+  const socketId = shortHash();
   const project = new Project({
     title,
     about,
-    topics: topicsArr,
+    topics: topicsarr,
     owner: req.user._id,
+    socketId,
     private,
   });
 
@@ -542,8 +555,6 @@ router.post("/deleteFile/:id", authenticateJWT, async (req, res) => {
     }
 
     const blobId = file.blobId;
-    const folderId = file.parent;
-
     // 2. Delete the file first
     await File.findByIdAndDelete(fileID);
 
@@ -567,11 +578,45 @@ router.post("/deleteFile/:id", authenticateJWT, async (req, res) => {
     } else {
       console.log("Blob updated, file removed:", blobId);
     }
-    const Files = await File.find({
-      parent: folderId,
-    });
-    res.json({ message: "File deleted successfully", Files });
+    req.io.to(req.params.id).emit("file-deleted", { fileID });
+    res.status(201).json(fileID);
   } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+//delete folder
+// Delete Folder (and all its files + subfolders)
+router.post("/deleteFolder/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.status(400).json({ message: "Authentication issue" });
+  }
+
+  const { folderID } = req.body;
+
+  try {
+    async function deleteFolder(folderId) {
+      const childFolders = await Folder.find({ parent: folderId });
+
+      for (const child of childFolders) {
+        await deleteFolder(child._id);
+      }
+
+      await File.deleteMany({ parent: folderId });
+
+      await Folder.findByIdAndDelete(folderId);
+    }
+
+    await deleteFolder(folderID);
+
+    await Folder.findByIdAndDelete(folderID);
+    req.io.to(req.params.id).emit("folder-deleted", { foldeerID: folderID });
+
+    res
+      .status(201)
+      .json({ message: "Folder and its contents deleted", folderID });
+  } catch (err) {
+    console.error("Error deleting folder:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -678,6 +723,180 @@ router.post("/fork/:id", authenticateJWT, async (req, res) => {
   }
 
   return res.json({ ForkprojectId: Forkproject._id });
+});
+
+// Upload Image to a folder
+router.post(
+  "/uploadfile/:id",
+  authenticateJWT,
+  upload.single("file"),
+  async (req, res) => {
+    try {
+      if (!req.user)
+        return res.status(400).json({ message: "Authentication issue" });
+
+      const { currFolder } = req.body;
+      const file = req.file;
+
+      if (!file) return res.status(400).json({ message: "No file uploaded" });
+
+      // Create hash for deduplication
+      const hash = crypto.createHash("sha1").update(file.buffer).digest("hex");
+      // Check if the blob already exists
+      let blob = await Blob.findOne({ hash });
+      if (!blob) {
+        blob = await Blob.create({
+          hash,
+          content: file.buffer,
+          mime: file.mimetype,
+          isBinary: false,
+        });
+      }
+
+      // Create File document
+      const newFile = new File({
+        name: file.originalname,
+        parent: currFolder,
+        owner: req.user._id,
+        project: req.params.id,
+        blobId: blob._id,
+        isBinary: false,
+      });
+      await newFile.save();
+      await Blob.findByIdAndUpdate(blob._id, {
+        $addToSet: { filesIDs: newFile._id }, // 🔹 add only if not already present
+      });
+      // Notify everyone in this project room
+      req.io.to(req.params.id).emit("file-created", {
+        file: newFile,
+      });
+      res.status(201).json(newFile);
+    } catch (err) {
+      res.status(500).json({ message: "Upload failed" });
+    }
+  }
+);
+
+// Example: Create a new file
+router.post("/renamefile/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.status(400).json({ message: "Authentication issue" });
+  }
+  try {
+    let { fileID, filename } = req.body;
+    await File.findByIdAndUpdate(fileID, { name: filename }, { new: true });
+    // Notify everyone in this project room
+    req.io.to(req.params.id).emit("file-renamed", {
+      fileID,
+      newName: filename,
+    });
+
+    res.status(201).json(fileID, filename);
+  } catch (err) {
+    res.status(400).json({ message: "Different error" });
+  }
+});
+
+// Example: Create a new file
+router.post("/renamefolder/:id", authenticateJWT, async (req, res) => {
+  if (!req.user) {
+    return res.status(400).json({ message: "Authentication issue" });
+  }
+  try {
+    let { foldeerID, foldername } = req.body;
+    await Folder.findByIdAndUpdate(
+      foldeerID,
+      { name: foldername },
+      { new: true }
+    );
+    // Notify everyone in this project room
+    req.io.to(req.params.id).emit("folder-renamed", {
+      foldeerID,
+      newName: foldername,
+    });
+
+    res.status(201).json(foldeerID, foldername);
+  } catch (err) {
+    res.status(400).json({ message: "Different error" });
+  }
+});
+
+// Compile LaTeX project route
+router.get("/getdata/:id", authenticateJWT, async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id).populate("rootFile");
+    if (!project) return res.status(404).json({ error: "Project not found" });
+
+    const folders = await Folder.find({ project: project._id });
+    const files = await File.find({ project: project._id }).populate("blobId");
+    res.json({
+      folders,
+      files,
+      rootFolder: project.rootFolder,
+      rootFile: project.rootFile,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message || "Server error",
+    });
+  }
+});
+
+router.get("/settings/:id", authenticateJWT, async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id)
+      .populate("owner", "email")
+      .populate("editors");
+      
+    if (!project) return res.status(404).json({ error: "Project not found" });
+
+    res.json({ project });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message || "Server error",
+    });
+  }
+});
+
+router.put("/settings/:id", authenticateJWT, async (req, res) => {
+  try {
+    const { title, about, topics } = req.body;
+
+    let topicsarr = [];
+    if (typeof topics === "string" && topics.trim().length > 0) {
+      topicsarr = topics
+        .split(",")
+        .map((t) => t.trim())
+        .filter((t) => t.length > 0);
+    }
+    const project = await Project.findByIdAndUpdate(
+      req.params.id,
+      { title, about, topics: topicsarr },
+      { new: true }
+    );
+    res.json({ project });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message || "Server error",
+    });
+  }
+});
+
+router.put("/editoracces/:id", authenticateJWT, async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email: email });
+    await Project.findByIdAndUpdate(
+      req.params.id,
+      { $addToSet: { editors: user._id } },
+      { new: true }
+    );
+    res.json({ message: "Editor added successfully" });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message || "Server error",
+    });
+  }
 });
 
 module.exports = router; // export the router

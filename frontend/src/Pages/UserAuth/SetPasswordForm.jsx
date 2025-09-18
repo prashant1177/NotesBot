@@ -22,7 +22,7 @@ const SetPasswordForm = ({ validatePassword, errors, setErrors }) => {
     try {
       await api.post("/set-password", { password });
       alert("Password set successfully!");
-      window.location.href = "/";
+      window.location.href = "/download";
     } catch (err) {
       alert(err.response?.data || "Failed to set password");
     }

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../ui/Button/Button";
 
-export default function Navbar() {
+export default function Navbar({token}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -78,13 +78,15 @@ export default function Navbar() {
             </ul>
           </div>
 
-          {/* Desktop Auth Buttons */}
+        
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/login">
-              <Button>Sign in</Button>
-            </Link>
-            <Link to="/register">
-              <Button varient="transparent">Get Started</Button>
+             {token ? <Link to="/user">
+              <Button>Profile</Button>
+            </Link>:<Link to="/register">
+              <Button>Sign up</Button>
+            </Link>}
+            <Link to="/download">
+              <Button varient="transparent">Download</Button>
             </Link>
           </div>
 
@@ -188,19 +190,19 @@ export default function Navbar() {
               {/* Mobile Auth Buttons */}
               <div className="pt-4 border-t border-border/20 space-y-3">
                 <Link
-                  to="/login"
-                  className="block"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Button className="w-full">Sign in</Button>
-                </Link>
-                <Link
                   to="/register"
                   className="block"
                   onClick={() => setIsMenuOpen(false)}
                 >
+                  <Button className="w-full">Register</Button>
+                </Link>
+                <Link
+                  to="/download"
+                  className="block"
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   <Button varient="transparent" className="w-full">
-                    Get Started
+                    Download
                   </Button>
                 </Link>
               </div>

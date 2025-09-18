@@ -1,8 +1,7 @@
 require("dotenv").config(); // Load .env file variables
 
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = process.env.JWT_SECRET; // ⚠️ store in .env in production
-const Note = require("../models/note.js");
+const JWT_SECRET = process.env.JWT_SECRET;
 const User = require("../models/User.js");
 
 function authenticateJWT(req, res, next) {

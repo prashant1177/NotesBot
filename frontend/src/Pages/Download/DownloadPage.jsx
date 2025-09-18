@@ -32,7 +32,7 @@ export default function DownloadPage() {
     }, 2000);
   };
   return (
-    <div className="min-h-screen bg-white text-black relative flex items-center flex-col">
+    <div className="min-h-screen bg-white text-black relative flex items-center flex-col mb-4">
       {downloadStarted && (
         <div className="absolute top-4 bg-blue-200 px-6 py-2 rounded-2xl text-blue-600 border-1 border-blue-400 transition-all animate-pulse">
           Download Started...
@@ -48,7 +48,7 @@ export default function DownloadPage() {
             <p className="text-2xl text-gray-700 mb-4">
               Then just $19 per month
             </p>
-            <p className="text-lg text-gray-600 mb-12">Download Now</p>
+            <p className="text-sm text-gray-600 mb-12 italic">Download Now and start free trial - No Card Details Required.</p>
 
             {/* Download Button */}
             <div className="mb-16">
@@ -60,7 +60,7 @@ export default function DownloadPage() {
                 Download for Windows
               </button>
               <p className="text-sm text-gray-500 mt-4">
-                Compatible with Windows 10/11 • 64-bit • 125 MB download
+                Compatible with Windows • 64-bit • 150 MB download
               </p>
             </div>
 

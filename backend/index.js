@@ -7,7 +7,6 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const User = require("./models/User.js");
-const Note = require("./models/note.js");
 const projectRoutes = require("./routes/projectRoutes");
 const versionsRoutes = require("./routes/versionsRoutes");
 const premiumRoutes = require("./routes/premiumRoutes");
@@ -15,7 +14,9 @@ const session = require("express-session");
 const configurePassport = require("./config/passport.js");
 const { authenticateJWT } = require("./middleware/middleware.js");
 const JWT_SECRET = process.env.JWT_SECRET; // ⚠️ store in .env in production
-const path =  require("path");
+const path = require("path");
+const { Server } = require("socket.io");
+const http = require("http"); // Add this at the top
 
 const sendOtpEmail = require("./utils/sendEmail");
 const { generateOtpToken, verifyOtpToken } = require("./utils/generateOtp");
@@ -31,13 +32,20 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:8080",
 ];
+
+
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: "*" } });
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 app.use(
   cors({
     origin: function (origin, callback) {
       // Reject requests with no Origin header (like Postman)
-      if (!origin) {
-        return callback(new Error("CORS not allowed: missing Origin"), false);
-      }
+                 if (!origin) return callback(null, true);
+
       const normalizedOrigin = origin.replace(/\/$/, "");
       const normalizedAllowedOrigins = allowedOrigins.map((o) =>
         o.replace(/\/$/, "")
@@ -88,11 +96,14 @@ async function database() {
 app.use("/projects", projectRoutes); // all routes start with /api/projects
 app.use("/versions", versionsRoutes); // all routes start with /api/projects
 app.use("/api", premiumRoutes); // all routes start with /api/projects
+require("./socket")(io);
+
 
 app.get("/download/windows", (req, res) => {
-  const file = path.join(__dirname, "installer", "latexwriter.exe");
-  res.download(file, "latexwriter.exe"); 
+  const file = path.join(__dirname, "installer", "LatexWriter Setup 1.0.0");
+  res.download(file, "LatexWriter Setup 1.0.0");
 });
+
 app.post("/register", async (req, res) => {
   const { fullname, email, password } = req.body;
   try {
@@ -136,15 +147,29 @@ app.post("/verify-otp", async (req, res) => {
   res.send("Email verified successfully!");
 });
 
-app.post("/login", (req, res, next) => {
-  passport.authenticate("local", { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return res.status(400).json({ msg: info?.message || "Login failed" });
+app.post("/login", async (req, res, next) => {
+  passport.authenticate(
+    "local",
+    { session: false },
+    async (err, user, info) => {
+      if (err || !user) {
+        return res.status(400).json({ msg: info?.message || "Login failed" });
+      }
+      if (!user.isVerified) {
+        const email = user.email;
+        const { otp, token } = generateOtpToken(email);
+        await sendOtpEmail(email, otp);
+
+        return res.json({
+          msg: "OTP sent to email",
+          token,
+          verficationNeeded: true,
+        });
+      }
+      const token = jwt.sign({ id: user.id }, JWT_SECRET);
+      return res.json({ token, username: user.fullname });
     }
-    // Issue JWT
-    const token = jwt.sign({ id: user.id }, JWT_SECRET);
-    return res.json({ token, username: user.fullname });
-  })(req, res, next);
+  )(req, res, next);
 });
 // set assword
 app.post("/set-password", authenticateJWT, async (req, res) => {
@@ -193,39 +218,6 @@ app.post("/auth/google", async (req, res) => {
   }
 });
 
-app.get("/searchnotes", async (req, res) => {
-  try {
-    const { search, sort = "recent" } = req.query;
-
-    let query = {};
-
-    // 🔎 Search filter
-    if (search) {
-      query = {
-        $or: [
-          { title: { $regex: search, $options: "i" } }, // case-insensitive partial match
-          { about: { $regex: search, $options: "i" } },
-          { topics: { $regex: search, $options: "i" } },
-        ],
-      };
-    }
-
-    // 📊 Sorting (always descending)
-    let sortOption = {};
-    if (sort === "views") {
-      sortOption = { views: -1 };
-    } else {
-      sortOption = { createdAt: -1 }; // default: most recent
-    }
-
-    const notes = await Note.find(query).sort(sortOption);
-
-    res.json({ notes });
-  } catch (err) {
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
 // user get Details
 app.get("/user", authenticateJWT, async (req, res) => {
   if (req.user) {
@@ -253,15 +245,18 @@ app.put("/user", authenticateJWT, async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
-  res.json(user);
+    return res.status(200).json({ message: "User Details updated" });
 });
 
 app.get("/MyProject", authenticateJWT, async (req, res) => {
-  const projects = await Project.find({ owner: req.user.id });
-  const author = await User.findById(req.user.id);
-  res.json({ projects, author });
+  const projects = await Project.find({  $or: [
+    { owner: req.user.id },
+    { editors: req.user.id }
+  ] }).sort({
+    createdAt: -1,
+  });
+  res.json({ projects, author: req.user});
 });
-
 //Get author details
 app.get("/userdetails", authenticateJWT, async (req, res) => {
   const author = await User.findById(req.user.id);
@@ -292,6 +287,6 @@ app.get("/openeditor/:id", authenticateJWT, async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 8080, "0.0.0.0", () => {
+server.listen(process.env.PORT || 8080, "0.0.0.0", () => {
   console.log("Server running on port 8080");
 });

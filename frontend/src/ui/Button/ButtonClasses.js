@@ -8,6 +8,8 @@ export default function ButtonClasses(varient, className = "") {
     primary: "bg-blue-500 text-gray-50 hover:bg-blue-600 focus:ring-blue-300",
     accent:
       "bg-orange-500 text-background hover:bg-orange-400 focus:ring-orange-300",
+    danger:
+      "bg-red-500 text-gray-50 hover:bg-red-400 focus:ring-red-300",
     outline:
       "border border-gray-400 text-gray-700 bg-transparent hover:bg-blue-100 hover:border-blue-400 hover:text-blue-400",
   };

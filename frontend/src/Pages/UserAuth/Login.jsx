@@ -5,10 +5,13 @@ import { User, Lock, Sparkles, Brain, ArrowRight } from "lucide-react";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import { GoogleLogin } from "@react-oauth/google";
+import OtpForm from "./OtpForm";
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [token, setToken] = useState(null); // JWT token from backend
+  const [showOtpForm, setShowOtpForm] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,13 +19,18 @@ function Login() {
     try {
       const res = await api.post("/login", form);
       const token = res.data.token;
+      if (res.data.verficationNeeded) {
+        setToken(token);
+        alert(res.data.msg);
+        setShowOtpForm(true);
+      }
       localStorage.setItem("token", token);
       localStorage.setItem("username", res.data.username);
 
       setAuthToken(token);
 
       localStorage.getItem("token");
-      window.location.href = "/";
+      window.location.href = "/download";
     } catch (err) {
       alert(err.response?.data?.msg || "Login failed");
     } finally {
@@ -31,25 +39,25 @@ function Login() {
   };
   const handleGoogleOAuth = async (response) => {
     try {
-    setLoading(true);
+      setLoading(true);
       const res = await api.post("/auth/google", {
         tokenId: response.credential,
       });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("username", res.data.username);
       setAuthToken(res.data.token);
-      window.location.href = "/";
+      window.location.href = "/download";
     } catch (err) {
       console.error(err);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
   return (
     <div className="w-full flex justify-center  p-4   text-gray-800">
+      {!showOtpForm? (
       <div className="md:w-1/3  w-full">
         <div className=" lg:flex-1 w-full lg:p-8 p-4  flex flex-col items-center rounded-2xl md:border-1 border-gray-100">
-          
           <GoogleLogin
             onSuccess={handleGoogleOAuth}
             onError={() => console.log("Login Failed")}
@@ -125,7 +133,14 @@ function Login() {
             </Link>
           </div>
         </div>
-      </div>
+      </div>) : (
+        <OtpForm
+          token={token}
+          setToken={setToken}
+          setShowOtpForm={setShowOtpForm}
+          handleSubmit={handleSubmit}
+        />
+      )}
     </div>
   );
 }

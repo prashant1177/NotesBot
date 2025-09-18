@@ -29,6 +29,7 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "razorpay": "^2.9.6",
+    "socket.io": "^4.8.1",
     "tmp": "^0.2.5",
     "tmp-promise": "^3.0.3"
   }
