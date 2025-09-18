@@ -30,7 +30,7 @@ function Login() {
       setAuthToken(token);
 
       localStorage.getItem("token");
-      window.location.href = "/";
+      window.location.href = "/download";
     } catch (err) {
       alert(err.response?.data?.msg || "Login failed");
     } finally {
@@ -46,7 +46,7 @@ function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("username", res.data.username);
       setAuthToken(res.data.token);
-      window.location.href = "/";
+      window.location.href = "/download";
     } catch (err) {
       console.error(err);
     } finally {

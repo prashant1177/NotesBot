@@ -48,7 +48,7 @@ export default function DownloadPage() {
             <p className="text-2xl text-gray-700 mb-4">
               Then just $19 per month
             </p>
-            <p className="text-sm text-gray-600 mb-12 italic">Download Now and start free trial. No Card Details Required for trail</p>
+            <p className="text-sm text-gray-600 mb-12 italic">Download Now and start free trial - No Card Details Required.</p>
 
             {/* Download Button */}
             <div className="mb-16">
