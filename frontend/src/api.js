@@ -11,5 +11,19 @@ export const setAuthToken = token => {
     delete api.defaults.headers.common['Authorization'];
   }
 };
+/*
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      const { status, data } = error.response;
 
+      if (status === 403 && data.PremiumExpired) {
+        window.location.href = "/premiumexpired"; 
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);*/
 export default api;
