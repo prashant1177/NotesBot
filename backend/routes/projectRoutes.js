@@ -36,7 +36,7 @@ async function errorHandling(error) {
   return response.text;
 }
 
-router.post("/askGemini", authenticateJWT, async (req, res) => {
+router.post("/askGemini",  async (req, res) => {
   if (!req.user) {
     return res.status(403).json({ error: "You are not logged in" });
   }
@@ -52,7 +52,7 @@ router.post("/askGemini", authenticateJWT, async (req, res) => {
   });
   return res.json({ text: response.text });
 });
-router.post("/debugerror", authenticateJWT, async (req, res) => {
+router.post("/debugerror",  async (req, res) => {
   if (!req.user) {
     return res.status(403).json({ error: "You are not logged in" });
   }
@@ -98,7 +98,7 @@ async function writeProjectToTemp(dirPath, folders, files, parentId) {
 }
 
 // Compile LaTeX project route
-router.post("/compile/:id", authenticateJWT, async (req, res) => {
+router.post("/compile/:id",  async (req, res) => {
   let tmpDir;
   try {
     const project = await Project.findById(req.params.id);
@@ -171,13 +171,12 @@ Hello, world! This is your main.tex.
 `;
 
 // GetFile
-router.get("/loadEditor/:id", authenticateJWT, async (req, res) => {
+router.get("/loadEditor/:id",  async (req, res) => {
   try {
     const projects = await Project.findOne({
       _id: req.params.id,
       $or: [{ owner: req.user._id }, { editors: req.user._id }],
     });
-    console.log(projects.owner, req.user.id);
     if (!projects) {
       return res.status(403).json({ error: "You are not the owner" });
     }
@@ -204,7 +203,7 @@ router.get("/loadEditor/:id", authenticateJWT, async (req, res) => {
 
 
 // GetFolder
-router.get("/getfolder/:id", authenticateJWT, async (req, res) => {
+router.get("/getfolder/:id",  async (req, res) => {
   try {
     const { folderID } = req.query;
     const Folders = await Folder.find({
@@ -221,7 +220,7 @@ router.get("/getfolder/:id", authenticateJWT, async (req, res) => {
 });
 
 // GetFile
-router.get("/getfile/:id", authenticateJWT, async (req, res) => {
+router.get("/getfile/:id",  async (req, res) => {
   try {
     const { fileID } = req.query;
     const file = await File.findById(fileID).populate("blobId");
@@ -243,7 +242,7 @@ router.get("/getfile/:id", authenticateJWT, async (req, res) => {
 // Upload Image to a folder
 router.post(
   "/uploadimage/:id",
-  authenticateJWT,
+  
   upload.single("image"),
   async (req, res) => {
     try {
@@ -292,7 +291,7 @@ router.post(
   }
 );
 // Example: Create a new file
-router.post("/newfile/:id", authenticateJWT, async (req, res) => {
+router.post("/newfile/:id",  async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -336,7 +335,7 @@ router.post("/newfile/:id", authenticateJWT, async (req, res) => {
 });
 
 // Example: Create a new folder
-router.post("/newfolder/:id", authenticateJWT, async (req, res) => {
+router.post("/newfolder/:id",  async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -359,7 +358,7 @@ router.post("/newfolder/:id", authenticateJWT, async (req, res) => {
   }
 });
 // Example: Get all projects from ProjectView
-router.get("/view/:id", authenticateJWT, async (req, res) => {
+router.get("/view/:id",  async (req, res) => {
   try {
     if (!req.user) {
       res.status(500).json({ message: "Login to view" });
@@ -384,7 +383,7 @@ router.get("/view/:id", authenticateJWT, async (req, res) => {
 });
 
 // Example: Create a new project
-router.post("/create", authenticateJWT, async (req, res) => {
+router.post("/create",  async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -470,7 +469,7 @@ router.post("/create", authenticateJWT, async (req, res) => {
   res.status(201).json({ id: project._id, foldername });
 });
 
-router.post("/savefile/:id", authenticateJWT, async (req, res) => {
+router.post("/savefile/:id",  async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -540,7 +539,7 @@ router.post("/savefile/:id", authenticateJWT, async (req, res) => {
 });
 
 // Delete File
-router.post("/deleteFile/:id", authenticateJWT, async (req, res) => {
+router.post("/deleteFile/:id",  async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -587,7 +586,7 @@ router.post("/deleteFile/:id", authenticateJWT, async (req, res) => {
 
 //delete folder
 // Delete Folder (and all its files + subfolders)
-router.post("/deleteFolder/:id", authenticateJWT, async (req, res) => {
+router.post("/deleteFolder/:id",  async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -621,7 +620,7 @@ router.post("/deleteFolder/:id", authenticateJWT, async (req, res) => {
   }
 });
 
-router.post("/fork/:id", authenticateJWT, async (req, res) => {
+router.post("/fork/:id",  async (req, res) => {
   if (!req.user) {
     return res.status(500).json({ message: "Login To Continue" });
   }
@@ -728,7 +727,7 @@ router.post("/fork/:id", authenticateJWT, async (req, res) => {
 // Upload Image to a folder
 router.post(
   "/uploadfile/:id",
-  authenticateJWT,
+  
   upload.single("file"),
   async (req, res) => {
     try {
@@ -778,7 +777,7 @@ router.post(
 );
 
 // Example: Create a new file
-router.post("/renamefile/:id", authenticateJWT, async (req, res) => {
+router.post("/renamefile/:id",  async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -798,7 +797,7 @@ router.post("/renamefile/:id", authenticateJWT, async (req, res) => {
 });
 
 // Example: Create a new file
-router.post("/renamefolder/:id", authenticateJWT, async (req, res) => {
+router.post("/renamefolder/:id",  async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -822,7 +821,7 @@ router.post("/renamefolder/:id", authenticateJWT, async (req, res) => {
 });
 
 // Compile LaTeX project route
-router.get("/getdata/:id", authenticateJWT, async (req, res) => {
+router.get("/getdata/:id",  async (req, res) => {
   try {
     const project = await Project.findById(req.params.id).populate("rootFile");
     if (!project) return res.status(404).json({ error: "Project not found" });
@@ -842,7 +841,7 @@ router.get("/getdata/:id", authenticateJWT, async (req, res) => {
   }
 });
 
-router.get("/settings/:id", authenticateJWT, async (req, res) => {
+router.get("/settings/:id",  async (req, res) => {
   try {
     const project = await Project.findById(req.params.id)
       .populate("owner", "email")
@@ -858,7 +857,7 @@ router.get("/settings/:id", authenticateJWT, async (req, res) => {
   }
 });
 
-router.put("/settings/:id", authenticateJWT, async (req, res) => {
+router.put("/settings/:id",  async (req, res) => {
   try {
     const { title, about, topics } = req.body;
 
@@ -882,7 +881,7 @@ router.put("/settings/:id", authenticateJWT, async (req, res) => {
   }
 });
 
-router.put("/editoracces/:id", authenticateJWT, async (req, res) => {
+router.put("/editoracces/:id",  async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email: email });

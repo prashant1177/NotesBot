@@ -1,5 +1,5 @@
 require("dotenv").config(); // Load .env file variables
-
+const bcrypt = require("bcryptjs");
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -12,7 +12,7 @@ const versionsRoutes = require("./routes/versionsRoutes");
 const premiumRoutes = require("./routes/premiumRoutes");
 const session = require("express-session");
 const configurePassport = require("./config/passport.js");
-const { authenticateJWT } = require("./middleware/middleware.js");
+const { authenticateJWT, checkPremium } = require("./middleware/middleware.js");
 const JWT_SECRET = process.env.JWT_SECRET; // ⚠️ store in .env in production
 const path = require("path");
 const { Server } = require("socket.io");
@@ -33,7 +33,6 @@ const allowedOrigins = [
   "http://localhost:8080",
 ];
 
-
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 app.use((req, res, next) => {
@@ -44,7 +43,7 @@ app.use(
   cors({
     origin: function (origin, callback) {
       // Reject requests with no Origin header (like Postman)
-                 if (!origin) return callback(null, true);
+      if (!origin) return callback(null, true);
 
       const normalizedOrigin = origin.replace(/\/$/, "");
       const normalizedAllowedOrigins = allowedOrigins.map((o) =>
@@ -93,11 +92,10 @@ async function database() {
   await mongoose.connect(process.env.MONGO_URL);
 }
 
-app.use("/projects", projectRoutes); // all routes start with /api/projects
-app.use("/versions", versionsRoutes); // all routes start with /api/projects
+app.use("/projects", authenticateJWT, checkPremium, projectRoutes); // all routes start with /api/projects
+app.use("/versions", authenticateJWT, checkPremium, versionsRoutes); // all routes start with /api/projects
 app.use("/api", premiumRoutes); // all routes start with /api/projects
 require("./socket")(io);
-
 
 app.get("/download/windows", (req, res) => {
   const file = path.join(__dirname, "installer", "LatexWriter Setup 1.0.0.exe");
@@ -131,6 +129,7 @@ app.post("/register", async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 });
+
 app.post("/verify-otp", async (req, res) => {
   const { token, otp } = req.body;
 
@@ -142,6 +141,11 @@ app.post("/verify-otp", async (req, res) => {
   if (!user) return res.status(404).send("User not found");
 
   user.isVerified = true;
+  const FREE_TRIAL_DAYS = 30;
+  const now = new Date();
+  user.isPremium = true;
+  user.premiumExpiry = new Date(now.setDate(now.getDate() + FREE_TRIAL_DAYS));
+
   await user.save();
 
   res.send("Email verified successfully!");
@@ -177,7 +181,15 @@ app.post("/set-password", authenticateJWT, async (req, res) => {
     return res.message("No user found ");
   }
   const { password } = req.body;
-  await User.findByIdAndUpdate(req.user.id, { password: password });
+  const hashedPassword = await bcrypt.hash(password, 14);
+
+  const now = new Date();
+  premiumExpiry = new Date(now.setDate(now.getDate() + 30));
+  await User.findByIdAndUpdate(req.user.id, {
+    password: hashedPassword,
+    isPremium: true,
+    premiumExpiry,
+  });
 
   return res.json("Success");
 });
@@ -245,17 +257,16 @@ app.put("/user", authenticateJWT, async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
-    return res.status(200).json({ message: "User Details updated" });
+  return res.status(200).json({ message: "User Details updated" });
 });
 
 app.get("/MyProject", authenticateJWT, async (req, res) => {
-  const projects = await Project.find({  $or: [
-    { owner: req.user.id },
-    { editors: req.user.id }
-  ] }).sort({
+  const projects = await Project.find({
+    $or: [{ owner: req.user.id }, { editors: req.user.id }],
+  }).sort({
     createdAt: -1,
   });
-  res.json({ projects, author: req.user});
+  res.json({ projects, author: req.user });
 });
 //Get author details
 app.get("/userdetails", authenticateJWT, async (req, res) => {
@@ -287,6 +298,6 @@ app.get("/openeditor/:id", authenticateJWT, async (req, res) => {
   }
 });
 
-server.listen(process.env.PORT || 8080, "0.0.0.0", () => {
+server.listen(process.env.PORT || 3000, "0.0.0.0", () => {
   console.log("Server running on port 8080");
 });

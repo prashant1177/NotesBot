@@ -18,21 +18,30 @@ function authenticateJWT(req, res, next) {
       const user = await User.findById(decoded.id).select("-password"); // exclude password
       if (!user) return res.status(404).json({ msg: "User not found" });
 
-      req.user = user; // attach to request
+      req.user = user;
       next();
     } catch (error) {
       return res.status(500).json({ msg: "Server error" });
     }
   });
 }
-async function viewCount(req, res, next) {
-  const note = await Note.findById(req.params.id);
-  await Note.findByIdAndUpdate(
-    req.params.id,
-    { views: note.views + 1 },
-    { new: true }
-  );
-  next();
-}
 
-module.exports = { authenticateJWT, viewCount };
+async function checkPremium(req, res, next) {
+  try {
+    console.log(req.user.isPremium);
+    if (!req.user || !req.user?.isPremium) {
+      return res
+        .status(403)
+        .json({
+          message: "Premium required to access this route",
+          PremiumExpired: true,
+        });
+    }
+
+    next(); // ✅ allow access
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+module.exports = { authenticateJWT, checkPremium };
