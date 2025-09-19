@@ -28,7 +28,6 @@ function authenticateJWT(req, res, next) {
 
 async function checkPremium(req, res, next) {
   try {
-    console.log(req.user.isPremium);
     if (!req.user || !req.user?.isPremium) {
       return res
         .status(403)
