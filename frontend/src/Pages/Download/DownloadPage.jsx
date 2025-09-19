@@ -20,7 +20,7 @@ export default function DownloadPage() {
      const url = window.URL.createObjectURL(new Blob([res.data]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", "latexwriter.exe"); // rename as you like
+    link.setAttribute("download", "LatexWriter Setup 1.0.0.exe"); // rename as you like
     document.body.appendChild(link);
     link.click();
     link.remove();
