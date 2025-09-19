@@ -100,8 +100,8 @@ require("./socket")(io);
 
 
 app.get("/download/windows", (req, res) => {
-  const file = path.join(__dirname, "installer", "LatexWriter Setup 1.0.0");
-  res.download(file, "LatexWriter Setup 1.0.0");
+  const file = path.join(__dirname, "installer", "LatexWriter Setup 1.0.0.exe");
+  res.download(file, "LatexWriter Setup 1.0.0.exe");
 });
 
 app.post("/register", async (req, res) => {
