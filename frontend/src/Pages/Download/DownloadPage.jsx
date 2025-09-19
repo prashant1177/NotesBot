@@ -14,18 +14,13 @@ import { useState } from "react";
 export default function DownloadPage() {
   const [downloadStarted, setDownloadStarted] = useState(false);
   const handleDownload = async () => {
-  const res  =  await api.get("/download/windows",{
-      responseType: "blob", // important
-    });
-     const url = window.URL.createObjectURL(new Blob([res.data]));
     const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "LatexWriter Setup 1.0.0.exe"); // rename as you like
+    link.href = "https://api.latexwriter.com/download/windows"; // your backend route
+    link.setAttribute("download", "LatexWriter-Setup.exe"); // custom filename
     document.body.appendChild(link);
     link.click();
     link.remove();
-
-
+    
     setDownloadStarted(true);
     setTimeout(() => {
       setDownloadStarted(false);
@@ -35,7 +30,7 @@ export default function DownloadPage() {
     <div className="min-h-screen bg-white text-black relative flex items-center flex-col mb-4">
       {downloadStarted && (
         <div className="absolute top-4 bg-blue-200 px-6 py-2 rounded-2xl text-blue-600 border-1 border-blue-400 transition-all animate-pulse">
-          Download Started...
+          Starting Download...
         </div>
       )}
       {/* Hero Section */}
@@ -48,7 +43,9 @@ export default function DownloadPage() {
             <p className="text-2xl text-gray-700 mb-4">
               Then just $19 per month
             </p>
-            <p className="text-sm text-gray-600 mb-12 italic">Download Now and start free trial - No Card Details Required.</p>
+            <p className="text-sm text-gray-600 mb-12 italic">
+              Download Now and start free trial - No Card Details Required.
+            </p>
 
             {/* Download Button */}
             <div className="mb-16">
