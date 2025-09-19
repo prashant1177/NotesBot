@@ -298,6 +298,6 @@ app.get("/openeditor/:id", authenticateJWT, async (req, res) => {
   }
 });
 
-server.listen(process.env.PORT || 3000, "0.0.0.0", () => {
+server.listen(process.env.PORT || 8080, "0.0.0.0", () => {
   console.log("Server running on port 8080");
 });
