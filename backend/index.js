@@ -175,21 +175,28 @@ app.post("/login", async (req, res, next) => {
     }
   )(req, res, next);
 });
+
 // set assword
 app.post("/set-password", authenticateJWT, async (req, res) => {
   if (!req.user) {
     return res.message("No user found ");
   }
   const { password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 14);
+
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found in DB" });
+  }
 
   const now = new Date();
   premiumExpiry = new Date(now.setDate(now.getDate() + 30));
-  await User.findByIdAndUpdate(req.user.id, {
-    password: hashedPassword,
-    isPremium: true,
-    premiumExpiry,
-  });
+
+  user.password = password;
+  user.isPremium = true;
+  user.premiumExpiry = premiumExpiry;
+
+  await user.save();
 
   return res.json("Success");
 });
