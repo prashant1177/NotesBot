@@ -222,7 +222,9 @@ app.post("/auth/google", async (req, res) => {
     }
     // Generate JWT
     const token = jwt.sign({ id: user._id }, JWT_SECRET);
-
+    if (!user.password) {
+      return res.json({ token, username: user.fullname, setpassword: true });
+    }
     res.json({ token, username: user.fullname });
   } catch (err) {
     console.error(err);
