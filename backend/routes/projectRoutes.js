@@ -6,7 +6,7 @@ const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() }); // store file in memory buffer
 
 const Project = require("../models/Project");
-const { authenticateJWT } = require("../middleware/middleware.js");
+
 const Folder = require("../models/Folder.js");
 const File = require("../models/File.js");
 const User = require("../models/User.js");
@@ -21,7 +21,13 @@ const execPromise = util.promisify(exec);
 require("dotenv").config(); // Load .env file variables
 const { GoogleGenAI } = require("@google/genai");
 const { shortHash } = require("../utils/socketId.js");
-
+const {
+  Book,
+  Letter,
+  Article,
+  Report,
+  Blank,
+} = require("../templates/template.js");
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 async function errorHandling(error) {
@@ -36,7 +42,7 @@ async function errorHandling(error) {
   return response.text;
 }
 
-router.post("/askGemini",  async (req, res) => {
+router.post("/askGemini", async (req, res) => {
   if (!req.user) {
     return res.status(403).json({ error: "You are not logged in" });
   }
@@ -52,7 +58,7 @@ router.post("/askGemini",  async (req, res) => {
   });
   return res.json({ text: response.text });
 });
-router.post("/debugerror",  async (req, res) => {
+router.post("/debugerror", async (req, res) => {
   if (!req.user) {
     return res.status(403).json({ error: "You are not logged in" });
   }
@@ -98,7 +104,7 @@ async function writeProjectToTemp(dirPath, folders, files, parentId) {
 }
 
 // Compile LaTeX project route
-router.post("/compile/:id",  async (req, res) => {
+router.post("/compile/:id", async (req, res) => {
   let tmpDir;
   try {
     const project = await Project.findById(req.params.id);
@@ -153,25 +159,8 @@ router.post("/compile/:id",  async (req, res) => {
   }
 });
 
-const texTemplate = `
-\\documentclass{article}
-\\usepackage[utf8]{inputenc}
-
-\\title{My New Project}
-\\author{Author Name}
-\\date{\\today}
-
-\\begin{document}
-
-\\maketitle
-
-Hello, world! This is your main.tex.
-
-\\end{document}
-`;
-
 // GetFile
-router.get("/loadEditor/:id",  async (req, res) => {
+router.get("/loadEditor/:id", async (req, res) => {
   try {
     const projects = await Project.findOne({
       _id: req.params.id,
@@ -201,9 +190,8 @@ router.get("/loadEditor/:id",  async (req, res) => {
   }
 });
 
-
 // GetFolder
-router.get("/getfolder/:id",  async (req, res) => {
+router.get("/getfolder/:id", async (req, res) => {
   try {
     const { folderID } = req.query;
     const Folders = await Folder.find({
@@ -220,7 +208,7 @@ router.get("/getfolder/:id",  async (req, res) => {
 });
 
 // GetFile
-router.get("/getfile/:id",  async (req, res) => {
+router.get("/getfile/:id", async (req, res) => {
   try {
     const { fileID } = req.query;
     const file = await File.findById(fileID).populate("blobId");
@@ -242,7 +230,7 @@ router.get("/getfile/:id",  async (req, res) => {
 // Upload Image to a folder
 router.post(
   "/uploadimage/:id",
-  
+
   upload.single("image"),
   async (req, res) => {
     try {
@@ -291,7 +279,7 @@ router.post(
   }
 );
 // Example: Create a new file
-router.post("/newfile/:id",  async (req, res) => {
+router.post("/newfile/:id", async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -335,7 +323,7 @@ router.post("/newfile/:id",  async (req, res) => {
 });
 
 // Example: Create a new folder
-router.post("/newfolder/:id",  async (req, res) => {
+router.post("/newfolder/:id", async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -358,7 +346,7 @@ router.post("/newfolder/:id",  async (req, res) => {
   }
 });
 // Example: Get all projects from ProjectView
-router.get("/view/:id",  async (req, res) => {
+router.get("/view/:id", async (req, res) => {
   try {
     if (!req.user) {
       res.status(500).json({ message: "Login to view" });
@@ -383,28 +371,17 @@ router.get("/view/:id",  async (req, res) => {
 });
 
 // Example: Create a new project
-router.post("/create",  async (req, res) => {
+router.post("/create", async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
-  const user = await User.findById(req.user.id).populate("project");
-  /*  if (!user.isPremium && user.project.length > 0) {
-    return res.status(400).json({
-      message: "premium is required for more than one project",
-      requiredpremium: true,
-    });
-  }*/
 
-  const { title, about, topics, private } = req.body;
+  const { title, about, topics, private, documentClass = "Blank" } = req.body;
   const foldername = title
     .toLowerCase()
     .trim()
     .replace(/\s+/g, "")
     .replace(/[^a-z0-9]/g, "");
-
-  if (req.user.projects?.includes(foldername)) {
-    return res.json({ message: "Folder exist error" });
-  }
 
   let topicsarr = [];
   if (typeof topics === "string" && topics.trim().length > 0) {
@@ -429,7 +406,7 @@ router.post("/create",  async (req, res) => {
     owner: req.user._id,
     project: project._id,
   });
-  const hash = crypto.createHash("sha1").update(texTemplate).digest("hex");
+  const hash = crypto.createHash("sha1").update(documentClass).digest("hex");
   // Check if the file already exists
   let blob = await Blob.findOne({ hash });
   if (!blob) {
@@ -469,7 +446,7 @@ router.post("/create",  async (req, res) => {
   res.status(201).json({ id: project._id, foldername });
 });
 
-router.post("/savefile/:id",  async (req, res) => {
+router.post("/savefile/:id", async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -539,7 +516,7 @@ router.post("/savefile/:id",  async (req, res) => {
 });
 
 // Delete File
-router.post("/deleteFile/:id",  async (req, res) => {
+router.post("/deleteFile/:id", async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -586,7 +563,7 @@ router.post("/deleteFile/:id",  async (req, res) => {
 
 //delete folder
 // Delete Folder (and all its files + subfolders)
-router.post("/deleteFolder/:id",  async (req, res) => {
+router.post("/deleteFolder/:id", async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -620,7 +597,7 @@ router.post("/deleteFolder/:id",  async (req, res) => {
   }
 });
 
-router.post("/fork/:id",  async (req, res) => {
+router.post("/fork/:id", async (req, res) => {
   if (!req.user) {
     return res.status(500).json({ message: "Login To Continue" });
   }
@@ -727,7 +704,7 @@ router.post("/fork/:id",  async (req, res) => {
 // Upload Image to a folder
 router.post(
   "/uploadfile/:id",
-  
+
   upload.single("file"),
   async (req, res) => {
     try {
@@ -777,7 +754,7 @@ router.post(
 );
 
 // Example: Create a new file
-router.post("/renamefile/:id",  async (req, res) => {
+router.post("/renamefile/:id", async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -797,7 +774,7 @@ router.post("/renamefile/:id",  async (req, res) => {
 });
 
 // Example: Create a new file
-router.post("/renamefolder/:id",  async (req, res) => {
+router.post("/renamefolder/:id", async (req, res) => {
   if (!req.user) {
     return res.status(400).json({ message: "Authentication issue" });
   }
@@ -821,7 +798,7 @@ router.post("/renamefolder/:id",  async (req, res) => {
 });
 
 // Compile LaTeX project route
-router.get("/getdata/:id",  async (req, res) => {
+router.get("/getdata/:id", async (req, res) => {
   try {
     const project = await Project.findById(req.params.id).populate("rootFile");
     if (!project) return res.status(404).json({ error: "Project not found" });
@@ -841,12 +818,12 @@ router.get("/getdata/:id",  async (req, res) => {
   }
 });
 
-router.get("/settings/:id",  async (req, res) => {
+router.get("/settings/:id", async (req, res) => {
   try {
     const project = await Project.findById(req.params.id)
       .populate("owner", "email")
       .populate("editors");
-      
+
     if (!project) return res.status(404).json({ error: "Project not found" });
 
     res.json({ project });
@@ -857,7 +834,7 @@ router.get("/settings/:id",  async (req, res) => {
   }
 });
 
-router.put("/settings/:id",  async (req, res) => {
+router.put("/settings/:id", async (req, res) => {
   try {
     const { title, about, topics } = req.body;
 
@@ -881,7 +858,7 @@ router.put("/settings/:id",  async (req, res) => {
   }
 });
 
-router.put("/editoracces/:id",  async (req, res) => {
+router.put("/editoracces/:id", async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email: email });

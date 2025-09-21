@@ -36,7 +36,6 @@ function Register() {
     e.preventDefault();
     try {
       setLoading(true);
-      console.log(form);
       const res = await api.post("/register", form);
       alert(res.data.msg);
       setToken(res.data.token);
@@ -57,7 +56,11 @@ function Register() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("username", res.data.username);
       setAuthToken(res.data.token);
-      setshowPassword(true);
+      if (res.data.setpassword) {
+        setshowPassword(true);
+        return;
+      }
+      window.location.href = "/user";
     } catch (err) {
       console.error(err);
     } finally {
