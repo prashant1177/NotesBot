@@ -14,7 +14,6 @@ import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import { GoogleLogin } from "@react-oauth/google";
 import OtpForm from "./OtpForm";
-import SetPasswordForm from "./SetPasswordForm";
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
