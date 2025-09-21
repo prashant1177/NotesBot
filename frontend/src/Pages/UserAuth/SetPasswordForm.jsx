@@ -5,10 +5,11 @@ import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import { Eye, EyeOff, LockIcon } from "lucide-react";
 
-const SetPasswordForm = ({ validatePassword, errors, setErrors }) => {
+const SetPasswordForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPasswordInput, setShowPasswordInput] = useState(false); // 👈 toggle for password visibility
+  const [errors, setErrors] = useState({ password: "" });
 
   const navigate = useNavigate();
 
@@ -22,7 +23,7 @@ const SetPasswordForm = ({ validatePassword, errors, setErrors }) => {
     try {
       await api.post("/set-password", { password });
       alert("Password set successfully!");
-      window.location.href = "/user";
+      navigate(`/user`);
     } catch (err) {
       alert(err.response?.data || "Failed to set password");
     }
@@ -36,6 +37,12 @@ const SetPasswordForm = ({ validatePassword, errors, setErrors }) => {
     }
   };
 
+  const validatePassword = (value) => {
+    const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    if (!strongRegex.test(value))
+      return "Password must be at least 8 chars, include upper, lower, number & special char";
+    return "";
+  };
   return (
     <div className="w-full max-w-md text-gray-800">
       <form

@@ -1,7 +1,15 @@
 import React, { useState, useContext } from "react";
 import api, { setAuthToken } from "../../api";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Lock, Sparkles, Brain, ArrowRight } from "lucide-react";
+import {
+  User,
+  Lock,
+  Sparkles,
+  Brain,
+  ArrowRight,
+  EyeOff,
+  Eye,
+} from "lucide-react";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import { GoogleLogin } from "@react-oauth/google";
@@ -10,10 +18,9 @@ import SetPasswordForm from "./SetPasswordForm";
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const [showPassword, setshowPassword] = useState(false);
   const [token, setToken] = useState(null); // JWT token from backend
   const [showOtpForm, setShowOtpForm] = useState(false);
+  const [showPasswordInput, setShowPasswordInput] = useState(false); // 👈 toggle for password visibility
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +56,7 @@ function Login() {
       localStorage.setItem("username", res.data.username);
       setAuthToken(res.data.token);
       if (res.data.setpassword) {
-        setshowPassword(true);
+        window.location.href = "/setpassword";
         return;
       }
       window.location.href = "/user";
@@ -61,7 +68,7 @@ function Login() {
   };
   return (
     <div className="w-full flex justify-center  p-4   text-gray-800">
-      {!showOtpForm && !showPassword ? (
+      {!showOtpForm  ? (
         <div className="md:w-1/3  w-full">
           <div className=" lg:flex-1 w-full lg:p-8 p-4  flex flex-col items-center rounded-2xl md:border-1 border-gray-100">
             <GoogleLogin
@@ -91,19 +98,34 @@ function Login() {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 relative">
                 <label className="flex items-center gap-2 font-medium text-sm">
                   <Lock className="w-4 h-4 text-chart-2" />
                   Password
                 </label>
                 <Input
-                  type="password"
+                  type={showPasswordInput ? "text" : "password"}
                   placeholder="Password"
                   required
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
                   }
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordInput(!showPasswordInput)}
+                  className="absolute right-3 top-0 text-gray-500 hover:text-gray-700"
+                >
+                  {showPasswordInput ? (
+                    <div className="flex items-center gap-2">
+                      Hide <EyeOff size={18} />
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      Show <Eye size={18} />{" "}
+                    </div>
+                  )}
+                </button>
               </div>
 
               <div className="w-full flex justify-center mb-4">
@@ -142,12 +164,6 @@ function Login() {
             </div>
           </div>
         </div>
-      ) : showPassword ? (
-        <SetPasswordForm
-          validatePassword={validatePassword}
-          setErrors={setErrors}
-          errors={errors}
-        />
       ) : (
         <OtpForm
           token={token}

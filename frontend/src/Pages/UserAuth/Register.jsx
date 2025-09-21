@@ -26,7 +26,6 @@ function Register() {
   });
   const [loading, setLoading] = useState(false);
   const [showOtpForm, setShowOtpForm] = useState(false);
-  const [showPassword, setshowPassword] = useState(false);
   const [token, setToken] = useState(null); // JWT token from backend
   const [showPasswordInput, setShowPasswordInput] = useState(false); // 👈 toggle for password visibility
 
@@ -57,7 +56,7 @@ function Register() {
       localStorage.setItem("username", res.data.username);
       setAuthToken(res.data.token);
       if (res.data.setpassword) {
-        setshowPassword(true);
+        window.location.href = "/setpassword";
         return;
       }
       window.location.href = "/user";
@@ -76,7 +75,7 @@ function Register() {
 
   return (
     <div className="w-full  p-4  flex  justify-center ">
-      {!showOtpForm && !showPassword ? (
+      {!showOtpForm ? (
         <div className="md:w-1/3  w-full">
           <div className=" lg:flex-1 w-full lg:p-8 p-4  flex flex-col items-center rounded-2xl md:border-1 border-gray-100">
             <GoogleLogin
@@ -181,12 +180,6 @@ function Register() {
             </div>
           </div>
         </div>
-      ) : showPassword ? (
-        <SetPasswordForm
-          validatePassword={validatePassword}
-          setErrors={setErrors}
-          errors={errors}
-        />
       ) : (
         <OtpForm
           token={token}
