@@ -45,7 +45,6 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/register" element={token ? <DownloadPage /> : <Register />} />
             <Route path="/login" element={token ? <DownloadPage /> : <Login />} />
-            <Route path="/download" element={<DownloadPage />} />
             <Route path="/setpassword" element={<SetPasswordForm />} />
             <Route path="/user" element={<UserEdit />} />
             {/*   <Route path="/latexeditor/:projectid" element={<EditorIndex />} /> 
