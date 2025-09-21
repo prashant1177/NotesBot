@@ -1,7 +1,6 @@
 
-const Blank = ```
-```;
-const Letter = ```\documentclass[12pt]{letter} % Letter class, 12pt font
+const Blank = " ";
+const Letter = String.raw`\documentclass[12pt]{letter} % Letter class, 12pt font
 
 % ----- Packages -----
 \usepackage{fontspec}       % XeLaTeX font support
@@ -55,9 +54,9 @@ You can also include references to documents, attachments, or links using \href{
 
 \end{document}
 
-```;
+`;
 
-const Book = ```\documentclass[12pt,openany]{book} % Book class, 12pt font, chapters can start on any page
+const Book = String.raw`\documentclass[12pt,openany]{book} % Book class, 12pt font, chapters can start on any page
 
 % ----- Packages -----
 \usepackage{fontspec}         % XeLaTeX font support
@@ -132,9 +131,9 @@ const Book = ```\documentclass[12pt,openany]{book} % Book class, 12pt font, chap
 
 \end{document}
 
-```;
+`;
 
-const Report = ```\documentclass[12pt,a4paper]{report} % Report class, 12pt font
+const Report = String.raw`\documentclass[12pt,a4paper]{report} % Report class, 12pt font
 
 % ----- Packages -----
 \usepackage{fontspec}       % XeLaTeX font support
@@ -203,9 +202,9 @@ Write a brief abstract summarizing your report. Usually 3–5 sentences.
 
 \end{document}
 
-```;
+`;
 
-const Article = ```\documentclass[12pt]{article} % Article class, 12pt font
+const Article = String.raw`\documentclass[12pt]{article} % Article class, 12pt font
 
 % ----- Packages -----
 \usepackage{fontspec}       % XeLaTeX font support
@@ -263,6 +262,6 @@ Write your abstract here. Summarize the main points of your article in 3-5 sente
 \end{itemize}
 
 \end{document}
-```;
+`;
 
 module.exports = { Book, Letter, Article, Report, Blank };
