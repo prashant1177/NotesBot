@@ -20,14 +20,14 @@ export default function DownloadPage() {
     document.body.appendChild(link);
     link.click();
     link.remove();
-    
+
     setDownloadStarted(true);
-  if (typeof window.gtag !== "undefined") {
-    window.gtag("event", "download", {
-      event_category: "File",
-      event_label: "LatexWriter-Setup.exe",
-    });
-  }
+    if (typeof window.gtag !== "undefined") {
+      window.gtag("event", "download", {
+        event_category: "File",
+        event_label: "LatexWriter-Setup.exe",
+      });
+    }
     setTimeout(() => {
       setDownloadStarted(false);
     }, 2000);
