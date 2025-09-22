@@ -1,5 +1,5 @@
-import { Sparkles, Zap, BookOpen, Link2 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Sparkles} from "lucide-react";
+import { Link } from "react-router-dom";
 import Button from "../../ui/Button/Button";
 import LatexWriterEditor from "../../assets/LatexWriterEditor.webp";
 
@@ -16,7 +16,7 @@ export function HeroSection() {
           </div>
 
           <h1 className="text-4xl lg:text-6xl font-medium mb-6 text-center text-gray-800 md:leading-18 tracking-tight md:tracking-wide">
-            The Simplest Way to <br/> Write LaTeX Online {" "}
+            The Simplest Way to <br/> Write LaTeX  {" "}
           </h1>
 
           <p className="text-lg md:text-xl  text-gray-600 mb-8  text-justify md:text-center">
@@ -35,11 +35,11 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div className="flex-1 flex items-center justify-center h-full w-full mt-12 md:mt-24  rounded-4xl shadow-2xl ">
+        <div className="blocks flex-1 flex items-center justify-center h-full w-full mt-12 md:mt-24  rounded-4xl shadow-2xl ">
           <img
             src={LatexWriterEditor}
             alt="LatexWriterEditor"
-            className="object-cover h-full rounded-4xl"
+            className="object-cover h-full rounded-4xl "
           />
         </div>
       </div>

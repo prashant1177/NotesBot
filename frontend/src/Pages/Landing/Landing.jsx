@@ -1,16 +1,16 @@
 
-import { ArrowRight, Sparkles, Zap, BookOpen } from "lucide-react";
 import { FeaturesSection } from "./Features";
-import { CTASection } from "../../components/CTASection";
 import { HeroSection } from "./HeroSection";
 import { HowItWorksSection } from "../../components/HowItWorksSection";
-
+import { TestimonialSection } from "./TestimonialSection";
+import "../../App.css"
 export default function Landing() {
   
   return (<div>
       <HeroSection/>
-      <FeaturesSection/>
-      <HowItWorksSection/>
+      <FeaturesSection  />
+      <TestimonialSection  />
+      <HowItWorksSection  />
       </div>
   );
 }
