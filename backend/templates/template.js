@@ -1,5 +1,11 @@
 
-const Blank = " ";
+const Blank = String.raw`\documentclass{article}
+
+\begin{document}
+
+latexwriter.com
+
+\end{document}`;
 const Letter = String.raw`\documentclass[12pt]{letter} % Letter class, 12pt font
 
 % ----- Packages -----
