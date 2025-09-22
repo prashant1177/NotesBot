@@ -285,13 +285,13 @@ router.post("/newfile/:id", async (req, res) => {
   }
   try {
     let { currFolder, filename } = req.body;
-    const hash = crypto.createHash("sha1").update(texTemplate).digest("hex");
+    const hash = crypto.createHash("sha1").update(Blank).digest("hex");
     // Check if the file already exists
     let blob = await Blob.findOne({ hash });
     if (!blob) {
       blob = await Blob.create({
         hash,
-        content: Buffer.from(texTemplate, "utf-8"),
+        content: Buffer.from(Blank, "utf-8"),
         mime: "application/x-tex",
       });
     } else {
@@ -412,7 +412,7 @@ router.post("/create", async (req, res) => {
   if (!blob) {
     blob = await Blob.create({
       hash,
-      content: Buffer.from(texTemplate, "utf-8"),
+      content: Buffer.from(Blank, "utf-8"),
       mime: "application/x-tex",
     });
   } else {
