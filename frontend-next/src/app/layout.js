@@ -2,6 +2,7 @@
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 import { Footer } from "@/components/Footer";
+import Script from "next/script";
 
 export const metadata = {
   title: "LaTeXWriter — Fast Collaborative LaTeX Editor",
@@ -16,6 +17,23 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-google-analytics-opt-out="">
+      <head>
+        {/* Google Analytics */}
+        <script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-DWCLLPY4G0"
+        ></script>
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-DWCLLPY4G0', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
+      </head>
       <body>
         <header>
           <Navbar />
