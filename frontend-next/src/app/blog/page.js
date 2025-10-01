@@ -2,6 +2,14 @@ import React from "react";
 import Link from "next/link";
 import { getSortedPostsData } from "@/lib/Blogs";
 
+export const metadata = {
+  title: "LaTeXWriter Blog - Tips, Tutorials & LaTeX Insights",
+  description:
+    "Explore the LaTeXWriter Blog for the latest tutorials, tips, and insights on LaTeX editing, document creation, and productivity for students, researchers, and professionals.",
+  alternates: {
+    canonical: "https://latexwriter.com/blog",
+  },
+};
 const BlogIndex = () => {
   const allPostsData = getSortedPostsData(); // synchronous for local Markdown
 

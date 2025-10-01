@@ -5,10 +5,14 @@ import faqData from "./LatexWriterFAQ.js";
 
 export const metadata = {
   title: "LaTeXWriter Documentation - FAQ & Help Center",
-  description: "Browse comprehensive LaTeXWriter documentation, FAQs, and guides to help you get the most out of your LaTeX editor.",
+  description:
+    "Browse comprehensive LaTeXWriter documentation, FAQs, and guides to help you get the most out of your LaTeX editor.",
   openGraph: {
     title: "LaTeXWriter Documentation",
     description: "Comprehensive FAQ and documentation for LaTeXWriter",
+  },
+  alternates: {
+    canonical: "https://latexwriter.com/documentation/latexwriter",
   },
 };
 

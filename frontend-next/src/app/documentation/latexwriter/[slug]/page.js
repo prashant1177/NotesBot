@@ -13,7 +13,7 @@ export async function generateStaticParams() {
 
 // Generate metadata for each page
 export async function generateMetadata({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const category = faqData.find((cat) => cat.slug === slug);
 
   if (!category) {
@@ -28,6 +28,9 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: `${category.title} - LaTeXWriter`,
       description: category.content,
+    },
+    alternates: {
+      canonical: `https://latexwriter.com/documentation/latexwriter/${slug}`,
     },
   };
 }

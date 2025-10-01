@@ -9,24 +9,53 @@ export async function generateStaticParams() {
   }));
 }
 
-export const metadata = {
-  title: "LaTeX Documentation - LaTeXWriter",
-  description: "Complete guide to LaTeX syntax and commands",
-};
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const currentDoc = sampleDocumentation.find((d) => d.id.toString() === slug);
+
+  if (!currentDoc) {
+    return {
+      title: "Documentation Not Found - LaTeXWriter",
+      description: "The requested documentation page does not exist.",
+    };
+  }
+
+  return {
+    title: `${currentDoc.title} - LaTeXWriter Documentation`,
+    description: currentDoc.content.slice(0, 160), // first 160 chars for SEO
+    alternates: {
+      canonical: `https://latexwriter.com/documentation/latex/${slug}`,
+    },
+    openGraph: {
+      title: `${currentDoc.title} - LaTeXWriter`,
+      description: currentDoc.content.slice(0, 160),
+      url: `https://latexwriter.com/documentation/latex/${slug}`,
+      type: "article",
+    },
+  };
+}
 
 export default async function LatexDocPage({ params }) {
   const { slug } = await params;
-  const currentIndex = sampleDocumentation.findIndex((d) => d.id.toString() === slug);
+  const currentIndex = sampleDocumentation.findIndex(
+    (d) => d.id.toString() === slug
+  );
   const currentDoc = sampleDocumentation[currentIndex];
-  const prevDoc = currentIndex > 0 ? sampleDocumentation[currentIndex - 1] : null;
-  const nextDoc = currentIndex < sampleDocumentation.length - 1 ? sampleDocumentation[currentIndex + 1] : null;
+  const prevDoc =
+    currentIndex > 0 ? sampleDocumentation[currentIndex - 1] : null;
+  const nextDoc =
+    currentIndex < sampleDocumentation.length - 1
+      ? sampleDocumentation[currentIndex + 1]
+      : null;
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
         {/* Sidebar */}
         <aside className="md:w-1/4 bg-white p-4 rounded-lg shadow-md h-fit">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Table of Contents</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">
+            Table of Contents
+          </h2>
           <nav className="flex flex-col gap-2">
             {sampleDocumentation.map((doc) => (
               <Link
@@ -49,13 +78,17 @@ export default async function LatexDocPage({ params }) {
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center mb-4">
               <FileText className="w-5 h-5 text-blue-600 mr-2" />
-              <h1 className="text-2xl font-bold text-gray-800">{currentDoc.title}</h1>
+              <h1 className="text-2xl font-bold text-gray-800">
+                {currentDoc.title}
+              </h1>
             </div>
             <p className="text-gray-700 mb-6">{currentDoc.content}</p>
 
             {currentDoc.sections?.map((section, index) => (
               <div key={index} className="mb-6 border-l-4 border-blue-500 pl-4">
-                <h2 className="text-lg font-semibold text-gray-800 mb-2">{section.subheading}</h2>
+                <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                  {section.subheading}
+                </h2>
                 <p className="text-gray-700 mb-3">{section.paragraph}</p>
               </div>
             ))}
