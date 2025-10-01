@@ -88,22 +88,20 @@ const features = [
 ];
 export function FeaturesSection() {
   return (
-    <section
-      id="features"
-      className="py-24  relative  bg-gradient-to-b from-white to-gray-50"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 blocks">
+    <section className="py-24  relative  ">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="text-center mb-16">
           <Badge variant="outline" className="mb-4 ">
             Features
           </Badge>
           <h2 className="text-3xl md:text-4xl font-medium mb-4">
-            Supercharge Your LaTeX Experience
+            Fastest Compilation & Easy-to-Use Features{" "}
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Reimagine LaTeX with an AI assistant that simplifies complexity,
-            accelerates your workflow, and empowers every researcher, student,
-            and creator.{" "}
+          <p className="text-lg  text-muted-foreground max-w-2xl mx-auto">
+            LaTeXWriter provides instant compilation and a user-friendly
+            interface. Write, edit, and generate PDFs quickly and
+            effortlessly—perfect for students, researchers, and professionals
+            who want a fast, seamless LaTeX workflow.
           </p>
         </div>
 
@@ -111,13 +109,11 @@ export function FeaturesSection() {
           {features.map((feature, index) => (
             <Card
               key={index}
-              className="blocks relative overflow-hidden bg-card/50 border-border/20 hover:border-border/40 transition-all duration-300 hover:shadow-lg"
+              className=" relative overflow-hidden bg-card/50 border-border/20 hover:border-border/40 transition-all duration-300 hover:shadow-lg"
             >
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <div
-                    className={`p-2 rounded-lg bg-muted/30 `}
-                  >
+                  <div className={`p-2 rounded-lg bg-muted/30 `}>
                     <feature.icon className="w-5 h-5" />
                   </div>
                   <Badge variant="secondary" className="text-xs">

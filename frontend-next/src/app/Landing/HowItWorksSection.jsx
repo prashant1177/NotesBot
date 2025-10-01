@@ -9,10 +9,10 @@ export function HowItWorksSection() {
         {/* Left Side */}
         <div>
           <h2 className="text-3xl md:text-4xl font-semibold mb-4">
-            How it Works
+            How LaTeXWriter Works
           </h2>
           <p className="text-lg text-gray-800 max-w-md">
-            This is how it works — from writing LaTeX code to generating
+            This is how LaTeXWriter works — from writing LaTeX code to generating
             beautiful, ready-to-download PDFs.
           </p>
         </div>

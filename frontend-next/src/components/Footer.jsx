@@ -12,10 +12,11 @@ export function Footer() {
               </span>
             </Link>
             <p className="py-8 text-sm text-gray-500 lg:max-w-xs text-center lg:text-left">
-              Create professional documents with ease, all in one place. Have any query?
+              Create professional documents with ease, all in one place. Have
+              any query?
             </p>
-            <Link 
-              href="/contact"  
+            <Link
+              href="/contact"
               className="py-2.5 px-5 h-9 block w-fit bg-blue-600 rounded-full shadow-sm text-xs text-gray-50 mx-auto transition-all duration-500 hover:bg-indigo-700 lg:mx-0"
             >
               Contact us
@@ -42,10 +43,11 @@ export function Footer() {
                     About
                   </Link>
                 </li>
-                <li>
-                  <Link href="/blog" className="hover:underline">
-                    Blog
-                  </Link>
+                
+                <li className="mb-4">
+                  <a href="https://www.producthunt.com/products/latexwriter" target="blank" className="hover:underline">
+                    Product Hunt
+                  </a>
                 </li>
               </ul>
             </div>
@@ -55,12 +57,23 @@ export function Footer() {
               </h2>
               <ul className="text-gray-500 font-medium">
                 <li className="mb-4">
-                  <Link href="/documentation/latex" className="hover:underline">
+                  <Link href="/blog" className="hover:underline">
+                    Blog
+                  </Link>
+                </li>
+                <li className="mb-4">
+                  <Link
+                    href="/documentation/latex/getting-started-latex"
+                    className="hover:underline"
+                  >
                     LaTeX Docs
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link href="/documentation/latexwriter" className="hover:underline">
+                  <Link
+                    href="/documentation/latexwriter"
+                    className="hover:underline"
+                  >
                     LaTeXWriter Docs
                   </Link>
                 </li>
@@ -82,7 +95,10 @@ export function Footer() {
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link href="/terms-and-conditions" className="hover:underline">
+                  <Link
+                    href="/terms-and-conditions"
+                    className="hover:underline"
+                  >
                     Terms &amp; Conditions
                   </Link>
                 </li>
@@ -134,7 +150,7 @@ export function Footer() {
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
-                <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm5.8 13.6a5.5 5.5 0 0 1-11.6 0 .8.8 0 0 1 1.6 0 3.9 3.9 0 0 0 8.4 0 .8.8 0 0 1 1.6 0Zm-8.3-4a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm5.6 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm-2.8 3.3c-1.4 0-2.5-.6-2.5-1.3h5c0 .7-1.1 1.3-2.5 1.3Z"/>
+                <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm5.8 13.6a5.5 5.5 0 0 1-11.6 0 .8.8 0 0 1 1.6 0 3.9 3.9 0 0 0 8.4 0 .8.8 0 0 1 1.6 0Zm-8.3-4a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm5.6 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm-2.8 3.3c-1.4 0-2.5-.6-2.5-1.3h5c0 .7-1.1 1.3-2.5 1.3Z" />
               </svg>
               <span className="sr-only">Reddit page</span>
             </a>
@@ -151,10 +167,11 @@ export function Footer() {
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path d="M23.498 6.186a2.991 2.991 0 0 0-2.11-2.112C19.565 3.5 12 3.5 12 3.5s-7.565 0-9.388.574a2.991 2.991 0 0 0-2.11 2.112A31.678 31.678 0 0 0 0 12a31.678 31.678 0 0 0 .502 5.814 2.991 2.991 0 0 0 2.11 2.112C4.435 20.5 12 20.5 12 20.5s7.565 0 9.388-.574a2.991 2.991 0 0 0 2.11-2.112A31.678 31.678 0 0 0 24 12a31.678 31.678 0 0 0-.502-5.814ZM9.545 15.568V8.432L15.818 12l-6.273 3.568Z"/>
+                <path d="M23.498 6.186a2.991 2.991 0 0 0-2.11-2.112C19.565 3.5 12 3.5 12 3.5s-7.565 0-9.388.574a2.991 2.991 0 0 0-2.11 2.112A31.678 31.678 0 0 0 0 12a31.678 31.678 0 0 0 .502 5.814 2.991 2.991 0 0 0 2.11 2.112C4.435 20.5 12 20.5 12 20.5s7.565 0 9.388-.574a2.991 2.991 0 0 0 2.11-2.112A31.678 31.678 0 0 0 24 12a31.678 31.678 0 0 0-.502-5.814ZM9.545 15.568V8.432L15.818 12l-6.273 3.568Z" />
               </svg>
               <span className="sr-only">YouTube channel</span>
             </a>
+            
           </div>
         </div>
       </div>

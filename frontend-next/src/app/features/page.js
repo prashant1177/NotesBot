@@ -34,12 +34,12 @@ export default function WebsiteFeatures() {
             <div className="w-24 h-1 bg-gray-600 mx-auto"></div>
           </div>
           
-          <h1 className="text-4xl lg:text-6xl font-medium mb-6 text-center text-gray-800 md:leading-18 tracking-tight md:tracking-wide">
+          <h1 className="text-5xl lg:text-8xl  mb-8 text-center text-gray-800  tracking-tight md:tracking-wide ">
             Key Features and <br />
             How to Use Them
           </h1>
 
-          <p className="text-lg md:text-xl text-gray-600 mb-8 text-justify md:text-center">
+          <p className="text-lg md:text-xl  text-gray-600 mb-8  text-justify md:text-center tracking-tight md:tracking-wide max-w-4xl ">
             Discover powerful tools designed to make LaTeX writing easier,
             faster, and more efficient. Each feature is explained in detail with
             simple steps so you can focus on creating professional documents
@@ -265,166 +265,155 @@ export default function WebsiteFeatures() {
               </div>
             </section>
 
-            {/* File Management Features */}
-            <section className="mb-16">
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* Upload Files */}
-                <div className="bg-white rounded-2xl  p-8">
-                  <div className="flex items-center mb-6">
-                    <div className="bg-gray-100 p-3 rounded-full mr-4">
-                      <Upload className="w-8 h-8 text-gray-600" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-800">
-                      Uploading Files and Images
-                    </h3>
-                  </div>
-                  <p className="text-gray-700 mb-6">
-                    Easily upload your research papers, LaTeX projects, or images
-                    directly into the editor. This feature saves time by allowing
-                    you to manage all files in one place.
-                  </p>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-bold text-gray-800 mb-3">How to Use:</h4>
-                    <ul className="space-y-2 text-gray-700 text-sm">
-                      <li className="flex items-start">
-                        <span className="bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">1</span>
-                        Click the "Upload" button in the folder toolbar.
-                      </li>
-                      <li className="flex items-start">
-                        <span className="bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">2</span>
-                        Select your file or image from your computer.
-                      </li>
-                      <li className="flex items-start">
-                        <span className="bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">3</span>
-                        The uploaded file will appear in your workspace.
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+           {/* File Management Features */}
+<section className="mb-16 bg-white rounded-2xl p-8">
+  <div className="flex items-center mb-6">
+    <div className="bg-gray-100 p-3 rounded-full mr-4">
+      <Upload className="w-8 h-8 text-gray-600" />
+    </div>
+    <h3 className="text-3xl font-bold text-gray-800">
+      Uploading Files and Images
+    </h3>
+  </div>
+  <p className="text-lg text-gray-700 mb-6">
+    Easily upload your research papers, LaTeX projects, or images
+    directly into the editor. This feature saves time by allowing
+    you to manage all files in one place.
+  </p>
+  <div className="bg-gray-50 p-6 rounded-lg">
+    <h4 className="text-lg font-bold text-gray-800 mb-4">How to Use:</h4>
+    <ul className="space-y-2 text-gray-700">
+      <li className="flex items-start">
+        <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">1</span>
+        Click the "Upload" button in the folder toolbar.
+      </li>
+      <li className="flex items-start">
+        <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">2</span>
+        Select your file or image from your computer.
+      </li>
+      <li className="flex items-start">
+        <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">3</span>
+        The uploaded file will appear in your workspace.
+      </li>
+    </ul>
+  </div>
+</section>
 
-                {/* Auto-Save */}
-                <div className="bg-white rounded-2xl  p-8">
-                  <div className="flex items-center mb-6">
-                    <div className="bg-gray-100 p-3 rounded-full mr-4">
-                      <Shield className="w-8 h-8 text-gray-600" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-800">
-                      Auto-Save Files
-                    </h3>
-                  </div>
-                  <p className="text-gray-700 mb-6">
-                    Never worry about losing your work again. The system
-                    automatically saves every change you make, ensuring that your
-                    research and writing progress is always secure.
-                  </p>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-bold text-gray-800 mb-3">How to Use:</h4>
-                    <ul className="space-y-2 text-gray-700 text-sm">
-                      <li className="flex items-start">
-                        <span className="bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">1</span>
-                        Simply start typing or editing.
-                      </li>
-                      <li className="flex items-start">
-                        <span className="bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">2</span>
-                        Every few seconds, your changes are saved in the background.
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </section>
+<section className="mb-16 bg-white rounded-2xl p-8">
+  <div className="flex items-center mb-6">
+    <div className="bg-gray-100 p-3 rounded-full mr-4">
+      <Shield className="w-8 h-8 text-gray-600" />
+    </div>
+    <h3 className="text-3xl font-bold text-gray-800">
+      Auto-Save Files
+    </h3>
+  </div>
+  <p className="text-lg text-gray-700 mb-6">
+    Never worry about losing your work again. The system
+    automatically saves every change you make, ensuring that your
+    research and writing progress is always secure.
+  </p>
+  <div className="bg-gray-50 p-6 rounded-lg">
+    <h4 className="text-lg font-bold text-gray-800 mb-4">How to Use:</h4>
+    <ul className="space-y-2 text-gray-700">
+      <li className="flex items-start">
+        <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">1</span>
+        Simply start typing or editing.
+      </li>
+      <li className="flex items-start">
+        <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">2</span>
+        Every few seconds, your changes are saved in the background.
+      </li>
+    </ul>
+  </div>
+</section>
 
-            {/* Advanced Features */}
-            <section className="mb-16">
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* Math Mode */}
-                <div className="bg-white rounded-2xl  p-8">
-                  <div className="flex items-center mb-6">
-                    <div className="bg-gray-100 p-3 rounded-full mr-4">
-                      <FunctionSquare className="w-8 h-8 text-gray-600" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-800">
-                      Math Mode Made Easy
-                    </h3>
-                  </div>
-                  <p className="text-gray-700 mb-6">
-                    Simplify writing mathematical equations by inserting
-                    ready-made LaTeX commands with one click.
-                  </p>
-                  <div className="bg-gray-50 p-4 rounded-lg mb-4">
-                    <h4 className="font-bold text-gray-800 mb-3">Available Options:</h4>
-                    <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
-                      <div>• Inline Math and Display Math</div>
-                      <div>• Fractions and Square Roots</div>
-                      <div>• Summations, Integrals, and Limits</div>
-                      <div>• Partial Derivatives</div>
-                      <div>• Binomial Coefficients</div>
-                      <div>• Vectors</div>
-                    </div>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-bold text-gray-800 mb-3">How to Use:</h4>
-                    <ul className="space-y-2 text-gray-700 text-sm">
-                      <li className="flex items-start">
-                        <span className="bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">1</span>
-                        Click on Math Mode.
-                      </li>
-                      <li className="flex items-start">
-                        <span className="bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">2</span>
-                        Choose the desigray mathematical structure.
-                      </li>
-                      <li className="flex items-start">
-                        <span className="bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">3</span>
-                        It will auto-insert the LaTeX code into your document.
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+{/* Advanced Features */}
+<section className="mb-16 bg-white rounded-2xl p-8">
+  <div className="flex items-center mb-6">
+    <div className="bg-gray-100 p-3 rounded-full mr-4">
+      <FunctionSquare className="w-8 h-8 text-gray-600" />
+    </div>
+    <h3 className="text-3xl font-bold text-gray-800">
+      Math Mode Made Easy
+    </h3>
+  </div>
+  <p className="text-lg text-gray-700 mb-6">
+    Simplify writing mathematical equations by inserting
+    ready-made LaTeX commands with one click.
+  </p>
+  <div className="bg-gray-50 p-6 rounded-lg mb-4">
+    <h4 className="text-lg font-bold text-gray-800 mb-4">Available Options:</h4>
+    <div className="space-y-1 text-gray-700 text-sm">
+      <div>• Inline Math and Display Math</div>
+      <div>• Fractions and Square Roots</div>
+      <div>• Summations, Integrals, and Limits</div>
+      <div>• Partial Derivatives</div>
+      <div>• Binomial Coefficients</div>
+      <div>• Vectors</div>
+    </div>
+  </div>
+  <div className="bg-gray-50 p-6 rounded-lg">
+    <h4 className="text-lg font-bold text-gray-800 mb-4">How to Use:</h4>
+    <ul className="space-y-2 text-gray-700">
+      <li className="flex items-start">
+        <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">1</span>
+        Click on Math Mode.
+      </li>
+      <li className="flex items-start">
+        <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">2</span>
+        Choose the desigray mathematical structure.
+      </li>
+      <li className="flex items-start">
+        <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">3</span>
+        It will auto-insert the LaTeX code into your document.
+      </li>
+    </ul>
+  </div>
+</section>
 
-                {/* Smart Toolbar */}
-                <div className="bg-white rounded-2xl  p-8">
-                  <div className="flex items-center mb-6">
-                    <div className="bg-gray-100 p-3 rounded-full mr-4">
-                      <Settings className="w-8 h-8 text-gray-600" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-800">
-                      Smart Toolbar
-                    </h3>
-                  </div>
-                  <p className="text-gray-700 mb-6">
-                    The smart toolbar is your one-click solution to formatting,
-                    structuring, and organizing content.
-                  </p>
-                  <div className="bg-gray-50 p-4 rounded-lg mb-4">
-                    <h4 className="font-bold text-gray-800 mb-3">Features in One Click:</h4>
-                    <div className="space-y-1 text-sm text-gray-700">
-                      <div>• Text formatting: Bold, Italic, Typewriter</div>
-                      <div>• Add structure: Section, Chapter, Subsection, Paragraph</div>
-                      <div>• Insert: Citations, Cross-references, Links</div>
-                      <div>• Align text with a single click</div>
-                      <div>• Create ordegray and unordegray lists instantly</div>
-                    </div>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-bold text-gray-800 mb-3">How to Use:</h4>
-                    <ul className="space-y-2 text-gray-700 text-sm">
-                      <li className="flex items-start">
-                        <span className="bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">1</span>
-                        Select the text or position where you want changes.
-                      </li>
-                      <li className="flex items-start">
-                        <span className="bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">2</span>
-                        Click the desigray button in the Smart Toolbar.
-                      </li>
-                      <li className="flex items-start">
-                        <span className="bg-gray-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">3</span>
-                        The change is applied instantly.
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </section>
+<section className="mb-16 bg-white rounded-2xl p-8">
+  <div className="flex items-center mb-6">
+    <div className="bg-gray-100 p-3 rounded-full mr-4">
+      <Settings className="w-8 h-8 text-gray-600" />
+    </div>
+    <h3 className="text-3xl font-bold text-gray-800">
+      Smart Toolbar
+    </h3>
+  </div>
+  <p className="text-lg text-gray-700 mb-6">
+    The smart toolbar is your one-click solution to formatting,
+    structuring, and organizing content.
+  </p>
+  <div className="bg-gray-50 p-6 rounded-lg mb-4">
+    <h4 className="text-lg font-bold text-gray-800 mb-4">Features in One Click:</h4>
+    <div className="space-y-1 text-gray-700 text-sm">
+      <div>• Text formatting: Bold, Italic, Typewriter</div>
+      <div>• Add structure: Section, Chapter, Subsection, Paragraph</div>
+      <div>• Insert: Citations, Cross-references, Links</div>
+      <div>• Align text with a single click</div>
+      <div>• Create ordegray and unordegray lists instantly</div>
+    </div>
+  </div>
+  <div className="bg-gray-50 p-6 rounded-lg">
+    <h4 className="text-lg font-bold text-gray-800 mb-4">How to Use:</h4>
+    <ul className="space-y-2 text-gray-700">
+      <li className="flex items-start">
+        <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">1</span>
+        Select the text or position where you want changes.
+      </li>
+      <li className="flex items-start">
+        <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">2</span>
+        Click the desigray button in the Smart Toolbar.
+      </li>
+      <li className="flex items-start">
+        <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">3</span>
+        The change is applied instantly.
+      </li>
+    </ul>
+  </div>
+</section>
+
           </div>
         </div>
       </div>

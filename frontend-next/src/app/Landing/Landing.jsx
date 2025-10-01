@@ -1,16 +1,15 @@
-
 import { FeaturesSection } from "./Features";
 import { HeroSection } from "./HeroSection";
 import { HowItWorksSection } from "./HowItWorksSection";
 import { TestimonialSection } from "./TestimonialSection";
-import "../../App.css"
+import "../../App.css";
 export default function Landing() {
-  
-  return (<div>
-      <HeroSection/>
-      <FeaturesSection  />
-      <TestimonialSection  />
-      <HowItWorksSection  />
-      </div>
+  return (
+    <div>
+      <HeroSection />
+      <FeaturesSection />
+      <TestimonialSection />
+      <HowItWorksSection />
+    </div>
   );
 }

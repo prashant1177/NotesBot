@@ -1,27 +1,30 @@
 import { ArrowRight, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 // Inline Button Component
-const Button = ({ 
-  children, 
-  variant = "default", 
-  size = "default", 
-  className = "", 
-  ...props 
+const Button = ({
+  children,
+  variant = "default",
+  size = "default",
+  className = "",
+  ...props
 }) => {
-  const baseStyles = "inline-flex items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
-  
+  const baseStyles =
+    "inline-flex items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
+
   const variants = {
     default: "bg-primary text-primary-foreground hover:bg-primary/90",
-    outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+    outline:
+      "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
   };
-  
+
   const sizes = {
     default: "h-10 px-4 py-2 text-sm",
-    lg: "h-11 rounded-md px-8 text-base"
+    lg: "h-11 rounded-md px-8 text-base",
   };
-  
+
   return (
-    <button 
+    <button
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
       {...props}
     >
@@ -32,42 +35,56 @@ const Button = ({
 
 export function CTASection() {
   return (
-    <section  id="about" className="py-24 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-chart-1/5 to-chart-2/5"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(120,119,198,0.1),transparent_50%)]"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(34,197,94,0.1),transparent_50%)]"></div>
-      
+    <section className="py-16 relative overflow-hidden bg-gray-900">
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="inline-flex items-center px-4 py-2 rounded-full bg-muted/30 border border-border/20 mb-6">
-          <Sparkles className="w-4 h-4 text-chart-1 mr-2 animate-pulse" />
-          <span className="text-sm text-muted-foreground">Join the AI Revolution</span>
+        {/* Badge */}
+        <div className="inline-flex items-center px-4 py-2 rounded-full border border-gray-600 mb-8 bg-gray-700/50">
+          <Sparkles className="w-4 h-4 text-blue-400 mr-2 animate-pulse" />
+          <span className="text-sm text-gray-500">
+            Built to make writing simple, smooth, and stress-free.{" "}
+          </span>
         </div>
-        
-        <h2 className="text-3xl md:text-5xl font-medium mb-6 bg-gradient-to-r from-primary to-chart-1 bg-clip-text text-transparent">
-          Ready to Transform Your Notes?
+
+        {/* Heading */}
+        <h2 className="text-3xl md:text-5xl font-semibold text-blue-500 mb-6">
+          Write LaTeX Without the Hassle
         </h2>
-        
-        <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Join thousands of users who have already revolutionized their note-taking with AI. 
-          Start your journey today.
+
+        {/* Subheading */}
+        <p className="text-lg text-gray-500 mb-8 max-w-2xl mx-auto">
+          LaTeXWriter makes professional writing easy with simple setup, rapid
+          tools, instant compilation, and real-time collaboration.
         </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button 
-            size="lg" 
-            className="bg-gradient-to-r from-primary to-chart-1 hover:from-primary/90 hover:to-chart-1/90 text-primary-foreground group"
-          >
-            Get Started Free
-            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
-          <Button variant="outline" size="lg">
-            Schedule Demo
-          </Button>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center my-12">
+          <Link href={`/user/register`}>
+            {" "}
+            <Button
+              size="lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white group"
+            >
+              Start Free
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
+          <Link href={`/features`}>
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-gray-500 hover:bg-gray-700 text-gray-200"
+            >
+              Explore Features
+            </Button>
+          </Link>
         </div>
-        
-        <div className="mt-8 text-sm text-muted-foreground">
-          <p>✨ No credit card required • 🚀 Setup in under 2 minutes • 🛡️ Enterprise-grade security</p>
+
+        {/* Trust Statement */}
+        <div className="mt-8 text-sm text-gray-400">
+          <p>
+            ✨ No installation needed • 🚀 Compile in seconds • 🛡️ Export-ready
+            for IEEE, Springer & more
+          </p>
         </div>
       </div>
     </section>

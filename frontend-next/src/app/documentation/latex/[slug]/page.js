@@ -14,8 +14,8 @@ export const metadata = {
   description: "Complete guide to LaTeX syntax and commands",
 };
 
-export default function LatexDocPage({ params }) {
-  const { slug } = params;
+export default async function LatexDocPage({ params }) {
+  const { slug } = await params;
   const currentIndex = sampleDocumentation.findIndex((d) => d.id.toString() === slug);
   const currentDoc = sampleDocumentation[currentIndex];
   const prevDoc = currentIndex > 0 ? sampleDocumentation[currentIndex - 1] : null;
