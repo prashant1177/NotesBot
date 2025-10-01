@@ -100,7 +100,7 @@ router.post("/cancel-subscription", authenticateJWT, async (req, res) => {
       console.log("Error creating subcancel");
     }
     if (!user || !user.subscriptionId) {
-      return res.status(400).json({ error: "No active subscription" });
+      return res.status(400).json({ error: "No paid subscription found." });
     }
 
     const response = await razorpay.subscriptions.cancel(user.subscriptionId);

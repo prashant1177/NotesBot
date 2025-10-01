@@ -6,7 +6,7 @@ function Dashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setAuthToken(token);
+    
 
     api.get('/dashboard')
       .then(res => setMessage(res.data.message))

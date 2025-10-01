@@ -1,5 +1,4 @@
 // BlogPage.jsx
-import React from "react";
 import { useParams } from "react-router-dom";
 import { BlogPosts } from "./BlogPosts";
 export default function BlogView() {

@@ -31,6 +31,7 @@ const allowedOrigins = [
   "https://www.latexwriter.com",
   "http://localhost:5173",
   "http://localhost:8080",
+  "http://localhost:3000",
 ];
 
 const server = http.createServer(app);
@@ -241,12 +242,12 @@ app.post("/auth/google", async (req, res) => {
 
 // user get Details
 app.get("/user", authenticateJWT, async (req, res) => {
-  if (req.user) {
+  try {
     const user = await User.findById(req.user.id);
-    res.json({ user });
-    return;
+    return res.json({ user });
+  } catch (error) {
+    return res.json({ message: "User login in first" });
   }
-  return res.err({ message: "User login in first" });
 });
 
 // user update Details

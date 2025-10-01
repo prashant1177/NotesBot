@@ -3,9 +3,9 @@ version: "3.8"
 services:
   frontend:
     build:
-      context: ./frontend
+      context: ./frontend-next
       args:
-        VITE_API_URL: https://api.latexwriter.com
+        NEXT_PUBLIC_API_URL: https://api.latexwriter.com
     container_name: frontend
     restart: unless-stopped
     networks:

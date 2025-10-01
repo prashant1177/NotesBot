@@ -69,7 +69,7 @@ export function TestimonialSection() {
 
               <p className="text-gray-600 mb-4 flex-1">{t.message}</p>
 
-              <div class="flex items-center mb-7 gap-2 text-amber-500 transition-all duration-500  ">
+              <div className="flex items-center mb-7 gap-2 text-amber-500 transition-all duration-500  ">
                 {Array.from({ length: 5 }, (_, i) => (
                   <Star
                     key={i}
