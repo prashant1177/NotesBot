@@ -34,12 +34,6 @@ export default function RootLayout({ children }) {
           `}
         </Script>
 
-        {/* Google AdSense Auto Ads */}
-        <Script
-          strategy="afterInteractive"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2823773486701492"
-          crossorigin="anonymous"
-        />
         <header>
           <Navbar />
         </header>
