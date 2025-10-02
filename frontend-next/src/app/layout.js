@@ -17,12 +17,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-google-analytics-opt-out="">
-      <head>
+      <body>
         {/* Google Analytics */}
-        <script
-          strategy="afterInteractive"
+        <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-DWCLLPY4G0"
-        ></script>
+          strategy="afterInteractive"
+        />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
@@ -33,8 +33,13 @@ export default function RootLayout({ children }) {
             });
           `}
         </Script>
-      </head>
-      <body>
+
+        {/* Google AdSense Auto Ads */}
+        <Script
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2823773486701492"
+          crossorigin="anonymous"
+        />
         <header>
           <Navbar />
         </header>
