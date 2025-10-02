@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+
+<url>
+  <loc>https://latexwriter.com/</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/features</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/about</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/getting-started-latex</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/download</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/contact</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/privacy-policy</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/terms-and-conditions</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog/Referencing-Citation-Styles-APA-MLA-IEEE</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog/Literature-Review-How-to-Avoid-Accidental-Plagiarism</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog/Literature-Review</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog/Abstract-Title-Writing</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog/Structure-a-Research-Paper</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog/LaTeX-vs-Word</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog/LaTeX-Packages-Every-Researcher-Should-Know</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog/How-LaTeX-Helps-to-Create-ATS-Friendly-Resumes</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog/LaTeX-for-Researchers-Complete-Guide</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog/Peer-Review-Process-What-Reviewers-Look-For</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/blog/How-to-Write-a-Strong-Conclusion-Summarizing-Findings-Effectively</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/document-structure</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/text-formatting</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/mathematics</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/tables-and-figures</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/cross-referencing</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/bibliography-citations</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/packages-formatting</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/advanced-math-science</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/beamer-presentations</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/customizations</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/large-projects</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/graphics-design</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/articles-reports-thesis</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latex/latexwriter-effects</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter/account-profile</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter/writing-latex</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter/editor-features</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter/projects-documents</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter/collaboration-sharing</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter/export-download</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter/error-handling</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter/payments-plans</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter/privacy-security</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter/technical-support</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://latexwriter.com/documentation/latexwriter/general</loc>
+  <lastmod>2025-10-02T14:56:15+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+
+</urlset>
