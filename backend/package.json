@@ -31,6 +31,7 @@
     "razorpay": "^2.9.6",
     "socket.io": "^4.8.1",
     "tmp": "^0.2.5",
-    "tmp-promise": "^3.0.3"
+    "tmp-promise": "^3.0.3",
+    "yjs": "^13.6.27"
   }
 }

@@ -22,11 +22,7 @@ require("dotenv").config(); // Load .env file variables
 const { GoogleGenAI } = require("@google/genai");
 const { shortHash } = require("../utils/socketId.js");
 const {
-  Book,
-  Letter,
-  Article,
-  Report,
-  Blank,
+  templates
 } = require("../templates/template.js");
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -285,13 +281,13 @@ router.post("/newfile/:id", async (req, res) => {
   }
   try {
     let { currFolder, filename } = req.body;
-    const hash = crypto.createHash("sha1").update(Blank).digest("hex");
+    const hash = crypto.createHash("sha1").update(templates[Blank]).digest("hex");
     // Check if the file already exists
     let blob = await Blob.findOne({ hash });
     if (!blob) {
       blob = await Blob.create({
         hash,
-        content: Buffer.from(Blank, "utf-8"),
+        content: Buffer.from(templates[Blank], "utf-8"),
         mime: "application/x-tex",
       });
     } else {
@@ -406,13 +402,14 @@ router.post("/create", async (req, res) => {
     owner: req.user._id,
     project: project._id,
   });
-  const hash = crypto.createHash("sha1").update(documentClass).digest("hex");
+  
+  const hash = crypto.createHash("sha1").update(templates[documentClass]).digest("hex");
   // Check if the file already exists
   let blob = await Blob.findOne({ hash });
   if (!blob) {
     blob = await Blob.create({
       hash,
-      content: Buffer.from(Blank, "utf-8"),
+      content: Buffer.from(templates[documentClass], "utf-8"),
       mime: "application/x-tex",
     });
   } else {
