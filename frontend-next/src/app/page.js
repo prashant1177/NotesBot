@@ -5,6 +5,7 @@ import { HowItWorksSection } from "./Landing/HowItWorksSection";
 import { TestimonialSection } from "./Landing/TestimonialSection";
 import Pricing from "./Landing/Pricing";
 import FAQSection from "./Landing/FAQSection";
+import RecentBlogs from "./Landing/RecentBlogs";
 
 export default function Home() {
   return (
@@ -12,9 +13,9 @@ export default function Home() {
       <HeroSection />
       <Pricing/>
       <TestimonialSection />
-      <FeaturesSection />
-      <HowItWorksSection />
       <CTASection />
+      <FeaturesSection />
+      <RecentBlogs/>
       <FAQSection/>
     </div>
   );

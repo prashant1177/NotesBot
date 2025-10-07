@@ -1,15 +1,14 @@
 import {
-  Code2,
   FileText,
-  Layout,
-  Zap,
-  Image,
-  Layers,
-  Save,
-  TrendingUp,
-  Shield,
-  Users,
   BookOpen,
+  Presentation,
+  Calculator,
+  PenTool,
+  FileCode,
+  BookMarked,
+  Layout,
+  FileSearch,
+  Globe,
 } from "lucide-react";
 import {
   Card,
@@ -24,86 +23,80 @@ import Badge from "../../ui/Badge/Badge";
 const features = [
   {
     icon: FileText,
-    title: "Version Control",
+    title: "Academic Papers",
     description:
-      "Track changes, restore previous versions, and collaborate with Git-style version history built-in.",
-    badge: "Core Feature",
-  },
-  {
-    icon: Users,
-    title: "Seamless Collaboration",
-    description:
-      "Work together in real-time with teammates, share documents instantly, and track changes effortlessly.",
-    badge: "Collaboration",
-  },
-  {
-    icon: Layout,
-    title: "Modern Interface",
-    description:
-      "A clean and distraction-free design that makes LaTeX editing intuitive and easy to navigate.",
-    badge: "Design",
-  },
-  {
-    icon: Code2,
-    title: "Math Keyboard",
-    description:
-      "Insert equations and symbols effortlessly with an intuitive math keyboard designed for LaTeX users.",
-    badge: "Productivity",
-  },
-  {
-    icon: Zap,
-    title: "Fast Compile & Preview",
-    description:
-      "Experience blazing-fast compile times and instant previews of your LaTeX documents.",
-    badge: "Performance",
-  },
-  {
-    icon: Image,
-    title: "Image & Media Support",
-    description:
-      "Seamlessly insert images, tables, and figures with real-time rendering support.",
-    badge: "Enhanced",
+      "Write research papers, theses, and dissertations with professional formatting and citation control.",
+    badge: "Education",
   },
   {
     icon: BookOpen,
-    title: "Easy Toolset",
+    title: "Scientific Journals",
     description:
-      "Access a daily-use LaTeX toolbar with syntax shortcuts, autocomplete, and one-click insertions.",
-    badge: "Usability",
+      "Create complex scientific documents with equations, figures, and tables that meet publication standards.",
+    badge: "Research",
   },
   {
-    icon: Save,
-    title: "Real-Time Save",
+    icon: Calculator,
+    title: "Mathematical Documents",
     description:
-      "Your work is saved automatically as you type, so you never lose progress.",
-    badge: "Safety",
+      "Write and format equations, proofs, and formulas with precision using LaTeX’s powerful math syntax.",
+    badge: "STEM",
   },
   {
-    icon: TrendingUp,
-    title: "Progress Tracking",
+    icon: PenTool,
+    title: "Resumes & CVs",
     description:
-      "Track your writing progress, word counts, and compilation history at a glance.",
-    badge: "Tracking",
+      "Build structured, ATS-friendly resumes and CVs with LaTeX templates for academic or industry use.",
+    badge: "Career",
+  },
+  {
+    icon: FileCode,
+    title: "Technical Reports",
+    description:
+      "Generate detailed project or lab reports with sections, citations, and diagrams in a clean layout.",
+    badge: "Engineering",
+  },
+  {
+    icon: BookMarked,
+    title: "Books & E-Books",
+    description:
+      "Publish books with chapter management, indexes, and consistent typography using LaTeX classes.",
+    badge: "Publishing",
+  },
+  {
+    icon: Layout,
+    title: "Templates & Forms",
+    description:
+      "Design reusable templates for certificates, invoices, and forms with precise formatting.",
+    badge: "Design",
+  },
+  {
+    icon: FileSearch,
+    title: "Research Proposals",
+    description:
+      "Prepare formal research or grant proposals with professional citations and consistent structure.",
+    badge: "Academia",
+  },
+  {
+    icon: Globe,
+    title: "Multilingual Documents",
+    description:
+      "Write and publish documents in any language with full Unicode and RTL support in LaTeX.",
+    badge: "Global",
   },
 ];
+
 export function FeaturesSection() {
   return (
     <section className="py-24  relative  ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-        <div className="text-center mb-16">
-          <Badge variant="outline" className="mb-4 ">
-            Features
-          </Badge>
-          <h2 className="text-3xl md:text-4xl font-medium mb-4">
-            Fastest Compilation & Easy-to-Use Features{" "}
-          </h2>
-          <p className="text-lg  text-muted-foreground max-w-2xl mx-auto">
-            LaTeXWriter provides instant compilation and a user-friendly
-            interface. Write, edit, and generate PDFs quickly and
-            effortlessly—perfect for students, researchers, and professionals
-            who want a fast, seamless LaTeX workflow.
-          </p>
-        </div>
+        <div className="mb-16 ">
+                  <Badge variant="outline" className="mb-4 ">
+                    Why LaTeX
+                  </Badge>
+                  <h3 className="  text-5xl lg:text-6xl  mb-4 text-black blocksnone">
+Real-World Applications of LaTeX                  </h3>
+                </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
@@ -134,7 +127,7 @@ export function FeaturesSection() {
           ))}
         </div>
 
-        {/* Trust Indicators */}
+        {/* Trust Indicators 
         <div className="flex items-center gap-8 justify-center text-sm text-muted-foreground mt-8">
           <div className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-chart-1" />
@@ -162,7 +155,7 @@ export function FeaturesSection() {
               </span>
             </div>
           </div>
-        </div>
+        </div>*/}
       </div>
     </section>
   );

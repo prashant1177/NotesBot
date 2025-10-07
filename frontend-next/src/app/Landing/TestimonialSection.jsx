@@ -48,17 +48,15 @@ export function TestimonialSection() {
   ];
 
   return (
-    <section className="py-24 ">
+    <section className="py-16 ">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 ">
-          <div className="text-center">
-            <Badge variant="outline" className="mb-4 ">
-              TESTIMONIAL
-            </Badge>
-          </div>
-          <h2 className="text-4xl text-center font-bold text-gray-900 ">
+          <Badge variant="outline" className="mb-4 ">
+            TESTIMONIAL
+          </Badge>
+          <h3 className="  text-5xl lg:text-6xl  mb-4 text-black blocksnone">
             What our happy user says!
-          </h2>
+          </h3>
         </div>
 
         <div className="flex overflow-x-scroll gap-12 scrollbar-design">

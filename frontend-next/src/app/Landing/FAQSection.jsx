@@ -25,28 +25,26 @@ const faqs = [
   {
     question: "How can I report issues or request new features in LaTeXWriter?",
     answer: `You can reach out to us at support@latexwriter.com. Please add a clear title such as "Report Issue" or "Request New Feature" in your email. We guarantee a response within 24 hours.`,
-  }
-]
-;
-
+  },
+];
 export default function FAQSection() {
   return (
     <section className="py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
-          <Badge variant="outline" className="mb-4">
+        <div className="mb-16 ">
+          <Badge variant="outline" className="mb-4 ">
             FAQ
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-medium mb-4">
-Frequently Asked Questions About LaTeXWriter          </h2>
-          
+          <h3 className="  text-5xl lg:text-6xl  mb-4 text-black blocksnone">
+            Frequently Asked Questions About LaTeXWriter{" "}
+          </h3>
         </div>
 
         {/* FAQs */}
-        <div className="divide-y divide-gray-200 dark:divide-gray-700">
+        <div className="divide-y divide-gray-200 dark:divide-gray-700 ">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="py-6">
+            <div key={idx} className="py-6 px-4">
               <h3 className="font-medium text-gray-900  mb-2">
                 {faq.question}
               </h3>

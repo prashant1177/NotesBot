@@ -35,8 +35,9 @@ const Button = ({
 
 export function CTASection() {
   return (
-    <section className="py-16 relative overflow-hidden bg-gray-900">
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <section className="relative overflow-hidden w-full h-screen flex justify-center">
+      <img src="/hd.webp" className="object-cover w-full"/>
+      <div className="absolute w-full mx-auto px-4 sm:px-6 lg:px-8 text-center bg-gray-950/90 h-full flex items-center flex-col justify-center">
         {/* Badge */}
         <div className="inline-flex items-center px-4 py-2 rounded-full border border-gray-600 mb-8 bg-gray-700/50">
           <Sparkles className="w-4 h-4 text-blue-400 mr-2 animate-pulse" />
@@ -82,7 +83,7 @@ export function CTASection() {
         {/* Trust Statement */}
         <div className="mt-8 text-sm text-gray-400">
           <p>
-            ✨ No installation needed • 🚀 Compile in seconds • 🛡️ Export-ready
+           No installation needed • Compile in seconds •  Export-ready
             for IEEE, Springer & more
           </p>
         </div>

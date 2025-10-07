@@ -50,9 +50,9 @@ export default function WebsiteFeatures() {
             <Link href="/user/register" className="w-full">
               <Button className="w-full">Start Now</Button>
             </Link>
-            <Link href="/documentation/latex" className="w-full">
+            <Link href="/documentation/latexwriter" className="w-full">
               <Button className="w-full" varient="muted">
-                Explore LaTeX Tutorial
+                Explore LaTeXWriter
               </Button>
             </Link>
           </div>

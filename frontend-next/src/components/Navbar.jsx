@@ -20,23 +20,19 @@ export default function Navbar() {
   };
 
   const isActiveLink = (path) => {
-    return pathname === path ? "text-blue-500" : "hover:text-blue-500";
+    return pathname === path ? "text-gray-950" : "hover:text-gray-950 ";
   };
 
   return (
-    <nav className="sticky top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-border/20">
+    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <Link href="/" className="text-xl font-medium">
-              LaTeXWriter
-            </Link>
-          </div>
+          
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            <ul className="flex items-center space-x-8">
+          <div className="hidden md:flex items-center ">
+            <ul className="flex items-center space-x-8 text-gray-600">
               <li>
                 <Link
                   href="/"

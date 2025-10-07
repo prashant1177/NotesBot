@@ -1,5 +1,9 @@
-@import "tailwindcss";
 
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import "tailwindcss";
+* {
+  font-family: "Open Sans", sans-serif;
+}
 @keyframes appear {
   from {
     opacity: 0;
@@ -17,9 +21,8 @@
   animation-range: entry 0% cover 30%;
 }
 
-
-.prose  {
- word-break: break-word;
+.prose {
+  word-break: break-word;
 }
 
 .prose h1 {
@@ -51,14 +54,14 @@
   line-height: 1.75;
 }
 .prose ul {
-  list-style-type: disc;       /* Show bullet points */
-  padding-left: 1.5rem;        /* Indent bullets */
+  list-style-type: disc; /* Show bullet points */
+  padding-left: 1.5rem; /* Indent bullets */
   margin: 1rem 0;
-  color: #374151;              /* Gray-700 */
+  color: #374151; /* Gray-700 */
 }
 
 .prose ol {
-  list-style-type: decimal;    /* Numbered list */
+  list-style-type: decimal; /* Numbered list */
   padding-left: 1.5rem;
   margin: 1rem 0;
   color: #374151;
@@ -69,7 +72,7 @@
   line-height: 1.6;
 }
 .prose code {
-  font-family: 'Fira Code', monospace;
+  font-family: "Fira Code", monospace;
   background-color: #f3f4f6; /* Gray-100 */
   color: #1f2937;
   padding: 0.2rem 0.4rem;
@@ -78,7 +81,7 @@
 }
 
 .prose pre {
-  font-family: 'Fira Code', monospace;
+  font-family: "Fira Code", monospace;
   background-color: #f9fafb; /* Gray-50 */
   color: #111827;
   font-size: 0.95rem;
@@ -131,17 +134,12 @@
   background-color: #f3f4f6; /* Slight hover highlight */
 }
 
-
-
-.scrollbar-design::-webkit-scrollbar
-{
+.scrollbar-design::-webkit-scrollbar {
   height: 2px;
-	background-color: #F5F5F5;
+  background-color: #f5f5f5;
 }
-.scrollbar-design::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	background-color: #555;
+.scrollbar-design::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
 }
-
