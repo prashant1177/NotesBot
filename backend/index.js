@@ -99,8 +99,8 @@ app.use("/api", premiumRoutes); // all routes start with /api/projects
 require("./socket")(io);
 
 app.get("/download/windows", (req, res) => {
-  const file = path.join(__dirname, "installer", "LatexWriter Setup 1.0.1.exe");
-  res.download(file, "LatexWriter Setup 1.0.1.exe");
+  const file = path.join(__dirname, "installer", "LatexWriter Setup 1.5.0.exe");
+  res.download(file, "LatexWriter Setup 1.5.0.exe");
 });
 
 app.post("/register", async (req, res) => {
