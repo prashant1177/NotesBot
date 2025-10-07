@@ -168,14 +168,14 @@ router.get("/loadEditor/:id", async (req, res) => {
     const Folders = await Folder.find({
       parent: projects.rootFolder.toString(),
     });
+    
     const Files = await File.find({
       parent: projects.rootFolder.toString(),
     });
-    const rootFile = await File.findById(projects.rootFile.toString()).populate(
-      "blobId"
-    );
+
+    const rootFile = await File.findById(projects.rootFile.toString());
+
     res.json({
-      fileContent: rootFile.blobId.content.toString(),
       Folders,
       Files,
       rootFile,

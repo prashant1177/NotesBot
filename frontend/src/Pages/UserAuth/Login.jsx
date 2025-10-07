@@ -1,6 +1,6 @@
-import React, { useState, useContext } from "react";
+import { useState } from "react";
 import api, { setAuthToken } from "../../api";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   User,
   Lock,
@@ -147,12 +147,12 @@ function Login() {
             <div className="mt-6 text-center space-y-3">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link
-                  to="/register"
+                <a
+                  href="https://latexwriter.com/user/register"
                   className="text-primary hover:text-primary/80 transition-colors font-medium"
                 >
                   Sign up
-                </Link>
+                </a>
               </p>
               <Link
                 to="/"
