@@ -18,13 +18,13 @@ export function HeroSection() {
               LaTeX files locally without installing anything, and collaborate
               seamlessly with colleagues on shared projects.
             </p>
-            <div className="w-full flex gap-8  md:mt-16 px-4 md:px-0 md:pe-8 items-center">
-              <Link href="/user/register" className="w-fit">
+            <div className="w-fit grid md:grid-cols-2 gap-4 mt-12  md:items-center">
+              <Link href="/user/register" className="w-full">
                 <Button className="w-full" varient="primary">
                   Start For Free
                 </Button>
               </Link>{" "}
-              <Link href="/download" className="w-fit">
+              <Link href="/download" className="w-full">
                 <Button className="w-full" varient="muted">
                   {" "}
                   Download For Windows{" "}

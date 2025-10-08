@@ -8,7 +8,7 @@ const RecentBlogs = () => {
   const allPostsData = getSortedPostsData();
 
   return (
-    <div className="max-w-7xl mx-auto  py-4 md:py-16">
+    <div className="w-full sm:max-w-5/6 px-4 sm:px-6 lg:px-8 mx-auto  py-4 md:py-16">
       <div className="mb-8">
         <Badge variant="outline" className="mb-4 ">
           Our Blogs

@@ -36,7 +36,7 @@ const Button = ({
 export function CTASection() {
   return (
     <section className="relative overflow-hidden w-full h-screen flex justify-center">
-      <img src="/hd.webp" className="object-cover w-full"/>
+      <img src="/hd.webp" className="object-cover w-full" alt="Latex Writer - Image from pixabay of a man having laptop on his lap"/>
       <div className="absolute w-full mx-auto px-4 sm:px-6 lg:px-8 text-center bg-gray-950/90 h-full flex items-center flex-col justify-center">
         {/* Badge */}
         <div className="inline-flex items-center px-4 py-2 rounded-full border border-gray-600 mb-8 bg-gray-700/50">

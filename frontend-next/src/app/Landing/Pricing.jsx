@@ -4,7 +4,7 @@ import { Check, Clock, Shield, Users, Zap, Star } from "lucide-react";
 export default function Pricing() {
   return (
     <section className="w-full  pt-16">
-      <div className="max-w-5/6 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full sm:max-w-5/6 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-16">
           <Badge variant="outline" className="mb-4 ">
             Know LaTeXWriter
@@ -15,13 +15,13 @@ export default function Pricing() {
         </div>
         {/* Main Features Grid */}
         <div className="grid md:grid-cols-2 gap-12 mb-16 p-4 ">
-          <div class="flex justify-center items-center gap-12 h-full">
-            <div class="bg-gradient-to-b from-gray-800/40 to-transparent p-[4px] rounded-[16px]">
-              <div class="group p-[4px] rounded-[12px] bg-gradient-to-b from-gray-700 to-gray-600 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
-                <div class="bg-gradient-to-b from-gray-600 to-gray-700 rounded-[8px] px-3 py-2">
+          <div className="justify-center items-center gap-12 h-full hidden md:flex">
+            <div className="bg-gradient-to-b from-gray-800/40 to-transparent p-[4px] rounded-[16px]">
+              <div className="group p-[4px] rounded-[12px] bg-gradient-to-b from-gray-700 to-gray-600 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
+                <div className="bg-gradient-to-b from-gray-600 to-gray-700 rounded-[8px] px-3 py-2">
                   <img
                     src="/assets/LatexWriterEditor.gif"
-                    className="rounded-[16px]"
+                    className="rounded-[16px]" alt="Latex Writer Lightning Fast Compilation"
                   />
                 </div>
               </div>
@@ -83,13 +83,14 @@ export default function Pricing() {
               </div>
             </div>
           </div>{" "}
-          <div class="flex justify-center items-center gap-12 h-full">
-            <div class="bg-gradient-to-b from-gray-800/40 to-transparent p-[4px] rounded-[16px]">
-              <div class="group p-[4px] rounded-[12px] bg-gradient-to-b from-gray-700 to-gray-600 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
-                <div class="bg-gradient-to-b from-gray-600 to-gray-700 rounded-[8px] px-3 py-2">
+          <div className="justify-center items-center gap-12 h-full hidden md:flex">
+            <div className="bg-gradient-to-b from-gray-800/40 to-transparent p-[4px] rounded-[16px]">
+              <div className="group p-[4px] rounded-[12px] bg-gradient-to-b from-gray-700 to-gray-600 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
+                <div className="bg-gradient-to-b from-gray-600 to-gray-700 rounded-[8px] px-3 py-2">
                   <img
                     src="/assets/Multi-cursor.webp"
-                    className="rounded-[16px]"
+                    className="rounded-[16px]" alt="Latex Writer Real-time Collaboration
+"
                   />
                 </div>
               </div>
@@ -97,13 +98,13 @@ export default function Pricing() {
           </div>
         </div>{" "}
         <div className="grid md:grid-cols-2 gap-12 mb-16 p-4">
-          <div class="flex justify-center items-center gap-12 h-full">
-            <div class="bg-gradient-to-b from-gray-800/40 to-transparent p-[4px] rounded-[16px]">
-              <div class="group p-[4px] rounded-[12px] bg-gradient-to-b from-gray-700 to-gray-600 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
-                <div class="bg-gradient-to-b from-gray-600 to-gray-700 rounded-[8px] px-3 py-2">
+          <div className="justify-center items-center gap-12 h-full hidden md:flex">
+            <div className="bg-gradient-to-b from-gray-800/40 to-transparent p-[4px] rounded-[16px]">
+              <div className="group p-[4px] rounded-[12px] bg-gradient-to-b from-gray-700 to-gray-600 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
+                <div className="bg-gradient-to-b from-gray-600 to-gray-700 rounded-[8px] px-3 py-2">
                   <img
                     src="/assets/savedcommit.webp"
-                    className="rounded-[16px]"
+                    className="rounded-[16px]" alt="Latex Writer Version History"
                   />
                 </div>
               </div>
@@ -160,13 +161,13 @@ export default function Pricing() {
               </div>
             </div>
           </div>{" "}
-         <div class="flex justify-center items-center gap-12 h-full">
-            <div class="bg-gradient-to-b from-gray-800/40 to-transparent p-[4px] rounded-[16px]">
-              <div class="group p-[4px] rounded-[12px] bg-gradient-to-b from-gray-700 to-gray-600 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
-                <div class="bg-gradient-to-b from-gray-600 to-gray-700 rounded-[8px] px-3 py-2">
+         <div className="justify-center items-center gap-12 h-full hidden md:flex">
+            <div className="bg-gradient-to-b from-gray-800/40 to-transparent p-[4px] rounded-[16px]">
+              <div className="group p-[4px] rounded-[12px] bg-gradient-to-b from-gray-700 to-gray-600 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
+                <div className="bg-gradient-to-b from-gray-600 to-gray-700 rounded-[8px] px-3 py-2">
                   <img
                     src="/assets/latexwritererrorassistant.webp"
-                    className="rounded-[16px]"
+                    className="rounded-[16px]" alt="Latex Writer Smart Error Assistant"
                   />
                 </div>
               </div>
@@ -175,13 +176,13 @@ export default function Pricing() {
         </div>
         <div className="grid md:grid-cols-2 gap-12 mb-16 p-4">
           {" "}
-          <div class="flex justify-center items-center gap-12 h-full">
-            <div class="bg-gradient-to-b from-gray-800/40 to-transparent p-[4px] rounded-[16px]">
-              <div class="group p-[4px] rounded-[12px] bg-gradient-to-b from-gray-700 to-gray-600 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
-                <div class="bg-gradient-to-b from-gray-600 to-gray-700 rounded-[8px] px-3 py-2">
+          <div className="justify-center items-center gap-12 h-full hidden md:flex">
+            <div className="bg-gradient-to-b from-gray-800/40 to-transparent p-[4px] rounded-[16px]">
+              <div className="group p-[4px] rounded-[12px] bg-gradient-to-b from-gray-700 to-gray-600 shadow-[0_2px_4px_rgba(0,0,0,0.7)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.6)] active:shadow-[0_0px_1px_rgba(0,0,0,0.8)] active:scale-[0.995] transition-all duration-200">
+                <div className="bg-gradient-to-b from-gray-600 to-gray-700 rounded-[8px] px-3 py-2">
                   <img
                     src="/assets/latexmathsymbols.webp"
-                    className="rounded-[16px]"
+                    className="rounded-[16px]" alt="Latex Writer Simple Math Keyboard"
                   />
                 </div>
               </div>
