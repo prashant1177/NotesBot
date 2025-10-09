@@ -20,10 +20,7 @@ const util = require("util");
 const execPromise = util.promisify(exec);
 require("dotenv").config(); // Load .env file variables
 const { GoogleGenAI } = require("@google/genai");
-const { shortHash } = require("../utils/socketId.js");
-const {
-  templates
-} = require("../templates/template.js");
+const { templates } = require("../templates/template.js");
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 async function errorHandling(error) {
@@ -168,7 +165,7 @@ router.get("/loadEditor/:id", async (req, res) => {
     const Folders = await Folder.find({
       parent: projects.rootFolder.toString(),
     });
-    
+
     const Files = await File.find({
       parent: projects.rootFolder.toString(),
     });
@@ -281,7 +278,10 @@ router.post("/newfile/:id", async (req, res) => {
   }
   try {
     let { currFolder, filename } = req.body;
-    const hash = crypto.createHash("sha1").update(templates[Blank]).digest("hex");
+    const hash = crypto
+      .createHash("sha1")
+      .update(templates[Blank])
+      .digest("hex");
     // Check if the file already exists
     let blob = await Blob.findOne({ hash });
     if (!blob) {
@@ -372,28 +372,16 @@ router.post("/create", async (req, res) => {
     return res.status(400).json({ message: "Authentication issue" });
   }
 
-  const { title, about, topics, private, documentClass = "Blank" } = req.body;
+  const { title, documentClass = "Blank" } = req.body;
   const foldername = title
     .toLowerCase()
     .trim()
     .replace(/\s+/g, "")
     .replace(/[^a-z0-9]/g, "");
 
-  let topicsarr = [];
-  if (typeof topics === "string" && topics.trim().length > 0) {
-    topicsarr = topics
-      .split(",")
-      .map((t) => t.trim())
-      .filter((t) => t.length > 0);
-  }
-  const socketId = shortHash();
   const project = new Project({
     title,
-    about,
-    topics: topicsarr,
     owner: req.user._id,
-    socketId,
-    private,
   });
 
   const newFolder = new Folder({
@@ -402,8 +390,11 @@ router.post("/create", async (req, res) => {
     owner: req.user._id,
     project: project._id,
   });
-  
-  const hash = crypto.createHash("sha1").update(templates[documentClass]).digest("hex");
+
+  const hash = crypto
+    .createHash("sha1")
+    .update(templates[documentClass])
+    .digest("hex");
   // Check if the file already exists
   let blob = await Blob.findOne({ hash });
   if (!blob) {
@@ -612,10 +603,7 @@ router.post("/fork/:id", async (req, res) => {
 
   const Forkproject = new Project({
     title: project.title,
-    about: project.about,
-    topics: project.topics,
     owner: req.user._id,
-    private: project.private,
   });
 
   const rootFolder = new Folder({
@@ -833,18 +821,11 @@ router.get("/settings/:id", async (req, res) => {
 
 router.put("/settings/:id", async (req, res) => {
   try {
-    const { title, about, topics } = req.body;
+    const { title } = req.body;
 
-    let topicsarr = [];
-    if (typeof topics === "string" && topics.trim().length > 0) {
-      topicsarr = topics
-        .split(",")
-        .map((t) => t.trim())
-        .filter((t) => t.length > 0);
-    }
     const project = await Project.findByIdAndUpdate(
       req.params.id,
-      { title, about, topics: topicsarr },
+      { title },
       { new: true }
     );
     res.json({ project });
@@ -872,4 +853,38 @@ router.put("/editoracces/:id", async (req, res) => {
   }
 });
 
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    await Folder.deleteMany({ project: req.params.id });
+
+    const files = await File.find({ project: req.params.id });
+    for (const file of files) {
+
+      const blobId = file.blobId;
+      await File.findByIdAndDelete(file._id);
+
+      const updatedBlob = await Blob.findByIdAndUpdate(
+        blobId,
+        { $pull: { filesIDs: file._id } },
+        { new: true }
+      );
+
+      // 4. If blob has no files and no commits, delete it
+      if (
+        (!updatedBlob.filesIDs || updatedBlob.filesIDs.length === 0) &&
+        (!updatedBlob.commitIDs || updatedBlob.commitIDs.length === 0)
+      ) {
+        await Blob.findByIdAndDelete(blobId);
+      } else {
+        console.log("Blob updated, file removed:", blobId);
+      }
+    }
+    await Project.findByIdAndDelete(req.params.id);
+    res.json({ message: "Succes " });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message || "Server error",
+    });
+  }
+});
 module.exports = router; // export the router

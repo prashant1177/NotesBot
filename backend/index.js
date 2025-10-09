@@ -99,8 +99,8 @@ app.use("/api", premiumRoutes); // all routes start with /api/projects
 require("./socket")(io);
 
 app.get("/download/windows", (req, res) => {
-  const file = path.join(__dirname, "installer", "LatexWriter Setup 1.5.0.exe");
-  res.download(file, "LatexWriter Setup 1.5.0.exe");
+  const file = path.join(__dirname, "installer", "LatexWriter-Setup-2.0.0.exe");
+  res.download(file, "LatexWriter-Setup-2.0.0.exe");
 });
 
 app.post("/register", async (req, res) => {
@@ -273,7 +273,7 @@ app.put("/user", authenticateJWT, async (req, res) => {
 app.get("/MyProject", authenticateJWT, async (req, res) => {
   const projects = await Project.find({
     $or: [{ owner: req.user.id }, { editors: req.user.id }],
-  }).sort({
+  }).populate("owner").sort({
     createdAt: -1,
   });
   res.json({ projects, author: req.user });

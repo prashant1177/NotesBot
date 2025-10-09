@@ -5,14 +5,6 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  about: {
-    type: String,
-    default: "",
-  },
-  topics: {
-    type: [String], // array of topic strings
-    default: [],
-  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -24,14 +16,6 @@ const projectSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
-  socketId:  {
-    type: String,
-    required: true,
-  },
-  private: {
-    type: Boolean,
-    default: true,
-  },
   rootFolder: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Folder",
