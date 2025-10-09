@@ -1,6 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import { getSortedPostsData } from "@/lib/Blogs";
+import Button from "@/ui/Button/Button";
+import FaqLinks from "@/components/FaqLinks";
+import GuideLinks from "@/components/GuideLinks";
 
 export const metadata = {
   title: "LaTeXWriter Blog - Tips, Tutorials & LaTeX Insights",
@@ -14,51 +17,62 @@ const BlogIndex = () => {
   const allPostsData = getSortedPostsData(); // synchronous for local Markdown
 
   return (
-    <div className="max-w-7xl mx-auto  py-4 md:py-16">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Blogs
-        </h1>
-        <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
-        {allPostsData.map((post) => (
-          <article
-            key={post.id}
-            className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer"
-          >
-            <Link href={`/blog/${post.slug}`}>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
-                  {post.title}
-                </h3>
-
-                <p className="text-gray-600 mb-4 leading-relaxed line-clamp-3">
-                  {post.description}
-                </p>
-
-                {/* Meta Information */}
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <div className="flex items-center space-x-2">
-                    <span className="font-medium text-gray-700">
-                      {post.author}
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-gray-600">{post.date}</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Read More Button */}
-              <div className="px-6 pb-6">
-                <div className="w-fit bg-gray-900  hover:bg-gray-950 text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                  Read More →
-                </div>
-              </div>
+    <div className="w-full md:max-w-5/6 mx-auto md:pb-8 px-4 sm:px-6 lg:px-8">
+      <div className=" w-full h-screen  flex flex-col justify-center   ">
+        <div className="flex flex-col sticky top-20 ">
+          {" "}
+          <h1 className="  text-5xl lg:text-8xl   text-gray-950">
+            Read Articles
+            <br />
+            Insights and Tutorials
+          </h1>
+          <p className="text-lg md:text-xl  text-gray-700 mt-8 max-w-4xl ">
+            Explore our LaTeX blog packed with tips, tutorials, and insights for
+            writers, researchers, and students. Learn how to write, format, and
+            publish professional documents with ease using practical guides and
+            expert advice.
+          </p>
+          <div className="w-fit grid md:grid-cols-2 gap-4 mt-12  md:items-center">
+            <Link
+              href="/documentation/latex/getting-started-latex"
+              className="w-full"
+            >
+              <Button className="w-full" varient="primary">
+                LaTeX Documentation
+              </Button>
+            </Link>{" "}
+            <Link href="/documentation/latexwriter" className="w-full">
+              <Button className="w-full" varient="muted">
+                {" "}
+                LaTeXWriter Documentation{" "}
+              </Button>
             </Link>
-          </article>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mt-16">
+        {allPostsData.map((post) => (
+          <Link
+            href={`/blog/${post.slug}`}
+            key={post.id}
+            className="flex flex-col justify-between border-b-2  border-gray-300 rounded transition-all duration-300 overflow-hidden group cursor-pointer hover:border-blue-600 pb-4"
+          >
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
+                {post.title}
+              </h3>
+
+              <p className="text-gray-600 mb-4 leading-relaxed line-clamp-3">
+                {post.description}
+              </p>
+            </div>
+            <p className=" text-gray-600 text-sm">{post.date}</p>
+          </Link>
         ))}
+      </div>
+      <div className="grid md:grid-cols-2 gap-8 mt-16">
+        <FaqLinks />
+        <GuideLinks />
       </div>
     </div>
   );

@@ -29,22 +29,22 @@ const faqs = [
 ];
 export default function FAQSection() {
   return (
-    <section className="py-24 relative">
+    <section className="py-16 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-16 ">
           <Badge variant="outline" className="mb-4 ">
-            FAQ
+            Frequently Asked Questions
           </Badge>
           <h3 className="  text-5xl lg:text-6xl  mb-4 text-black blocksnone">
-            Frequently Asked Questions About LaTeXWriter{" "}
+            FAQ About LaTeXWriter{" "}
           </h3>
         </div>
 
         {/* FAQs */}
-        <div className="divide-y divide-gray-200 dark:divide-gray-700 ">
+        <div className="divide-y divide-gray-200 dark:divide-gray-700">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="py-6 px-4">
+            <div key={idx} className="py-4">
               <h3 className="font-medium text-gray-900  mb-2">
                 {faq.question}
               </h3>

@@ -6,9 +6,8 @@ export function HeroSection() {
   return (
     <section className="w-full h-full  -z-10">
       <div className="flex flex-col w-full h-full  mx-auto items-center  md:gap-2 md:max-w-5/6 px-4 sm:px-6 lg:px-8">
-        <div className="sticky top-0  w-full h-screen  flex flex-col justify-center   ">
-          <div className="flex flex-col ">
-            {" "}
+        <div className=" w-full h-screen  flex flex-col justify-center   ">
+          <div className="flex flex-col sticky top-20 ">
             <h1 className="  text-5xl lg:text-8xl   text-gray-950">
               Fast & Simple <br />
               Way to Write LaTeX
@@ -33,8 +32,6 @@ export function HeroSection() {
             </div>
           </div>
         </div>
-
-  
       </div>
     </section>
   );

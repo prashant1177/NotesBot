@@ -9,7 +9,7 @@ export default function Pricing() {
           <Badge variant="outline" className="mb-4 ">
             Know LaTeXWriter
           </Badge>
-          <h2 className="  text-5xl lg:text-6xl  mb-4 text-black blocksnone">
+          <h2 className="text-5xl lg:text-6xl  mb-4 text-black blocksnone">
             Why Upgrade to LaTeXWriter?
           </h2>
         </div>

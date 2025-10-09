@@ -1,7 +1,6 @@
 import {
   FileText,
   BookOpen,
-  Presentation,
   Calculator,
   PenTool,
   FileCode,
@@ -88,7 +87,7 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section className="py-24  relative  ">
+    <section className="pt-16  relative  ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="mb-16 ">
                   <Badge variant="outline" className="mb-4 ">
