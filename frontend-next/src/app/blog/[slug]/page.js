@@ -60,17 +60,25 @@ export default async function BlogPostPage({ params }) {
         </div>
       </article>
       <div className="w-full px-4 mx-auto md:mb-16 lg:col-span-1 h-fit md:sticky  md:top-20 ">
+        <Link href={`/`}>
+          {" "}
+          <img
+            src="/latexwriter-adl.gif"
+            alt="LaTeXWriter Ad"
+            className="w-full mt-6 mb-6 sm:mt-0 rounded-2xl sm:shadow-lg/10 sm:hover:shadow-lg/30 shadow-blue-600 transition-all duration-500"
+          />
+        </Link>{" "}
         <h5 className="font-bold text-xl  text-gray-900 border-b-1 border-gray-400  py-2 ">
           Learn More About LaTeX{" "}
         </h5>
         <ul className="flex flex-col gap-2 ">
-          {recentPosts.slice(0, 7).map((post) => (
+          {recentPosts.slice(0, 5).map((post) => (
             <li
               key={post.id}
               className=" transition-all duration-300 group cursor-pointer border-b-1 border-gray-200  py-2"
             >
               <Link href={`/blog/${post.slug}`}>
-                <h6 className="text-md font-light text-gray-500 group-hover:text-blue-600 transition-colors duration-200 ">
+                <h6 className="text-md font-light text-gray-500 group-hover:text-blue-600 transition-colors duration-200 line-clamp-1">
                   {post.title}
                 </h6>
               </Link>
