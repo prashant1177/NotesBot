@@ -278,16 +278,17 @@ router.post("/newfile/:id", async (req, res) => {
   }
   try {
     let { currFolder, filename } = req.body;
+    
     const hash = crypto
       .createHash("sha1")
-      .update(templates[Blank])
+      .update(templates["Blank"])
       .digest("hex");
     // Check if the file already exists
     let blob = await Blob.findOne({ hash });
     if (!blob) {
       blob = await Blob.create({
         hash,
-        content: Buffer.from(templates[Blank], "utf-8"),
+        content: Buffer.from(templates["Blank"], "utf-8"),
         mime: "application/x-tex",
       });
     } else {
@@ -859,7 +860,6 @@ router.delete("/delete/:id", async (req, res) => {
 
     const files = await File.find({ project: req.params.id });
     for (const file of files) {
-
       const blobId = file.blobId;
       await File.findByIdAndDelete(file._id);
 
