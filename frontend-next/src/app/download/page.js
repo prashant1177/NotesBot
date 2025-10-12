@@ -48,7 +48,7 @@ export default function DownloadPage() {
               Get a month free trial{" "}
             </h2>
             <p className="text-2xl text-gray-700 mb-4">
-              Then just $19 per month
+              Then just $9 per month
             </p>
             <p className="text-sm text-gray-600 mb-12 italic">
               Download Now and start free trial - No Card Details Required.
@@ -157,7 +157,7 @@ export default function DownloadPage() {
 
               <div>
                 <h4 className="text-xl font-medium mb-6 text-black">
-                  Pro Subscription ($19/month)
+                  Pro Subscription ($9/month)
                 </h4>
                 <ul className="space-y-3">
                   <li className="flex items-center">

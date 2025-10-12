@@ -33,10 +33,8 @@ export default function RootLayout({ children }) {
           `}
         </Script>
 
-        <header>
-          <Navbar />
-        </header>
-        <main className="mt-16">{children}</main>
+        <Navbar />
+        <main>{children}</main>
         <Footer />
       </body>
     </html>
