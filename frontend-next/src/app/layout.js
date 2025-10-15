@@ -32,11 +32,11 @@ export default function RootLayout({ children }) {
   gtag('config', 'G-DWCLLPY4G0');
           `}
         </Script>
-        <Script
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2823773486701492"
           crossorigin="anonymous"
-        ></Script>
+        ></script>
         <Navbar />
         <main>{children}</main>
         <Footer />
