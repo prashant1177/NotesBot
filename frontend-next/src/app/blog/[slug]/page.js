@@ -61,13 +61,12 @@ export default async function BlogPostPage({ params }) {
       </article>
       <div className="w-full px-4 mx-auto md:mb-16 lg:col-span-1 h-fit md:sticky  md:top-20 ">
         <Link href={`/`}>
-          {" "}
           <img
             src="/latexwriter-adl.gif"
             alt="LaTeXWriter Ad"
             className="w-full mt-6 mb-6 sm:mt-0 rounded-2xl sm:shadow-lg/10 sm:hover:shadow-lg/30 shadow-blue-600 transition-all duration-500"
           />
-        </Link>{" "}
+        </Link>
         <h5 className="font-bold text-xl  text-gray-900 border-b-1 border-gray-400  py-2 ">
           Learn More About LaTeX{" "}
         </h5>

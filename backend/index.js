@@ -142,7 +142,7 @@ app.post("/verify-otp", async (req, res) => {
   if (!user) return res.status(404).send("User not found");
 
   user.isVerified = true;
-  const FREE_TRIAL_DAYS = 30;
+  const FREE_TRIAL_DAYS = 7;
   const now = new Date();
   user.isPremium = true;
   user.premiumExpiry = new Date(now.setDate(now.getDate() + FREE_TRIAL_DAYS));
@@ -191,7 +191,7 @@ app.post("/set-password", authenticateJWT, async (req, res) => {
   }
 
   const now = new Date();
-  premiumExpiry = new Date(now.setDate(now.getDate() + 30));
+  premiumExpiry = new Date(now.setDate(now.getDate() + 7));
 
   user.password = password;
   user.isPremium = true;

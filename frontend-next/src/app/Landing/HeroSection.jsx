@@ -1,4 +1,3 @@
-import { ChevronsLeftRight, Space, Sparkles } from "lucide-react";
 import Link from "next/link";
 import Button from "../../ui/Button/Button";
 

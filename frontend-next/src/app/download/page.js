@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Download,
   Check,
@@ -8,12 +8,19 @@ import {
   Users,
   Star,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-
 
 export default function DownloadPage() {
   const [downloadStarted, setDownloadStarted] = useState(false);
+  const router = useRouter();
+
   const handleDownload = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/user/register");
+      return;
+    }
     const link = document.createElement("a");
     link.href = "https://api.latexwriter.com/download/windows"; // your backend route
     link.setAttribute("download", "LatexWriter-Setup.exe"); // custom filename
@@ -32,7 +39,7 @@ export default function DownloadPage() {
       setDownloadStarted(false);
     }, 2000);
   };
-  
+
   return (
     <div className="min-h-screen bg-white text-black relative flex items-center flex-col mb-4">
       {downloadStarted && (
@@ -129,7 +136,7 @@ export default function DownloadPage() {
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <h4 className="text-xl font-medium mb-6 text-blue-500">
-                  Free Trial (30 days)
+                  Free Trial (7 days)
                 </h4>
                 <ul className="space-y-3">
                   <li className="flex items-center">
