@@ -85,6 +85,14 @@ export default function Navbar() {
                   </Link>
                 </div>
               </li>
+               <li>
+                <Link
+                  href="/documentreview"
+                  className={`transition-colors ${isActiveLink("/documentreview")}`}
+                >
+                  AI Peer Review
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -208,7 +216,14 @@ export default function Navbar() {
                       </Link>
                     </div>
                   </div>
-                </li>
+                </li> <li>
+                <Link
+                  href="/documentreview"
+                  className={`transition-colors ${isActiveLink("/documentreview")}`}
+                >
+                  AI Peer Review
+                </Link>
+              </li>
               </ul>
 
               {/* Mobile Auth Buttons */}

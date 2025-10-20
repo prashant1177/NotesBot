@@ -1,10 +1,13 @@
+require("dotenv").config(); // Load .env file variables
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const analyzePDF = require("../utils/analyze");
+const { analyzePDF, Prompt } = require("../utils/analyze");
 
+const { GoogleGenAI } = require("@google/genai");
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 // Setup upload folder
 const uploadFolder = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadFolder)) fs.mkdirSync(uploadFolder);
@@ -23,14 +26,28 @@ router.post("/upload", upload.single("pdf"), async (req, res) => {
   const filePath = req.file.path;
   try {
     const stats = await analyzePDF(filePath);
-    console.log(stats);
-    const fileLink = `http://localhost:3000/uploads/${req.file.filename}`;
-    res.json({ stats, fileLink });
+
+    // Read file correctly
+    const contents = [
+      { text: Prompt },
+      {
+        inlineData: {
+          mimeType: "application/pdf",
+          data: Buffer.from(fs.readFileSync(filePath)).toString("base64"),
+        },
+      },
+    ];
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: contents,
+    });
+
+    res.json({ stats, response: response.text });
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
 
-router.use('/uploads', express.static(uploadFolder));
+router.use("/uploads", express.static(uploadFolder));
 
-module.exports = router; // export the router
+module.exports = router;

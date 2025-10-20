@@ -20,7 +20,6 @@ const About = () => {
       <div className="w-full md:max-w-5/6 mx-auto md:pb-16 px-4 sm:px-6 lg:px-8X">
         <div className=" w-full h-screen  flex flex-col justify-center   ">
           <div className="flex flex-col  ">
-            {" "}
             <h1 className="  text-5xl lg:text-8xl   text-gray-950">
               The Story of
               <br />
