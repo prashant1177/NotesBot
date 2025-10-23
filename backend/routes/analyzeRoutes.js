@@ -7,6 +7,7 @@ const fs = require("fs");
 const { analyzePDF, Prompt } = require("../utils/analyze");
 
 const { GoogleGenAI } = require("@google/genai");
+const User = require("../models/User");
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 // Setup upload folder
 const uploadFolder = path.join(__dirname, "uploads");
@@ -21,6 +22,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 // Upload endpoint
 router.post("/upload", upload.single("pdf"), async (req, res) => {
+  if (!req.user) return res.status(400).send("Login to continue");
+  if (req.user.reviewsAvailable > 0) return res.status(400).send("No More Reviews Left");
   if (!req.file) return res.status(400).send("No file uploaded.");
 
   const filePath = req.file.path;
@@ -41,7 +44,11 @@ router.post("/upload", upload.single("pdf"), async (req, res) => {
       model: "gemini-2.5-flash",
       contents: contents,
     });
-
+    if (response) {
+      await User.findByIdAndUpdate(req.user.id, {
+        $inc: { reviewsAvailable: -1 },
+      });
+    }
     res.json({ stats, response: response.text });
   } catch (err) {
     res.status(500).send(err.message);

@@ -8,7 +8,7 @@ import { CardHeader, CardTitle, CardContent } from "@/ui/Card/Card";
 import Button from "@/ui/Button/Button";
 import Input from "@/ui/Input/Input";
 import TextArea from "@/ui/Input/TextArea";
-import { Info, Mail, User, User2, Calendar } from "lucide-react";
+import { Info, Mail, User, User2, Calendar, Search, Scan } from "lucide-react";
 
 export default function UserEdit() {
   const [form, setForm] = useState({
@@ -18,6 +18,7 @@ export default function UserEdit() {
     email: "",
   });
   const [premium, setPremium] = useState(true);
+  const [reviews, setReviews] = useState(0);
   const [endDate, setEndDate] = useState(null);
   const router = useRouter();
 
@@ -35,6 +36,7 @@ export default function UserEdit() {
         email: res.data.user?.email || "",
       });
       setPremium(res.data.user?.isPremium);
+      setReviews(res.data.user?.reviewsAvailable);
       if (res.data.user?.isPremium) {
         setEndDate(res.data.user.premiumExpiry);
       }
@@ -196,6 +198,20 @@ export default function UserEdit() {
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-3 items-start gap-4">
+                <label className="flex items-center gap-2 font-medium text-sm">
+                  <Scan className="h-4 w-4" />
+                  Reviews Available
+                </label>
+                <div className="md:col-span-2 flex flex-col gap-1">
+                  <div className="flex items-center justify-between gap-2">
+                    
+                    <p className="text-sm text-gray-500 italic">
+                      {reviews} Left
+                    </p>
+                  </div>
+                </div>
+              </div>
               {/* Buttons */}
               <div className="flex justify-end gap-4">
                 <Button

@@ -165,4 +165,39 @@ router.post("/razorpay/webhook", async (req, res) => {
   res.json({ status: "ok" });
 });
 
+// Create Order
+router.post("/create-order", async (req, res) => {
+  const options = {
+    amount: 499900, // ₹4999 → amount in paise
+    currency: "INR",
+    receipt: `receipt_order_${Date.now()}`,
+  };
+  try {
+    const order = await razorpay.orders.create(options);
+    res.json(order);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+// Verify Payment
+router.post("/verify-payment", async (req, res) => {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, userId } =
+    req.body;
+
+  const sign = crypto
+    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+    .update(razorpay_order_id + "|" + razorpay_payment_id)
+    .digest("hex");
+
+  if (sign === razorpay_signature) {
+    // Successful Payment → Activate 10 reviews
+    await User.findByIdAndUpdate(req.user.id, {
+      $inc: { reviewsAvailable: 10 },
+    });
+    res.json({ success: true, message: "Payment Verified and Plan Activated" });
+  } else {
+    res.json({ success: false, message: "Payment verification failed" });
+  }
+});
 module.exports = router; // export the router

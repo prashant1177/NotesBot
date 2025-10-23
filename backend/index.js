@@ -96,7 +96,7 @@ async function database() {
 
 app.use("/projects", authenticateJWT, checkPremium, projectRoutes); // all routes start with /api/projects
 app.use("/versions", authenticateJWT, checkPremium, versionsRoutes); // all routes start with /api/projects// all routes start with /api/projects
-app.use("/analyze", analyzeRoutes); 
+app.use("/analyze", authenticateJWT, analyzeRoutes); 
 app.use("/api", premiumRoutes); // all routes start with /api/projects
 require("./socket")(io);
 

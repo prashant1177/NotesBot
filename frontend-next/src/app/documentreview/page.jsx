@@ -1,42 +1,74 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Upload, FileText } from "lucide-react";
 import api from "@/lib/api";
 import Link from "next/link";
 import Badge from "@/ui/Badge/Badge";
 import FAQAccordion from "@/components/FAQAccordion";
 import ReviewLoader from "@/components/ReviewLoader";
+import { useRouter } from "next/navigation";
+import ReviewBuySection from "@/components/ReviewBuySection";
+import ReviewBuySection1 from "@/components/ReviewBuySection1";
 
 export default function PDFReviewPage() {
   const [pdfFile, setPdfFile] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [response, setResponse] = useState(null);
   const [stats, setStats] = useState(null);
+  const [showMoney, setShowMoney] = useState(true);
+  const router = useRouter();
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      if (!localStorage.getItem("token")) {
+        return;
+      }
+      const res = await api.get("/user");
+      if (res.data.user?.reviewsAvailable > 0) {
+        setShowMoney(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file && file.type === "application/pdf") {
-      setAnalyzing(true);
-      setPdfFile(file);
-      const formData = new FormData();
-      formData.append("pdf", file);
-      // Send the FormData directly
-      const res = await api.post("/analyze/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      const cleanResponse = res.data.response
-        .replace(/```html|```/g, "")
-        .trim();
+    if (!localStorage.getItem("token")) {
+      router.push("/user/login");
+      return;
+    }
+    try {
+      const file = e.target.files[0];
+      if (file && file.type === "application/pdf") {
+        setAnalyzing(true);
+        setPdfFile(file);
+        const formData = new FormData();
+        formData.append("pdf", file);
+        // Send the FormData directly
+        const res = await api.post("/analyze/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        const cleanResponse = res.data.response
+          .replace(/```html|```/g, "")
+          .trim();
 
-      setStats(res.data.stats);
-      setResponse(cleanResponse);
+        setStats(res.data.stats);
+        setResponse(cleanResponse);
+      }
+    } catch (error) {
+      console.log(error);
+      setPdfFile(null);
+    } finally {
       setAnalyzing(false);
     }
   };
 
   return (
     <div className=" max-w-7xl mx-auto">
-      <div className="min-h-screen w-full grid lg:grid-cols-3">
+      <div className="w-full grid lg:grid-cols-3">
         <div
           className={`${
             pdfFile && !analyzing ? "lg:col-span-2" : "lg:col-span-3"
@@ -268,7 +300,7 @@ export default function PDFReviewPage() {
             </div>
           )}
         </div>
-        {pdfFile&& !analyzing && (
+        {pdfFile && !analyzing && (
           <div className=" lg:col-span-1  sticky top-16 h-full p-8">
             <ins
               className="adsbygoogle"
@@ -288,6 +320,12 @@ export default function PDFReviewPage() {
           </div>
         )}
       </div>
+      {showMoney && (
+        <>
+          <ReviewBuySection />
+          <ReviewBuySection1 />
+        </>
+      )}
       <FAQAccordion />
     </div>
   );
