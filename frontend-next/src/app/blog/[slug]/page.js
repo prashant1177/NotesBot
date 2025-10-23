@@ -47,7 +47,7 @@ export default async function BlogPostPage({ params }) {
 
   return (
     <div className="relative w-full md:w-5/6 grid lg:grid-cols-3 mx-auto h-full">
-      <article className="prose w-full px-4  lg:col-span-2 ">
+      <article className="prose w-full px-4 lg:col-span-2">
         <div className=" text-justify">
           {/* Title */}
           <div className="border-b-1 border-gray-400">
@@ -83,7 +83,14 @@ export default async function BlogPostPage({ params }) {
               </Link>
             </li>
           ))}
-        </ul>
+        </ul> <ins
+          className="adsbygoogle"
+          style={{ display: "block" }}
+          data-ad-client="ca-pub-2823773486701492"
+          data-ad-slot="1578889750"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
       </div>
     </div>
   );

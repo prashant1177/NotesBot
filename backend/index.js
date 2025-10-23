@@ -10,6 +10,7 @@ const User = require("./models/User.js");
 const projectRoutes = require("./routes/projectRoutes");
 const versionsRoutes = require("./routes/versionsRoutes");
 const premiumRoutes = require("./routes/premiumRoutes");
+const analyzeRoutes = require("./routes/analyzeRoutes");
 const session = require("express-session");
 const configurePassport = require("./config/passport.js");
 const { authenticateJWT, checkPremium } = require("./middleware/middleware.js");
@@ -94,7 +95,8 @@ async function database() {
 }
 
 app.use("/projects", authenticateJWT, checkPremium, projectRoutes); // all routes start with /api/projects
-app.use("/versions", authenticateJWT, checkPremium, versionsRoutes); // all routes start with /api/projects
+app.use("/versions", authenticateJWT, checkPremium, versionsRoutes); // all routes start with /api/projects// all routes start with /api/projects
+app.use("/analyze", authenticateJWT, analyzeRoutes); 
 app.use("/api", premiumRoutes); // all routes start with /api/projects
 require("./socket")(io);
 
