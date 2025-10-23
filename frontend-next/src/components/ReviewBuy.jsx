@@ -4,7 +4,7 @@ import api from "@/lib/api";
 export default async function ReviewBuy() {
   try {
     // Create order
-    const { data: order } = await api.post("/create-order");
+    const { data: order } = await api.post("/api/create-order");
 
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY,
@@ -15,7 +15,7 @@ export default async function ReviewBuy() {
       order_id: order.id,
       handler: async function (response) {
         try {
-          const { data: result } = await api.post("/verify-payment", {
+          const { data: result } = await api.post("/api/verify-payment", {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
