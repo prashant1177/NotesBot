@@ -7,7 +7,7 @@ export default async function ReviewBuy() {
     const { data: order } = await api.post("/api/create-order");
 
     const options = {
-      key: import.meta.env.NEXT_PUBLIC_RAZORPAY_KEY,
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
       amount: order.amount,
       currency: "INR",
       name: "AI Paper Review",
