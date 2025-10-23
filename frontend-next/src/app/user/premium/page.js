@@ -34,7 +34,7 @@ export default function PremiumPage() {
 
       // 3️⃣ Configure Razorpay options
       const options = {
-        key: import.meta.env.NEXT_PUBLIC_RAZORPAY_KEY, // use frontend key
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY, // use frontend key
         subscription_id: data.subscriptionId,
         name: "Latex Writer Premium",
         description: "Monthly subscription",
