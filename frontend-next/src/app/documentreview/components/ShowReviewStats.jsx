@@ -2,8 +2,8 @@ import React from "react";
 
 function ShowReviewStats({ stats }) {
   return (
-    <div className="">
-      <div className="grid grid-cols-4 gap-4">
+    <div>
+      <div className="grid grid-cols-2 gap-4">
         {/* Word Count */}
         <div className="bg-white p-4 rounded-lg border-2 border-gray-200 shadow-sm w-full h-full">
           <p className="text-gray-600 text-sm mb-1">Word Count</p>

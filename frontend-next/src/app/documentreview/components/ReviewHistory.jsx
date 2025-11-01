@@ -1,6 +1,6 @@
 export default function ReviewHistory({ reviews, handleShowHistory }) {
   return (
-    <div className="mb-16">
+    <div className="mb-16  px-4">
       <h5 className="text-3xl lg:text-5xl   text-black mt-16 mb-8">
         Review History
       </h5>
