@@ -29,12 +29,10 @@ function authenticateJWT(req, res, next) {
 async function checkPremium(req, res, next) {
   try {
     if (!req.user || !req.user?.isPremium) {
-      return res
-        .status(403)
-        .json({
-          message: "Premium required to access this route",
-          PremiumExpired: true,
-        });
+      return res.status(403).json({
+        message: "Premium required to access this route",
+        PremiumExpired: true,
+      });
     }
 
     next(); // ✅ allow access
@@ -43,4 +41,11 @@ async function checkPremium(req, res, next) {
     res.status(500).json({ message: "Server error" });
   }
 }
-module.exports = { authenticateJWT, checkPremium };
+
+const checkReviews = (req, res, next) => {
+  if (!req.user) return res.status(400).send("Login to continue");
+  if (req.user.reviewsAvailable < 1)
+    return res.status(403).send("No More Reviews Left");
+  next();
+};
+module.exports = { authenticateJWT, checkPremium, checkReviews };

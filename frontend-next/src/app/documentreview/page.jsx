@@ -121,7 +121,7 @@ export default function PDFReviewPage() {
                 AI Peer Review
               </Badge>
               <h2 className="text-5xl lg:text-6xl  mb-4 text-black">
-                Get Your Document Review
+                Get Your Document Reviewed
               </h2>
             </div>
           )}
