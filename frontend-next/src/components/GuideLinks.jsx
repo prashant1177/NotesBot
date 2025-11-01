@@ -5,7 +5,7 @@ export default function GuideLinks() {
     return(
         <div>
             <h5 className="text-3xl lg:text-5xl   text-black mt-16 mb-8">
-              LaTeX Guide{" "}
+              LaTeX Guide
             </h5>
             <ul className="flex flex-col gap-2 ">
               {sampleDocumentation.slice(0, 7).map((post, i) => (

@@ -4,3 +4,4 @@ node_modules/
 Database/
 installer/
 uploads/
+seed.js

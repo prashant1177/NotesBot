@@ -24,6 +24,7 @@ const { generateOtpToken, verifyOtpToken } = require("./utils/generateOtp");
 
 //Latex
 const Project = require("./models/Project.js");
+const Review = require("./models/Review.js");
 
 app.use(express.json({ limit: "2mb" }));
 
@@ -96,7 +97,7 @@ async function database() {
 
 app.use("/projects", authenticateJWT, checkPremium, projectRoutes); // all routes start with /api/projects
 app.use("/versions", authenticateJWT, checkPremium, versionsRoutes); // all routes start with /api/projects// all routes start with /api/projects
-app.use("/analyze", authenticateJWT, analyzeRoutes); 
+app.use("/analyze", authenticateJWT, analyzeRoutes);
 app.use("/api", premiumRoutes); // all routes start with /api/projects
 require("./socket")(io);
 
@@ -243,6 +244,17 @@ app.post("/auth/google", async (req, res) => {
 });
 
 // user get Details
+app.get("/reviewHistory", authenticateJWT, async (req, res) => {
+  try {
+    const reviews = await Review.find({
+      user: req.user.id,
+    });
+    return res.json({ reviews });
+  } catch (error) {
+    return res.json({ message: "User login in first" });
+  }
+});
+// user get Details
 app.get("/user", authenticateJWT, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -275,9 +287,11 @@ app.put("/user", authenticateJWT, async (req, res) => {
 app.get("/MyProject", authenticateJWT, async (req, res) => {
   const projects = await Project.find({
     $or: [{ owner: req.user.id }, { editors: req.user.id }],
-  }).populate("owner").sort({
-    createdAt: -1,
-  });
+  })
+    .populate("owner")
+    .sort({
+      createdAt: -1,
+    });
   res.json({ projects, author: req.user });
 });
 //Get author details
