@@ -45,6 +45,8 @@ Peer review is the backbone of scholarly communication. Without it, anyone could
 
 ## How Peer Review Works
 
+![Figure: Peer Review Process Explained: Step-by-Step](/blog/Peer-Review-Process.webp "Learn how research papers move through editorial checks, reviewer feedback, and revision cycles before publication.")
+
 The peer review process generally follows these stages:
 
 1. **Submission:** The author submits their paper to a journal.
