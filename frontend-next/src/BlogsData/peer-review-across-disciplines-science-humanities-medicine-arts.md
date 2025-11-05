@@ -15,7 +15,7 @@ As one expert notes, many HSS fields are “book fields” where significant sch
 
 In contrast, **STEM (science, technology, engineering, mathematics)** fields usually publish shorter, focused articles with fixed structure and prioritize collaborative, data-driven research. Most STEM papers have multiple co-authors and move through the review process relatively quickly, whereas humanities work is often single-authored and can take over a year from submission to acceptance.
 
-
+![Figure: STEM (Science, Technology, Engineering, Mathematics)](/blog/STEM.webp "Peer Review Across Disciplines: How It Differs in Science, Humanities, Medicine, and Beyond")
 
 ## Peer Review Anonymity in Different Fields
 
