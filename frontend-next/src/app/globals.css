@@ -21,15 +21,13 @@
 }
 
 .heroImg {
- 
   -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
   mask-image: linear-gradient(to right, black 50%, transparent 100%);
 }
 
 .prose {
   word-break: break-word;
-    overflow-wrap: anywhere; /* Break long words or URLs */
-
+  overflow-wrap: anywhere; /* Break long words or URLs */
 }
 
 .prose h1 {
@@ -85,8 +83,7 @@
   padding: 0.2rem 0.4rem;
   font-size: 0.95rem;
   border-radius: 0.25rem;
-    word-break: break-word; /* Avoid code overflow */
-
+  word-break: break-word; /* Avoid code overflow */
 }
 
 .prose pre {
@@ -99,7 +96,7 @@
   overflow-x: auto;
   margin: 1.25rem 0;
   line-height: 1.6;
-  white-space: pre-wrap;   /* Wrap long lines */
+  white-space: pre-wrap; /* Wrap long lines */
   word-break: break-word;
 }
 
@@ -119,8 +116,7 @@
   margin: 1.25rem 0;
   font-size: 0.95rem;
   color: #374151; /* Gray-700 */
-    display: block;       /* Makes table scrollable */
-
+  display: block; /* Makes table scrollable */
 }
 
 .prose th,
@@ -157,12 +153,11 @@
   background-color: #555;
 }
 
-
-/* From Uiverse.io by Nawsome */ 
+/* From Uiverse.io by Nawsome */
 .loader {
-  --background: linear-gradient(135deg, #23C4F8, #275EFE);
+  --background: linear-gradient(135deg, #23c4f8, #275efe);
   --shadow: rgba(39, 94, 254, 0.28);
-  --text: #6C7486;
+  --text: #6c7486;
   --page: rgba(255, 255, 255, 0.36);
   --page-fold: rgba(255, 255, 255, 0.52);
   --duration: 3s;
@@ -171,7 +166,8 @@
   position: relative;
 }
 
-.loader:before, .loader:after {
+.loader:before,
+.loader:after {
   --r: -6deg;
   content: "";
   position: absolute;
@@ -283,11 +279,13 @@
     opacity: 1;
   }
 
-  35%, 100% {
+  35%,
+  100% {
     opacity: 0;
   }
 
-  50%, 100% {
+  50%,
+  100% {
     transform: rotateY(0deg);
   }
 }
@@ -302,11 +300,13 @@
     opacity: 1;
   }
 
-  50%, 100% {
+  50%,
+  100% {
     opacity: 0;
   }
 
-  65%, 100% {
+  65%,
+  100% {
     transform: rotateY(0deg);
   }
 }
@@ -321,11 +321,13 @@
     opacity: 1;
   }
 
-  65%, 100% {
+  65%,
+  100% {
     opacity: 0;
   }
 
-  80%, 100% {
+  80%,
+  100% {
     transform: rotateY(0deg);
   }
 }
@@ -340,11 +342,23 @@
     opacity: 1;
   }
 
-  80%, 100% {
+  80%,
+  100% {
     opacity: 0;
   }
 
-  95%, 100% {
+  95%,
+  100% {
     transform: rotateY(0deg);
   }
+}
+
+.bg-grid-pattern {
+  background-image: linear-gradient(
+      to right,
+      rgb(0 0 0 / 0.1) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgb(0 0 0 / 0.1) 1px, transparent 1px);
+  background-size: 4rem 4rem;
 }

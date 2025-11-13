@@ -91,6 +91,12 @@ export default function PDFReviewPage() {
 
   return (
     <div className="max-w-7xl mx-auto">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse"></div>
+      </div>
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-20 -z-10"></div>
       <div className="fixed bottom-0 md:bottom-8  flex md:gap-4 z-10 w-full max-w-7xl justify-end">
         {pdfFile && !analyzing && (
           <button

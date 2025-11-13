@@ -4,9 +4,15 @@ import Button from "../../ui/Button/Button";
 export function HeroSection() {
   return (
     <section className="w-full h-full  -z-10">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-5 animate-pulse"></div>
+      </div>
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
       <div className="flex flex-col w-full h-full  mx-auto items-center  md:gap-2 md:max-w-5/6 px-4 sm:px-6 lg:px-8">
         <div className=" w-full h-screen  flex flex-col justify-center   ">
-          <div className="flex flex-col sticky top-20 ">
+          <div className="flex flex-col">
             <h1 className="  text-5xl lg:text-8xl   text-gray-950">
               Fast & Simple <br />
               Way to Write LaTeX
